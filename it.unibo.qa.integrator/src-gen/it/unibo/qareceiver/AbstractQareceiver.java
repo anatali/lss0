@@ -56,6 +56,7 @@ public abstract class AbstractQareceiver extends QActor {
 	    protected void initStateTable(){  	
 	    	stateTab.put("handleToutBuiltIn",handleToutBuiltIn);
 	    	stateTab.put("init",init);
+	    	stateTab.put("endOfwork",endOfwork);
 	    }
 	    StateFun handleToutBuiltIn = () -> {	
 	    	try{	
@@ -78,30 +79,7 @@ public abstract class AbstractQareceiver extends QActor {
 	    	println( temporaryStr );  
 	    	//bbb
 	    msgTransition( pr,myselfName,"qareceiver_"+myselfName,false,
-	          new StateFun[]{//new state AD HOC to execute an action and resumeLastPlan
-	          () -> {	
-	          try{
-	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
-	            //ActionSwitch for a message or event
-	             if( currentEvent.getMsg().startsWith("alarm") ){
-	            	String parg="endSinceAlarm";
-	            	/* EndPlan */
-	            	parg =  updateVars( Term.createTerm("alarm(X)"),  
-	            	                    Term.createTerm("alarm(X)"), 
-	            		    		  	Term.createTerm(currentEvent.getMsg()), parg);
-	            	if( parg != null ){  
-	            		println( parg);
-	            		return ; //JULY2017
-	            		//break
-	            	}					
-	             }
-	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
-	          }catch(Exception e ){  
-	             println( getName() + " plan=init WARNING:" + e.getMessage() );
-	             //QActorContext.terminateQActorSystem(this); 
-	          }
-	          },
-	           //new state AD HOC to execute an action and resumeLastPlan
+	          new StateFun[]{stateTab.get("endOfwork"), //new state AD HOC to execute an action and resumeLastPlan
 	          () -> {	
 	          try{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
@@ -124,6 +102,26 @@ public abstract class AbstractQareceiver extends QActor {
 	    	 QActorContext.terminateQActorSystem(this); 
 	    }
 	    };//init
+	    
+	    StateFun endOfwork = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp("endOfwork",-1);
+	    	String myselfName = "endOfwork";  
+	    	//onEvent
+	    	if( currentEvent.getEventId().equals("alarm") ){
+	    	 		String parg = "endOfwork(X)";
+	    	 		/* Print */
+	    	 		parg =  updateVars( Term.createTerm("alarm(X)"), 
+	    	 		                    Term.createTerm("alarm(X)"), 
+	    	 			    		  	Term.createTerm(currentEvent.getMsg()), parg);
+	    	 		if( parg != null ) println( parg );
+	    	 }
+	    	repeatPlanNoTransition(pr,myselfName,"qareceiver_"+myselfName,false,false);
+	    }catch(Exception e_endOfwork){  
+	    	 println( getName() + " plan=endOfwork WARNING:" + e_endOfwork.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//endOfwork
 	    
 	    protected void initSensorSystem(){
 	    	//doing nothing in a QActor

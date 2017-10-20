@@ -73,18 +73,10 @@ public abstract class AbstractQajaactoivator extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
-	    	//delay  ( no more reactive within a plan)
-	    	aar = delayReactive(2000,"" , "");
-	    	if( aar.getInterrupted() ) curPlanInExec   = "init";
-	    	if( ! aar.getGoon() ) return ;
 	    	temporaryStr = "\"qajaactoivator START\"";
 	    	println( temporaryStr );  
 	    	parg = "runNodeJs(\"./nodejsCode/TcpClientToQaNode.js localhost 8031\",\"true\")";
 	    	actorOpExecute(parg, false);	//OCT17		 
-	    	//delay  ( no more reactive within a plan)
-	    	aar = delayReactive(5000,"" , "");
-	    	if( aar.getInterrupted() ) curPlanInExec   = "init";
-	    	if( ! aar.getGoon() ) return ;
 	    	temporaryStr = "\"qajaactoivator END\"";
 	    	println( temporaryStr );  
 	    	repeatPlanNoTransition(pr,myselfName,"qajaactoivator_"+myselfName,false,false);

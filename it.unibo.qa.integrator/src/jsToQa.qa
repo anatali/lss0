@@ -6,50 +6,25 @@ Context ctxJsToQa ip[ host="localhost" port=8031]
 EventHandler evh for alarm -print;
   
 QActor qajaactoivator context ctxJsToQa {
-	Plan init normal      
-	actions[
-		delay 2000;	//allow the server to start
+	Plan init normal [
 		println("qajaactoivator START") ;
     	actorOp runNodeJs("./nodejsCode/TcpClientToQaNode.js localhost 8031", "true") ;
-//delay time(1000);
-//emit alarm : alarm(fire) ; 
- 		delay 5000;
-		println("qajaactoivator END") 
+    	//[?? actorOpDone(OP,R)] println( rrr(R) );
+ 		println("qajaactoivator END") 
 	]  		  
 }       
 
 QActor qareceiver context ctxJsToQa {
-	Plan init normal   
-	actions[
+	Plan init normal [
   		println("qareceiver WAITS") 
 	] 
 	transition stopAfter 10000	 
-  			whenEvent alarm  : alarm(X) do  endPlan "endSinceAlarm" , 
+  			whenEvent alarm  ->  endOfwork , 
  			whenMsg info     : info(X)  do printCurrentMessage
-  	finally repeatPlan  			
+  	finally repeatPlan  	
+  	
+  	Plan endOfwork [
+  		onEvent alarm : alarm(X) -> println( endOfwork(X) )
+  	]
+  	
  }        
- 
- 
- /*
-git config --global user.name "anatali"
-git config --global user.email antonio.natali@unibo.it
-https://github.com/signup/free
-username anatali
-nat25650
-
-GENERATE KEY
-https://help.github.com/articles/generating-ssh-keys
-eseguo C:\Program Files\Git\git-bash.exe" --cd-to-home
-ls -al ~/.ssh per vedere le key
-ssh-keygen -t rsa -b 4096 -C "antonio.natali@unibo.it" 
-C:/Didattica/.ssh/id-rsa
-
-ADD SSH KEY
-https://github.com/settings/ssh
-eval $(ssh-agent -s)
-ssh-add C:/Didattica/.ssh/id-rsa
-
-CREATE REPO
-https://github.com/new
-
-  */   

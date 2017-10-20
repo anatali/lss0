@@ -5,6 +5,7 @@ GENERATED ONLY ONCE
 USAGE:	 
 	gradle -b build_ctxJsToQa.gradle eclipse	//to set the dependency on the library
 	gradle -b build_ctxJsToQa.gradle build
+	gradle -b build_ctxJsToQa.gradle cleanDistDir	//to clear the src directory
 ================================================================================
 */
 apply plugin: 'java'
@@ -124,7 +125,7 @@ test {
 }
 /*
 ---------------------------------------------------------------------
-JAR: incldes src-gen code (excluding Java) in the executable jar
+JAR: includes src-gen code (excluding Java) in the executable jar
 ---------------------------------------------------------------------
 */
 jar {
@@ -145,6 +146,11 @@ PREPARE DISTRIBUTION
 ---------------------------------------------------------
 */
 task copyInfoForDist << {
+	copy {	//ADDED
+		from 'nodejsCode'
+		into 'src/dist/nodejsCode/'
+		include '**/*.*'
+ 	}
 	copy {
 		from 'audio'
 		into 'src/dist/audio/'

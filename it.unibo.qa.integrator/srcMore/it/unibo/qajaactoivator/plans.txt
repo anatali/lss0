@@ -1,0 +1,5 @@
+plan(1,init, sentence(true,delay( 2000) ,'','' ))
+plan(2,init, sentence(true,move(print("qajaactoivator START")),'','' ))
+plan(3,init, sentence(true,move(actorOp(runNodeJs( "./nodejsCode/TcpClientToQaNode.js localhost 8031","true"))),'','' ))
+plan(4,init, sentence(true,delay( 5000) ,'','' ))
+plan(5,init, sentence(true,move(print("qajaactoivator END")),'','' ))

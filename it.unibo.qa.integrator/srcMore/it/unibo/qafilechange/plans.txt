@@ -1,0 +1,2 @@
+plan(1,init, sentence(true,move(print("START WATCHING")),'','' ))
+plan(2,init, sentence(true,move(actorOp(watchFileInDir( "C:/repoGitHub/it.unibo.qa.integrator/sharedFiles"))),'','' ))

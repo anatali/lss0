@@ -4,23 +4,29 @@ Dispatch info : info(X)
 
 Context ctxJsToQa ip[ host="localhost" port=8031] 
 EventHandler evh for alarm -print;
-  
+/*
+ * This actor activates a NodeJs process that sends messages to the qareceiver
+ */  
 QActor qajaactoivator context ctxJsToQa {
 	Plan init normal [
 		println("qajaactoivator START") ;
-    	actorOp runNodeJs("./nodejsCode/TcpClientToQaNode.js localhost 8031", "true") ;
+	   	actorOp runNodeJs("./nodejsCode/TcpClientToQaNode.js localhost 8031", "true") ;
     	//[?? actorOpDone(OP,R)] println( rrr(R) );
  		println("qajaactoivator END") 
 	]  		  
 }       
 
+/*
+ * This actor handles message ent by the NodeJs process by distinguishing between
+ * messages (dispatch info : info(X))  and events (alarm   : alarm(X)).
+ */
 QActor qareceiver context ctxJsToQa {
 	Plan init normal [
   		println("qareceiver WAITS") 
 	] 
-	transition stopAfter 10000	 
+	transition stopAfter 60000	 
   			whenEvent alarm  ->  endOfwork , 
- 			whenMsg info     : info(X)  do printCurrentMessage
+ 			whenMsg info : info(X)  do printCurrentMessage
   	finally repeatPlan  	
   	
   	Plan endOfwork [

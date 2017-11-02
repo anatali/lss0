@@ -1,0 +1,35 @@
+System testRover 
+Event sonarDetect    : sonarDetect(X) //From (virtual robot) sonar
+Event sonar          : sonar(SONAR, TARGET, DISTANCE) //From (virtual) sonar  
+
+Context  ctxRover  ip [ host="localhost"  port=8070 ]         
+EventHandler evh for  sonarDetect , sonar -print ;   
+
+QActor rover context ctxRover { 
+	Plan init normal [    
+	    	println("rover START");	    	
+	    	actorOp workWithUnity("localhost") ;  
+	   		actorOp createSimulatedActor("rover","Prefabs/CustomActor")  ;	    	
+   	    	right 50 time ( 1000 )   //position
+  	    ] 
+	    switchTo moveVitualRobot
+		
+	Plan moveVitualRobot [
+		println("moveVitualRobot")
+	]
+	reactive onward 40 time ( 5000 )      
+	    	whenEnd -> endOfMove
+	    	whenTout 30000 -> handleTout
+	    	whenEvent sonarDetect -> handleObstacle 
+	    	or whenEvent sonar    -> handleSonar
+	finally repeatPlan
+	 
+	Plan handleSonar resumeLastPlan [
+   	    onward 50 time ( 300 ) ;   //out of sonar range
+   	    stop 50 time ( 1000 )      //stop for a while ...
+	]	
+	Plan handleObstacle resumeLastPlan [ backwards 50 time ( 3500 ) ]
+	Plan endOfMove resumeLastPlan [ println("endOfMove") ]
+	Plan handleTout   [ println("handleTout") ]
+		
+ }

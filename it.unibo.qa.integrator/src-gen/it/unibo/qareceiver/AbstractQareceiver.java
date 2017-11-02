@@ -72,15 +72,15 @@ public abstract class AbstractQareceiver extends QActor {
 	    
 	    StateFun init = () -> {	
 	    try{	
-	     PlanRepeat pr = PlanRepeat.setUp("qareceiver_init",0);
+	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_init",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "init";  
 	    	temporaryStr = "\"qareceiver WAITS\"";
 	    	println( temporaryStr );  
 	    	//bbb
-	    msgTransition( pr,myselfName,"qareceiver_"+myselfName,false,
-	          new StateFun[]{stateTab.get("endOfwork"), //new state AD HOC to execute an action and resumeLastPlan
-	          () -> {	
+	     msgTransition( pr,myselfName,"qareceiver_"+myselfName,false,
+	          new StateFun[]{stateTab.get("endOfwork"), 
+	          () -> {	//AD HOC state to execute an action and resumeLastPlan
 	          try{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
@@ -94,9 +94,9 @@ public abstract class AbstractQareceiver extends QActor {
 	             //QActorContext.terminateQActorSystem(this); 
 	          }
 	          }
-	          },
+	          },//new StateFun[]
 	          new String[]{"true","E","alarm", "true","M","info" },
-	          10000, "handleToutBuiltIn" );
+	          60000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_init){  
 	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 
@@ -108,14 +108,14 @@ public abstract class AbstractQareceiver extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("endOfwork",-1);
 	    	String myselfName = "endOfwork";  
 	    	//onEvent
-	    	if( currentEvent.getEventId().equals("alarm") ){
+	    	if( currentEvent != null && currentEvent.getEventId().equals("alarm") ){
 	    	 		String parg = "endOfwork(X)";
 	    	 		/* Print */
 	    	 		parg =  updateVars( Term.createTerm("alarm(X)"), 
 	    	 		                    Term.createTerm("alarm(X)"), 
 	    	 			    		  	Term.createTerm(currentEvent.getMsg()), parg);
 	    	 		if( parg != null ) println( parg );
-	    	 }
+	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"qareceiver_"+myselfName,false,false);
 	    }catch(Exception e_endOfwork){  
 	    	 println( getName() + " plan=endOfwork WARNING:" + e_endOfwork.getMessage() );

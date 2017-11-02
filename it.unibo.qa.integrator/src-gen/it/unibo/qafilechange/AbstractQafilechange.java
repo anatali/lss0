@@ -71,12 +71,12 @@ public abstract class AbstractQafilechange extends QActor {
 	    
 	    StateFun init = () -> {	
 	    try{	
-	     PlanRepeat pr = PlanRepeat.setUp("qafilechange_init",0);
+	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_init",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "init";  
 	    	temporaryStr = "\"START WATCHING\"";
 	    	println( temporaryStr );  
-	    	parg = "watchFileInDir(\"C:/repoGitHub/it.unibo.qa.integrator/sharedFiles\")";
+	    	parg = "watchFileInDir(\"C:/repoGitHub/it.unibo.qa.integrator/sharedFiles\")"; 
 	    	actorOpExecute(parg, false);	//OCT17		 
 	    	repeatPlanNoTransition(pr,myselfName,"qafilechange_"+myselfName,true,false);
 	    }catch(Exception e_init){  

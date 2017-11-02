@@ -12,8 +12,8 @@ digraph finite_state_machine {
 	init [ color = red ][ fontcolor = red ][ penwidth = 3 ]
 	endOfwork [ color = blue ][ fontcolor = blue ][ penwidth = 3 ]
 	
-	init -> init [ label = "repeat " ][ style = dashed ][ color = blue ][ fontcolor = blue ]
+	init -> handleToutBuiltIn [ label = "timeout(60000)" ][ color = green ][ fontcolor = green ]
+	init -> init [ label = "repeat "][ style = dashed ][ color = blue ][ fontcolor = blue ]
 	init -> endOfwork [ label = "alarm" ][ color = black ][ fontcolor = black ]
 	init -> action [ label = "info" ][ color = red ][ fontcolor = red ][ dir = both ]
-	init -> handleToutBuiltIn [ label = "timeout(10000)" ][ color = green ][ fontcolor = green ]
 }

@@ -71,15 +71,15 @@ public abstract class AbstractQafilechangehandler extends QActor {
 	    
 	    StateFun init = () -> {	
 	    try{	
-	     PlanRepeat pr = PlanRepeat.setUp("qafilechangehandler_init",0);
+	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_init",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "init";  
-	    	parg = "noOP";
+	    	parg = "noOP"; 
 	    	actorOpExecute(parg, false);	//OCT17		 
 	    	//bbb
-	    msgTransition( pr,myselfName,"qafilechangehandler_"+myselfName,false,
-	          new StateFun[]{//new state AD HOC to execute an action and resumeLastPlan
-	          () -> {	
+	     msgTransition( pr,myselfName,"qafilechangehandler_"+myselfName,false,
+	          new StateFun[]{
+	          () -> {	//AD HOC state to execute an action and resumeLastPlan
 	          try{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
@@ -93,8 +93,8 @@ public abstract class AbstractQafilechangehandler extends QActor {
 	             //QActorContext.terminateQActorSystem(this); 
 	          }
 	          },
-	           //new state AD HOC to execute an action and resumeLastPlan
-	          () -> {	
+	           
+	          () -> {	//AD HOC state to execute an action and resumeLastPlan
 	          try{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
@@ -112,9 +112,9 @@ public abstract class AbstractQafilechangehandler extends QActor {
 	             //QActorContext.terminateQActorSystem(this); 
 	          }
 	          }
-	          },
+	          },//new StateFun[]
 	          new String[]{"true","E","fileChanged", "true","E","fileChanged" },
-	          30000, "handleToutBuiltIn" );
+	          30000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_init){  
 	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 

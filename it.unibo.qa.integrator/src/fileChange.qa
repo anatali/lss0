@@ -1,24 +1,19 @@
 System fileChange
 Event fileChanged   : fileChanged(F,X)  //F filename X current content
-
 Context ctxFileChange ip[ host="localhost" port=8061] 
 /*
  * This system acts as an OBSERVER for change of files in the directory 
  * C:/repoGitHub/it.unibo.qa.integrator/sharedFiles
- * Any change in some file (e.g. cmd.txt) generates the event
- *      fileChanged   : fileChanged(F,X)
+ * Any change in some file (e.g. cmd.txt) generates the event: fileChanged   : fileChanged(F,X)
  */
 QActor qafilechange context ctxFileChange {
-	Plan init normal[
- 		println("START WATCHING"); 
+	Plan init normal[ println("START WATCHING"); 
  		actorOp watchFileInDir("C:/repoGitHub/it.unibo.qa.integrator/sharedFiles")
 	]
  	finally repeatPlan 
 }
 QActor qafilechangehandler context ctxFileChange {
-	Plan init normal[
-		actorOp noOP
- 	]
+	Plan init normal[ actorOp noOP ]
 	transition stopAfter 30000  
 	whenEvent fileChanged : fileChanged(F,X) do printCurrentEvent,
 	whenEvent fileChanged : fileChanged(F,X) do println(X)

@@ -1,0 +1,2 @@
+plan(1,init, sentence(true,move(print("qabls0nodestarter STARTS the Node.js HTTP server")),'','' ))
+plan(2,init, sentence(true,move(print("qabls0nodestarter ENDS")),'','' ))

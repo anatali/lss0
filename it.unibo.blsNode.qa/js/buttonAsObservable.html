@@ -1,0 +1,46 @@
+<html>
+<head>
+<script src="./ButtonAsObservable.js"></script> 
+</head>
+ 
+
+<body>
+<h3>buttonAsObservable</h3>
+<!-- LED  -->
+<div id="ledGuiId" style="height:20px; width:3%; position: absolute; background-color:#00FF33"></div>
+<br/><br/>
+<!-- BUTTON -->
+<div><button onclick="button.press()">BUTTON</button></div>
+</body>
+<script>
+ var button;
+ var LedImplGui  = function( name ){
+		this.name      = name;
+		this.ledState  = 0;
+		document.getElementById( name ).style.backgroundColor='#FF0000';
+ }
+ LedImplGui.prototype.turnOn  = function(){
+	this.ledState  = 1;
+	document.getElementById(this.name).style.backgroundColor='#00FF33';
+ }
+ LedImplGui.prototype.turnOff = function(){
+	this.ledState = 0;
+	document.getElementById(this.name).style.backgroundColor='#FF0000';
+ }
+ LedImplGui.prototype.switchState = function(){
+	if( this.ledState ) this.turnOff(); else this.turnOn() ;
+ }
+ 
+var configure = function (){
+	//configure the system
+	ledgui = new LedImplGui("ledGuiId");
+ 	button = new Button( 'b1'  );
+  	button.registerFunc(
+  		function(){ ledgui.switchState(); }
+  	);
+	console.log("configuration done"  );
+}
+configure();
+</script> 
+
+</htnl>

@@ -1,0 +1,2 @@
+plan(1,init, sentence(true,move(print("qabls0cmdhandler STARTS watching the file")),'','' ))
+plan(2,init, sentence(true,move(actorOp(watchFileInDir( "C:/repoGitHub/it.unibo.blsNode.qa/blsOop"))),'','' ))

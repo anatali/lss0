@@ -6,7 +6,7 @@
 var http    = require("http");
 var fs      = require('fs');
 var path    = require('path');
-var file    = path.join(process.cwd(), './cmd.txt');
+var file    = path.join(process.cwd(), '../sharedFiles/cmd.txt');
 
 http.createServer(function(request, response) {
 	//The request object is an instance of IncomingMessage (a ReadableStream and it's also an EventEmitter)

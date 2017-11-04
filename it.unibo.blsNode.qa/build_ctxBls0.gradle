@@ -68,6 +68,16 @@ UNIBO SUPPORTS
 	  compile fileTree(dir: './libs/unibo', include: '2p301.jar')
 	  compile fileTree(dir: './libs/unibo', include: 'qa18Akka.jar')
 	  compile fileTree(dir: './libs/http',  include: 'nanoHTTPD.jar')
+
+/*
+	BY THE APPLICATION DESIGNER FOR HTTP CLIENT
+*/
+// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
+// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore
+compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.3.3'
+
+
 /*
 JSON
 */

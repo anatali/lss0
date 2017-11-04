@@ -1,0 +1,4 @@
+plan(1,init, sentence(true,move(print("qahttpclient STARTS")),'','' ))
+plan(2,init, sentence(-  data( X) ,move(actorOp(sendPut( X,8080))),'','' ))
+plan(3,init, sentence(true,move(actorOp(sendGet( 8080))),'','' ))
+plan(4,init, sentence(true,delay( 500) ,'','' ))

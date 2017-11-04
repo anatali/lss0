@@ -1,19 +1,12 @@
 System bls0                 
-Event fileChanged   : fileChanged(FNAME,CONTENT)         
- 
-Context ctxBls0 ip [ host="localhost"  port=8029 ]  //-g cyan  
-/*
- * A Node.js HTTP server writes commands on the file 
- * 	C:/repoGitHub/it.unibo.blsNode.qa/blsOop/cmd.txt
- */    
-QActor qabls0cmdhandler context ctxBls0{       
-	Plan init normal [                  
-   		println( "qabls0cmdhandler STARTS watching the file"  ) ;
-     	actorOp watchFileInDir("C:/repoGitHub/it.unibo.blsNode.qa/blsOop") 
-   	]
-   	finally repeatPlan
-}   
+Event fileChanged : fileChanged(FNAME,CONTENT)   //emitted by watchFileInDir      
     
+Context ctxBls0 ip [ host="localhost"  port=8029 ]  //-g cyan 
+ 
+/*
+ * A Node.js HTTP server writes 'press' on the file  
+ * 	C:/repoGitHub/it.unibo.blsNode.qa/blsOop/cmd.txt
+ */   
 QActor qabls0led context ctxBls0 -g yellow{  
 	Plan init normal [         
    		println( "qabls0led STARTS"  )  ;
@@ -21,12 +14,20 @@ QActor qabls0led context ctxBls0 -g yellow{
    	]
    	switchTo  work      
    	
-  	Plan work [ actorOp noOp ]
+  	Plan work [ 
+   		actorOp watchFileInDir("C:/repoGitHub/it.unibo.blsNode.qa/sharedFiles") -asynch
+  	]
 	transition stopAfter 300000  
-		whenEvent fileChanged : fileChanged(F,press) do actorOp ledSwitch
-		finally repeatPlan 	
+		whenEvent fileChanged : fileChanged(F,press) do actorOp ledSwitch 
+ 		finally repeatPlan 	
 } 
 
+QActor qabls0client context ctxBls0  {  
+	Plan init normal [         
+   		println( "qabls0client STARTS"  )  ;
+   		actorOp sendPut("pressButton", 8080)
+   	]
+}
 
 /*
  //Launched here seems fail to write the file

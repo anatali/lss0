@@ -110,8 +110,8 @@ public abstract class AbstractQabls0led extends QActor implements IActivity{
 	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_work",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "work";  
-	    	parg = "noOp"; 
-	    	actorOpExecute(parg, false);	//OCT17		 
+	    	parg = "watchFileInDir(\"C:/repoGitHub/it.unibo.blsNode.qa/sharedFiles\")"; 
+	    	actorOpExecute(parg, true);	//OCT17		 
 	    	//bbb
 	     msgTransition( pr,myselfName,"qabls0led_"+myselfName,false,
 	          new StateFun[]{
@@ -120,7 +120,7 @@ public abstract class AbstractQabls0led extends QActor implements IActivity{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentEvent.getMsg().startsWith("fileChanged") ){
-	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.EventTransSwitchImpl@75714ec2
+	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.EventTransSwitchImpl@a259465
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("fileChanged(FNAME,CONTENT)"), 
 	            		                Term.createTerm("fileChanged(F,press)"), 

@@ -1,0 +1,29 @@
+System httpClient                 
+Event httpinfo : httpinfo(X)     //emitted by PUT GET
+
+Context ctxHttpClient ip [ host="localhost"  port=8029 ]   
+ 
+QActor qahttpclient context ctxHttpClient  {  
+Rules{
+	data( item1 ).
+	data( item2 ).
+}
+	Plan init normal [         
+   		println( "qahttpclient STARTS"  )  ;
+   		[ ?? data(X) ] actorOp sendPut(X, 8080) else endPlan "no more data";
+   		actorOp sendGet( 8080 )  ;
+   		delay 500
+    ]
+    finally repeatPlan
+}
+
+QActor qahttpanswerhandler context ctxHttpClient  {
+	Plan init normal [
+		actorOp noOp  
+	]
+   	transition stopAfter 10000 
+   		whenEvent httpinfo : httpinfo(X) do println( httpinfo(X) )
+   		finally repeatPlan
+}
+
+

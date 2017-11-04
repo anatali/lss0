@@ -16,7 +16,7 @@ http.createServer(function(request, response) {
   	if (request.method === 'GET' && request.url === '/') {
 		response.writeHead(200, {"Content-Type": "text/plain"});
 		response.write("The server calls the operation press of button");
-		blsMod.b1.press(1);
+		blsMod.button.press();
 		response.end();
 	}
 }).listen( 8080, function(){ console.log('bound to port 8080');} );

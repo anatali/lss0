@@ -2,7 +2,7 @@
  * testBlsObservableObj.js for nodeunit
  */
 var LedMod    = require("../Led");
-var ButtonMod = require("../ButtonObservable");
+var ButtonMod = require("../ButtonAsObservable");
 
 var l1 = new LedMod.Led("l1",null);
 var b1 = new ButtonMod.Button( 'b1' );

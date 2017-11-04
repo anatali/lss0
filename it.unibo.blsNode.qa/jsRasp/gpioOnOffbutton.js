@@ -1,8 +1,6 @@
-
 /*
  * =====================================
  * gpioOnOffbutton.js
-
  * See https://github.com/fivdi/onoff
  * =====================================
 */
@@ -19,7 +17,6 @@ Watch for hardware interrupts on the GPIO.
 The edge argument that was passed to the constructor 
 determines which hardware interrupts to watch for.
 */
-
 button.watch(function (err, level) {
   if (err) {
     throw err;

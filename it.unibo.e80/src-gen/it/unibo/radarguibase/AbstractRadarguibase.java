@@ -112,7 +112,7 @@ public abstract class AbstractRadarguibase extends QActor {
 	    	String myselfName = "handleSonarInfo";  
 	    	//onMsg
 	    	if( currentMessage != null && currentMessage.msgId().equals("polarMsg") ){
-	    		String parg = "sendDataToGui(D,A)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@b35c8d
+	    		String parg = "sendDataToGui(D,A)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@2e70c556
 	    		{/* ActorOp */
 	    		parg =  updateVars( Term.createTerm("p(Distance,Angle)"), 
 	    			                Term.createTerm("p(D,A)"), 
@@ -122,7 +122,7 @@ public abstract class AbstractRadarguibase extends QActor {
 	    	}
 	    	//onEvent
 	    	if( currentEvent != null && currentEvent.getEventId().equals("polar") ){
-	    	 		String parg = "sendDataToGui(D,A)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@b35c8d
+	    	 		String parg = "sendDataToGui(D,A)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@2e70c556
 	    	 		{/* ActorOp */
 	    	 		parg =  updateVars( Term.createTerm("p(Distance,Angle)"), 
 	    	 			                Term.createTerm("p(D,A)"), 

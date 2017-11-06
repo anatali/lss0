@@ -1,0 +1,438 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.o../html4/strict.dtd">
+<html>
+<!-- <link rel="stylesheet" type="text/css" href="../../css/plainStyle.css"> -->
+<link rel="stylesheet" type="text/css" href="../../css/tabStyle.css">
+        <link rel="stylesheet" type="text/css" href="../../css/robotTabStyle.css">
+<script type="text/javascript" src="../../css/issStyle.js"></script>
+<style>
+h2 {
+    font: 100% Lucida Sans;
+    background-color: #f6d8f8;
+}
+h3 {
+    font: 90% Lucida Sans; 
+    width: 100%;
+    background-color: #f3f3f7;
+    color: #191818;
+}
+#i {
+     color: #ff1010;
+} 
+b{
+	font: 100% Lucida Console;
+	color: #2219fd;
+    font-weight: bold;
+}
+tt{
+	font: 100% Lucida Console;
+	color: #c90b46;
+    font-weight: bold;
+}
+</style>
+<head>
+
+<title>ButtonLedSystem on a RaspberryPi</title></head>
+    
+<body>     
+<div class="container wrapper"> 
+<div class="wrapper">
+<div id="main"> 
+
+<h1>ButtonLedSystem on a RaspberryPi</h1>
+     <button onclick="window.location.href='../../Material/entry.html'">Home</button>
+ 
+<div style="background-color:#fbffb6; width:100%;float:left;"> 
+<h3>VISION</h3>
+<ul>
+    <li>Technology is fundamental, but it should be something to be <tt>properly used</tt>, not something we have to be subjected to. </li>
+</ul>
+ 
+    
+<h3>GOALS</h3>
+
+<ul>
+    <li>Show how a low-cost compuational device like <a href="../../Raspberry/raspberryEntry.html" target="code">RaspberryPi</a>)   can be included in our reference ButtonLed case study accoding to a 'message passing' programming style. </li>
+</ul>
+ 
+</div>
+  
+    
+<div style="background-color:#d5faf1; width:100%;float:left;">
+<h3>WORK</h3>
+    Our starting point will be a very simple introduction to the usage of RaspberryPi GPIO by means of bash commands, gpio library and Python: see <a href="../Raspberry/raspberryProjects.html" target="code">Raspberry Low level Projects</a>
+Next we will build systems including a   <a href="../../Appls/ButtonLed/LedEntry.html" target="code">physical Led</a> a <a href="../../Appls/ButtonLed/buttonEntry.html" target="code">physical Button</a>. 
+    
+
+<ol>
+</ol>
+    
+</div>
+
+<div style="background-color:#04b779; width:100%;text-align:center;font-size:small;color:white">
+-------
+</div>
+<h2>Requirements</h2>
+<hr/>
+<b>User story</b>: <b>As</b> a <i>operator</i>, <b>I want</b> to press a <tt>BLINK</tt> Button</i> <b>so that</b> a Led can start to blink. Moreover, <b>I want</b> also to press a <tt>STOP</tt> Button</i> <b>so that</b> the Led can stop blinking and remain in a <tt>off</tt> state. The 
+    <a href="../../Appls/ButtonLed/buttonEntry.html">Button</a> and the
+    <a href="../../Appls/ButtonLed/LedEntry.html">Led</a>
+    can be <i>physical</i> devices connnected to a RaspberryPi computer or a <i>'virtual'</i> (GUI-based) device implemented on a PC.
+<hr/>     
+
+ 
+    
+<h1>Work to do</h1>
+    <ol>
+        <li>
+                    <h2>Start</h2> 
+<ol>
+    <li>Read <a href="../CARD/rpi_sd.pdf">rpi_sd.pdf</a> e <a href="../CARD/guida_rpi.pdf">guida_rpi.pdf</a> </li>
+        <li>Download and install <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY</a></li>
+<li>      Download the unibo SD: 
+    <a href="../../Download/2016-02-26-raspbian-jessie-iss.img.zip">SD (zip 1GB)</a>
+    <!--
+    <a href="https://137.204.107.21/www-files/2016-02-26-raspbian-jessie-iss.img.zip">SD (zip 1GB)</a>
+-->, generate your own <a href="https://en.wikipedia.org/wiki/Secure_Digital#Micro">Secure Digital</a> card </li>
+    <li>Insert the SD card in a PC and look (in the unit <tt>boot</tt>) at the file <tt>mywifi.conf</tt>:
+    <pre>
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+ap_scan=1
+eapol_version=1
+fast_reauth=1
+
+network={
+        ssid="natspot"
+        scan_ssid=1
+        key_mgmt=WPA-PSK
+        psk="123456789"
+}    
+    </pre>
+    
+    </li>
+    <li>Insert the SD card into the RaspberryPi and extend the file system by running:
+    <pre>
+    sudo raspi-config
+    </pre></li>
+    </ol>
+        </li>
+<li>
+        <h2>Connect the RaspberryPi to a PC  with a Ethernet cable.</h2> 
+<ol>
+<li>Connect the RaspberryPi to the PC via a <a href="http://www.howtogeek.com/210326/not-all-ethernet-cables-are-equal-you-can-get-faster-lan-speeds-by-upgrading/">Ethernet cable </a></li>      
+    <li>Connect the RaspberryPi to the PC via a USB cable</li>
+    <li>Open PuTTY and connect to <tt>192.168.137.2</tt> port <tt>22</tt> </li>
+    <li>Login with: <tt>pi</tt> pswd= <tt>raspberry</tt></li>
+    <li>Look at the output:
+    
+    <pre>
+IP                      192.168.137.2
+Wifi settings           /boot/mywifi.conf
+Web terminal            https://192.168.137.2:4200
+VNC Remote Desktop      192.168.137.2:1 Password:123456
+SMB Network Share       \\192.168.137.2\home_pi\
+    
+    </pre>
+    </li>
+</ol>
+<li>
+         <h2>Access to the RaspberryPi via Windows</h2> 
+    (connnetti unita di rete):
+    <pre>\\192.168.137.2\home_pi\</pre>
+    
+</li>
+        <li> 
+                     <h2>Configure the hardware</h2> 
+           
+            Connect the hardware :<br/> 
+        <img src="../../imgs/appls/butLedRasp.jpg" alt="show" width="301" height="302"/>
+    <h3>Resistors</h3>
+    If we need some resistor:
+    <a href="../../../docs/imgs/devices/Resistor-Colour-Code.gif" target="code">Resistor-Colour-Code</a>,
+<a href="../../../docs/imgs/devices/resistor-color-code-all.gif" target="code">resistor-color-code-all</a>,
+<a href="http://www.digikey.com/en/resources/conversion-calculators/conversion-calculator-resistor-color-code-4-band">evalColor</a>
+<br/>
+The Raspberry Pi has internal <b>pull-up</b> and <b>pull-down</b> resistors that can be specified when the pin declarations are made.
+   <h3>Useful links (introduction to GPIO control)</h3>         
+<ul>        
+<li><a href="https://www.youtube.com/watch?v=D-cTUEKbJJA">VIDEO: Raspberry Pi GPIO with Java</a></li>
+<li>About pins: <a href="http://elinux.org/RPi_Low-level_peripherals">RPi_Low-level_peripherals</a></li>
+<li>About Raspberry Pi GPIOs control: <a href="http://elinux.org/RPi_GPIO_Code_Samples">RPi GPIO Code Samples</a></li>
+<li><a href="http://wiringpi.com/the-gpio-utility/">Command-line utility gpio  (used by Wiringpi)</a></li>
+    <li><a href="http://makezine.com/projects/tutorial-raspberry-pi-gpio-pins-and-python/">gpio-pins-and-python</a></li>
+<li><a href="http://wiringpi.com//">Wiringpi</a></li>
+<li>     <a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/RaspberryPi_Setup/RaspberryPi_Setup.html">Oracle java/RaspberryPi_Setup</a>  </li>         
+<li>      <a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/RaspberryPi_GPIO/RaspberryPi_GPIO.html">Oracle java/RaspberryPi_GPIO</a>  </li>   
+<li>Java <a href="https://bitbucket.org/sbub/raspberry-pi-gpio-web-control/overview">gpio-web-control</a></li>    
+</ul>                
+ 
+        
+        
+</li> 
+        
+        <li>
+<h2 >Basic Experiments (interactive) </h2> 
+           
+<table id="robots">
+  <tr>
+    <th>Bash</th>
+    <th>Gpio</th>
+    <th>Python</th>
+    </tr>
+  <tr class="alt">
+    <td>
+        <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/led25OnOff.sh">led25OnOff.sh</a>
+      <pre>
+echo Unexporting.
+echo 25 > /sys/class/gpio/unexport #
+echo 25 > /sys/class/gpio/export #
+cd /sys/class/gpio/gpio25 #
+
+echo Setting direction to out.
+echo out > direction #
+echo Setting pin high.
+echo 1 > value #
+sleep 1 #
+echo Setting pin low
+echo 0 > value #
+sleep 1 #
+echo Setting pin high.
+echo 1 > value #
+sleep 1 #
+echo Setting pin low
+echo 0 > value #      
+      </pre>
+      
+      </td>
+    <td><a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/gpio/led25Gpio.sh">led25Gpio.sh</a>
+      <pre>
+gpio readall #
+echo Setting direction to out
+gpio mode 6 out #
+echo Write 1
+gpio write 6 1 #
+sleep 1 #
+echo Write 0
+gpio write 6 0 #    
+      </pre>
+      
+      </td> 
+    <td>    <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/python/ledPython25.py">ledPython25.py</a>
+<br/><br/>  
+        The newest version of Raspbian has the <br/>
+        RPi.GPIO library pre-installed. 
+        <pre>
+sudo python
+>>> import RPi.GPIO as GPIO
+>>> GPIO.VERSION
+>>> GPIO.setmode(GPIO.BCM) 
+>>> GPIO.setup(25,GPIO.OUT)
+>>> while True:
+>>>     GPIO.output(25,GPIO.HIGH)
+>>>     time.sleep(1)
+>>>     GPIO.output(25,GPIO.LOW)
+>>>     time.sleep(1)
+>>> quit()
+</pre> </td>
+   </tr>
+ </table> 
+            
+  <h3>Fron file</h3>           
+<table id="robots">
+  <tr>
+    <th>Bash</th>
+    <th>Gpio</th>
+    <th>Python</th>
+    </tr>
+  <tr class="alt">
+    <td>
+        <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/led25OnOff.sh">led25OnOff.sh</a><br/>
+<a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/buttonOn24Click.sh">buttonOn24Click.sh</a>  
+<br/>
+<a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/buttonLed.sh">buttonLed.sh</a>          
+      </td> 
+    <td>    <a href="../../../../it.unibo.raspIntro/src/it/unibo//bls/bash/gpio/led25Gpio.sh">led25Gpio.sh</a><br/>
+<a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/gpio/button24Gpio.sh">button24Gpio.sh</a>  
+        
+      </td> 
+    <td>    <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/python/ledPython25.py">ledPython25.py</a><br/>
+        <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/python/buttonPython24.py">buttonPython24.py</a>
+<br/>
+        <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/gpio/python/buttonLedPython.py">buttonLedPython.py</a>
+ </td>
+   </tr>
+ </table>          
+<br>
+            
+Other <a href="../../Raspberry/raspberryProjects.html" target="code">Basic experiment</a> 
+<br/>
+<!--
+(with the fundamental <a href="'../../../../Tools/WiringPi/wriringpiIntro.html">WiringPi</a> library):
+-->
+         
+</li>
+        
+<li>
+            <h2>Using Pi4J in Java</h2> 
+ <h3>Useful links (introduction to Pi4J)</h3> 
+    <a href="../../Raspberry/rpi-java-8-savage-devoxx.pdf" target="code">Java8+Pi4j (pdf)</a> ,        
+    <a href="http://pi4j.com/"  target="code">Pi4j site</a>    
+
+    
+  <h3>Pi4J (project <i>it.unibo.buttonLedSystem.raspberry</i>)</h3>           
+<table id="robots">
+  <tr>
+    <th>Led</th>
+    <th>Button</th>
+    </tr>
+  <tr class="alt">
+    <td> <a href="../../../../it.unibo.buttonLedSystem.raspberry/src/it/unibo/bls/raspberry/components/DeviceLedPi4j.java" target="code"><img src="../../Material/source.gif">DeviceLedPi4j</a>   
+<br/>specializes the 'standard implementation': 
+<a href="../../../../it.unibo.buttonLedSystemHL/src/it/unibo/buttonLed/components/DeviceLedImpl.java" target="code"><img src="../../Material/source.gif">DeviceLedImpl</a>
+      </td> 
+    <td>
+        <a href="../../../../it.unibo.buttonLedSystem.raspberry/src/it/unibo/bls/raspberry/components/DeviceButtonPi4J.java" target="code"><img src="../../Material/source.gif">DeviceButtonPi4J</a><br/>specializes the 'standard implementation': 
+<a href="../../../../it.unibo.buttonLedSystemHL/src/it/unibo/buttonLed/components/DeviceButtonImpl.java" target="code"><img src="../../Material/source.gif">DeviceButtonImpl</a>   
+      </td> 
+ 
+ </table>              
+</li>
+<li>
+        <h2>Connect the RaspberryPi to a PC  with Wifi (future applications).</h2>    
+<ol>
+<li>Insert a WIFI adapter (e.g. EDUP - Adattatore Wifi Mini USB,150MBps) in a USB slot.</li>    
+<li>Activate an hot spot (e.g by using a smart device) with name <b>natspot</b> and password <b>123456789</b></li>
+<li>Turn on the RaspberryPi. It will acquire an address (<tt>192.168.43.xxx</tt>) as shown by the command <b>ifconfig</b> </li>  
+<li>Open PuTTY and connect to <tt>192.168.43.xxx</tt> on port <tt>22</tt></li>
+</ol>    
+
+</li>
+
+     </ol>
+ 
+ <!--   
+<h1>Exchanging messages with a RaspberryPi</h1>     
+<h2>IConnInteraction</h2>
+The project  <a href="../../../../it.unibo.noawtsupports/" target="code"><img src="../../Material/source.gif">it.unibo.noawtsupports</a> defines a support for communications over the network based on two-way connected protocols (like TCP, UDP) or a serial line (the case of Arduino). It provides:
+    <ol>
+    <li>A factory <a href="../../../../it.unibo.noawtsupports/src/it/unibo/supports/FactoryProtocol">FactoryProtocol</a> to create supports for a server or for a client (in the case of TCP/UDP) or for the user of a serial line.</li>
+        <li>Each operation of the factory returns an object thet implements the  interface <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/protocols/IConnInteraction.java" target="code"><img src="../../Material/source.gif">IConnInteraction</a> (defined in project  <a href="../../../../it.unibo.interfaces/" target="code"><img src="../../Material/source.gif">it.unibo.interfaces</a>) that can be used to send/receive information on the connection.</li>
+    </ol>
+In this way the applicative software does not depend on the protocol used for communications. If we want to change a protocol, software moidification is limited to the system configuration phase.
+ -->
+<h1>The ButtonLedSystem on a RaspberryPi</h1>   
+Our first application including a RaspberryPi could be a version of the ButtonLed system running on a RaspberryPi.
+<br/>
+The prototype built in <a href="./BLSGui.html"  target="code"><img src="../../Material/source.gif">BLSGui</a> can adopted as our starting point. What we have to do, is to replace the concrete devices implemented witha GUI with the concrete devices implemented using the Pi4j library. See:
+ <a href="../../../../it.unibo.buttonLedSystem.raspberry/src/it/unibo/bls/raspberry/BLSRaspberryMain.java" target="code"><img src="../../Material/source.gif">BLSRaspberryMain</a> 
+    
+<h1>Exchanging information with a RaspberryPi</h1>
+Our first application including a RaspberryPi could be a version of the ButtonLed system in which one of the two concrete devices (Led or Button) is connected and handled by a RaspberryPi. An example is given in the    
+    projects <a href="../../../../it.unibo.buttonLedSystem.proxy" target="code"><img src="../../Material/source.gif">it.unibo.buttonLedSystem.proxy</a> and <a href="../../../../it.unibo.buttonLedSystem.raspberry" target="code"><img src="../../Material/source.gif">it.unibo.buttonLedSystem.raspberry</a>.<br/>
+In these projects, we refine the software built in <a href="./BLSGui.html"  target="code"><img src="../../Material/source.gif">BLSGui</a> by exploiting the <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/protocols/IConnInteraction.java" target="code"><img src="../../Material/source.gif">IConnInteraction</a> abstraction provided by the project <a href="../../../../it.unibo.noawtsupports/" target="code"><img src="../../Material/source.gif">it.unibo.noawtsupports</a>.
+In this way the applicative software does not depend on the protocol used for communications. If we want to change a protocol, software modification is limited to the system configuration phase.
+<br/><br/>
+<table id="robots">
+  <tr>
+    <th>Led on Raspberry</th>
+    <th>Button on Raspberry</th>
+    </tr>
+  <tr class="alt">
+    <td> <a href="../../../../it.unibo.buttonLedSystem.proxy/src/it/unibo/buttonLedSystem/proxy/DeviceLedPassiveProxy.java" target="code"><img src="../../Material/source.gif">DeviceLedPassiveProxy</a>  
+<br/>
+<a href="../../../../it.unibo.buttonLedSystem.proxy/src/it/unibo/buttonLedSystem/proxy/example/BLSRemoteLed.java" target="code"><img src="../../Material/source.gif">BLSRemoteLed</a>   
+  <br/>   <br/>  
+ <img src="./img/BLSLedOnRasp.jpg" alt="show" width="251" height="189"/>
+ <br/>  <br/>
+<a href="../../../../it.unibo.buttonLedSystem.raspberry/src/it/unibo/bls/raspberry/BLSRaspWithLedServerMain.java" target="code"><img src="../../Material/source.gif">BLSRaspWithLedServerMain</a>           
+ <br/>        
+<a href="../../../../it.unibo.buttonLedSystem.proxy/src/it/unibo/buttonLedSystem/proxy/DeviceLedServer.java" target="code"><img src="../../Material/source.gif">DeviceLedServer</a>  <br/>      
+     </td> 
+      
+    <td>
+       
+ <a href="../../../../it.unibo.buttonLedSystem.proxy/src/it/unibo/buttonLedSystem/proxy/example/BLSRemoteButton.java" target="code"><img src="../../Material/source.gif">BLSRemoteButton</a>  <br/>
+<a href="../../../../it.unibo.buttonLedSystem.proxy/src/it/unibo/buttonLedSystem/proxy/DeviceButtonServer.java" target="code"><img src="../../Material/source.gif">DeviceButtonServer</a>  <br/>
+ <br/>     <br/>
+ <img src="./img/BLSButtonOnRasp.jpg" alt="show" width="326" height="185"/>
+ <br/>  <br/>
+ <a href="../../../../it.unibo.buttonLedSystem.proxy/src/it/unibo/buttonLedSystem/proxy/DeviceButtonProxy.java" target="code"><img src="../../Material/source.gif">DeviceButtonProxy</a><br/>        
+<a href="../../../../it.unibo.buttonLedSystem.raspberry/src/it/unibo/bls/raspberry/proxy/BLSRaspWithButtonProxyMain.java" target="code"><img src="../../Material/source.gif">BLSRaspWithButtonProxyMain</a>    
+       </td> 
+ 
+      
+      
+ </table>          
+
+    <h1>The ButtonLedBlink system distributed</h1>
+    <h2>Logical architecture (problem analysis)</h2>    
+ 
+    Our reference achitecture is that introduced in <a href="./BLSBlink.html">BLSBlink.html</a>:<br/>
+     <br/>
+<img src="./img/BLSBlinkAtiAct.jpg" alt="show" width="609" height="253"/>
+    
+<br/><br/>
+The project <a href="../../../../it.unibo.bls17Blink/" target="code"><img src="../../Material/source.gif">it.unibo.bls17Blink</a> provide a start-up working prototype:<br/>
+<a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/BlsBlinkControl.java" target="code"><img src="../../Material/source.gif">BlsBlinkControl</a>,  
+    <a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/BlinkTimed.java" target="code"><img src="../../Material/source.gif">BlinkTimed</a>(<a href="../../../../it.unibo.bls17Blink/src/it/unibo/action/AsynchTimedAction.java" target="code"><img src="../../Material/source.gif">AsynchTimedAction</a>),
+    <a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/MainBlsBlinkAtiAct.java" target="code"><img src="../../Material/source.gif">MainBlsBlinkAtiAct</a>(<a href="../../../../it.unibo.buttonLedSystemHL/src/it/unibo/buttonLedSystem/BLSHLConfig.java" target="code"><img src="../../Material/source.gif">BLSHLConfig</a>),
+<a href="../../../../it.unibo.bls17Blink/test/it/unibo/bls17Blink/TestBlsBlinkAtiAct.java" target="code"><img src="../../Material/source.gif">TestBlsBlinkAtiAct</a>    
+    
+    <h2>From local to distributed </h2>
+ Now our goal is to refactor this software system in order to create a distributed system. In   
+     <a href="../../Appls/ButtonLedDitributed/distributedPrototypes.html" target="code"><img src="../../Material/source.gif">distributedPrototypes</a> we present an overview of the possible structures of the project architectures and introduce the possibility of overcoming the 'traditional' object-oritented paradigm with a message-passing programming style.
+<!--    
+    
+    
+     
+<h2>Physical devices on RaspberryPi</h2>  
+Project <a href="../../../../it.unibo.buttonLedSystem.arduino/" target="code"><img src="../../Material/source.gif">it.unibo.buttonLedSystem.arduino</a>
+
+<h2>Proxy</h2>  
+    
+By following the  <a href="https://sourcemaking.com/design_patterns/proxy" target="code">Proxy</a> design pattern, we will 'inject' in our logic architecture  concrete devices acting as 'proxy' for a Led or Button working on Arduino.
+    
+    
+    
+<h2>Arduino bls support</h2>   
+Let us introduce a very simple support on Arduino to receive/send commands (<b>0|1</b>) from/to the PC on the serial line:
+    <br/>
+<a href="../../../../it.unibo.buttonLedSystem.arduino/arduino/blsSupportNaive/blsSupportNaive.ino" target="code"><img src="../../Material/source.gif">blsSupportNaive.ino</a>        <br/>
+Let us introduce also an utility class to get a <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/protocols/IConnInteraction.java" target="code"><img src="../../Material/source.gif">IConnInteraction</a> on the serial line:
+
+<br/>
+    <a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/buttonLedSystem/arduino/BlsArduinoSysKb.java" target="code"><img src="../../Material/source.gif">BlsArduinoSysKb</a>    
+    
+<h2>Physical Led on RaspberryPi</h2>
+    <li>Build a new version of the system in which the Led is a concrete physical device controlled by RaspberryPi (and the rest of the system runs on a conventional PC) </li>
+    
+    <img src="./img/BLSArduinoLed.jpg" alt="show" width="647" height="364"/> 
+<br/>
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/bls/arduino/components/DeviceLedArduino.java" target="code"><img src="../../Material/source.gif">DeviceLedArduino</a>  
+ <br/>   
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/buttonLedSystem/arduino/BLSLedOnArduinoMain.java" target="code"><img src="../../Material/source.gif">BLSLedOnArduinoMain</a>    
+
+<h2>Physical Button on RaspberryPi</h2>
+ <li>Build a new version of the system in which the Button is a concrete physical device controlled by RaspberryPi (and the rest of the system runs on a conventional PC)</li>  
+<img src="./img/BLSArduinoButton.jpg" alt="show" width="631" height="371"/> 
+<br/>
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/bls/arduino/components/DeviceButtonArduino.java" target="code"><img src="../../Material/source.gif">DeviceButtonArduino</a>  
+ <br/>  
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/buttonLedSystem/arduino/BLSButtonOnArduinoMain.java" target="code"><img src="../../Material/source.gif">BLSButtonOnArduinoMain</a>    
+
+    
+    
+    <h2>Blink control on PC</h2>
+    
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/buttonLedSystem/arduino/blinkAtiAct/BLSOnArduinoBlinkMain.java" target="code"><img src="../../Material/source.gif">BLSOnArduinoBlinkMain</a>    
+
+ -->
+    <br/> <br/>
+</div>    
+</div>
+</div>    
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div>    
+
+</body></html>

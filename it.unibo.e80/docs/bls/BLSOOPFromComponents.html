@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.o../html4/strict.dtd">
+<html>
+<!-- <link rel="stylesheet" type="text/css" href="../../css/plainStyle.css"> -->
+<link rel="stylesheet" type="text/css" href="../../css/tabStyle.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+<style>
+h2 {
+    font: 100% Lucida Sans;
+    background-color: #f6d8f8;
+}
+h3 {
+    font: 90% Lucida Sans; 
+    width: 100%;
+    background-color: #f3f3f7;
+    color: #191818;
+}
+#i {
+     color: #ff1010;
+} 
+b{
+	font: 100% Lucida Console;
+	color: #2219fd;
+    font-weight: bold;
+}
+tt{
+	font: 90% Lucida Console;
+	color: #c90b46;
+    font-weight: bold;
+}
+</style>
+<head>
+
+<title>BLSOOPFromComponents</title></head>
+    
+<body>     
+<div class="container wrapper"> 
+<div class="wrapper">
+<div id="main"> 
+
+<h1>The ButtonLed system as a classical Object-Based system</h1>
+ <button onclick="window.location.href='../../Material/entry.html'">Home</button>
+<div style="background-color:#fbffb6; width:100%;float:left;"> 
+<h3>VISION</h3>
+      <ul>
+      <li>A design without specifications cannot be right or wrong, it can only be surprising!</li>
+<li>There is non code without a project, no project without problem analysis and no problem without requiremets.<br/> 
+    The question is how to make them <b>explicit, effective and reusable</b>. </li>
+    <li>A feature does not exist unless a test validates that it functions.</li>
+    <li>Analyze a little.Design a little. Code a little. Test what you can.</li>
+      </ul>
+</div> 
+<div style="background-color:#ecf8d1; width:100%;float:left;">     
+<h3>GOALS</h3>
+        <ul>
+
+    <li>Design and build a <a href="../../Appls/ButtonLed/buttonLed.html" target="show"><img src="../../Material/source.gif">ButtonLed system</a> in Java for a local (virtual) environment. <!-- by adopting the object-oriented programming paradigm (and Java) by staring from a set of tested, resusable components.--> </li>
+    <li>Introduce the concept of <a href="https://en.wikipedia.org/wiki/Domain_model" target="show">domain model</a> and build reusable software for the components <i>Button</i> and  <i>Led</i>.</li>
+    <li>Recall some fundamental <a href="../../NatMolBook/Pattern.html" target="show"><img src="../../Material/source.gif">Design Pattern GOF</a> (<a href="https://en.wikipedia.org/wiki/Factory_method_pattern" target="show">Factory</a>, 
+        <a href="https://en.wikipedia.org/wiki/Singleton_pattern" target="show">Singleton</a>
+        <a href="https://en.wikipedia.org/wiki/Observer_pattern"  target="show">Observer</a>). </li> 
+    <li>Better understand the difference between <a href="https://en.wikipedia.org/wiki/Unit_testing"  target="show">unit testing</a> and <a href="https://en.wikipedia.org/wiki/Integration_testing"  target="show">integration testing</a>.</li>
+    <li>Start to adopt <a href="https://en.wikipedia.org/wiki/Continuous_integration">continuous integration</a> with the help of the <a href="https://en.wikipedia.org/wiki/Gradle">GRADLE</a> software automation system.</li>
+    <li>Introducing the main concepts of the <a href="http://www.collab.net/sites/default/files/uploads/CollabNet_scrumreferencecard.pdf" target="show">SCRUM</a> management framework for incremental software development.</li>
+    </ul>
+ 
+</div>
+  
+    
+<div style="background-color:#d5faf1; width:100%;float:left;">
+<h3>WORK TO DO</h3>
+<ol>
+<li>Build the <a href="#LedModel">Led</a> as an Output device.</li>
+<li>Build the <a href="#ButtonModel">Button</a> an an Input device.</li>
+<li>Testing the components (unit testing).</li>
+<li>Build the ButtonLed system.</li>
+<li>Testing the system (integration testing).</li>
+    </ol>
+    
+</div>
+
+<div style="background-color:#04b779; width:100%;text-align:center;font-size:small;color:white">
+-------
+</div>
+    
+<h2>Product Backlog</h2>
+To define our first <a href="http://www.collab.net/sites/default/files/uploads/CollabNet_scrumreferencecard.pdf" target="show">SCRUM</a> <a href="https://www.mountaingoatsoftware.com/agile/scrum/product-backlog">product backlog</a> for the ButtonLed system we can start from the <a href="https://www.mountaingoatsoftware.com/agile/user-stories" target="show">user-stories</a> as follows.
+<hr/>
+<b>User story</b>: <b>As</b> a <i>operator</i>, <b>I want</b> <i>to press a 'virtual' Button</i> <b>so that</b> <i>a 'virtual' Led can be turned on/off</i>. For <i>'virtual'</i> component we intend a device implemented with a GUI.
+<hr/>
+<ol>
+ 
+<li>Define <b>what is</b>  a 'virtual' Led for the customer (Feature) and the Test Plans for the Led as a (possibly reusable) domain compoment (Technical work).</li>
+<li>Define <b>what is</b>  a 'virtual' Button for the customer (Feature) and the Test Plans for the Button as (possibly reusable) domain compoment (Technical work).</li>
+<li>Define, build (or select from a library (Knowledge acquisition) ) and test a <a href="#LedModel">Led</a> as an Output device (Technical work).</li>
+<li>Define, build (or select from a library (Knowledge acquisition) ) and test a <a href="#ButtonModel">Button</a> an an Input device (Technical work).</li>
+<li>Define the Test Plans for the ButtonLed System according to the requirements (user stories).</li>
+<li>Design and build the <a href="#BLSsystem">system</a>.</li>
+<li>Test the system (integration testing).</li>
+</ol>
+
+Of course this product backlog can be refined after some <a href="http://www.collab.net/sites/default/files/uploads/CollabNet_scrumreferencecard.pdf" target="show">SCRUM</a> <a href="http://www.collab.net/sites/default/files/uploads/CollabNet_scrumreferencecard.pdf" target="show">SPRINT</a>,
+for example to face bugs.
+
+<!--
+=========================================================================================
+-->
+    
+    
+
+<h2><a name="LedModel"></a>Led</h2> 
+    After requirement analysis we can state that:
+    <ul>
+<li>A Led is an <b>Output device</b> that can emit a light when turned on.</li>
+<li>After some meeting with the customer, we can define the following model:
+    <ul>
+    <li><i id="i">Structure</i>: a Led is an atomic entity.</li>
+    <li><i id="i">Interaction</i>: a Led is a passive object that can be accessed by calling one of its public operations.</li>
+    <li><i id="i">Behavior</i>: a Led is an object that can change its internal state under program control.</li>
+    </ul>
+        </li>
+    </ul>
+Example (project <a href="../../../../it.unibo.bls17/" target="code"><img src="../../Material/source.gif">it.unibo.bls17</a>) :         
+<a href="../../../../it.unibo.bls17/src/it/unibo/bls17/components/Led.java" target="code"><img src="../../Material/source.gif">Led</a>  ,
+<a href="../../../../it.unibo.bls17/test/it/unibo/bls17/components/naive/TestLed.java" target="code"><img src="../../Material/source.gif">TestLed</a> 
+
+    
+<h2><a name="ButtonModel">Button</h2> 
+    After requirement analysis we can state that:
+    <ul>
+<li>A Button is an <b>Input device</b> that allows a software system to acquire a boolean value (pressed/unpressed) from the external world.</li>
+<li>After some meeting with the customer, we can define the following model:
+    <ul>
+    <li><i id="i">Structure</i>: a Button is an atomic entity.</li>
+     <li><i id="i">Interaction</i>: a Button can interact with other objects in several ways. See          
+         <a href="#inputDeviceInteraction">Interaction with an input device</a>.</li>
+     <li><i id="i">Behavior</i>: a Button is an active object that can change its internal state, usually under the control of an human operator. However, the  Button could change its internal state also in autonomous way or uder the control of some software agent, (external to the system that we have to build).
+        </li>
+    </ul></li>
+    </ul>
+
+
+    
+ <h2><a name="inputDeviceInteraction">Interaction with an input device</h2> 
+Let us consider the possible interaction modes between an entity (object) <tt>E</tt> working <b>inside</b> our software system and an Input device  <tt>InpDev</tt>:
+ <ul>
+ <li><i id="i">Polling</i>: <tt>E</tt> periodically calls a public operation provided by <tt>InpDev</tt>.  </li>    
+ <li><i id="i">Interrupt</i>: <tt>InpDev</tt> emits an <a href="https://en.wikipedia.org/wiki/Interrupt" target="show">interrupt</a> that puts in execution an interrupt service routine (<tt>ISR</tt>). </li>    
+ <li><i id="i">Observer pattern</i>: <tt>InpDev</tt> is an <b>Observable</b> of the  <a href="https://en.wikipedia.org/wiki/Observer_pattern"  target="show">Observer Pattern</a>, while <tt>E</tt> is one
+     of the possible <b>Observers</b>.</li>    
+<li>------------------------------</li>
+<li><i id="i">Message sender</i>:  <tt>InpDev</tt> sends a <b>message</b> to all its (registered) <b>Observers</b>, including <tt>E</tt>. In a local environment, this action is equivalent to the writing of some data in some specific 
+    memory area (message-queue) shared with each observer modelled as an active object.
+</li>
+<li><i id="i">Event emitter</i>:  <tt>InpDev</tt> emits an <b>event</b> in the sense of <a href="https://en.wikipedia.org/wiki/Event-driven_programming" target="show">Event-driven programming</a>. </li>
+<li><i id="i">Publisher</i>:  <tt>InpDev</tt> is the publisher of information  in the sense of the <a href="https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern" target="show">Publish-subscribe pattern</a>. </li>
+<li> ... (tuple spaces? ) </li>
+ </ul>   
+The possible interaction modes between <tt>InpDev</tt> and an entity (object) <tt>X</tt> <b>outside</b> our software system 
+are the same, with the <tt>X</tt> that acts as the information emitter and <tt>InpDev</tt> acting as information receiver.
+
+<h3><a name="Beyondoo">Beyond objects</h3> 
+ We note that each of the listed interaction modes <i>implies</i> a different, specific <i id="i">behavior</i> of the device and of <tt>E</tt> that suggest new 'models' like <a href="https://en.wikipedia.org/wiki/Actor_model" target="show">Actors</a> or <a href="https://en.wikipedia.org/wiki/Software_agent agents" target="show">Agents</a>. Moreover, the first three modes seems to be more 'primitive' then the last ones.
+
+    
+
+<h3><a name="ButtonJava">A Button in Java</h3>     
+ Usually, a Button as 'virtual' device is an element of a <a href="https://en.wikipedia.org/wiki/Graphical_user_interface">graphical user interface</a> (GUI). 
+     Java provides the class 
+     <a href="https://docs.oracle.com/javase/7/docs/api/java/awt/Button.html" target="code">java.awt.Button</a> and says that:
+<br/>
+     <i>If an application wants to perform some action based on a button being pressed and released, it should implement ActionListener and register the new listener to receive events from this button, by calling the button's <b>addActionListener</b> method. The application can make use of the button's action command as a <b>messaging protocol</b>.</i>
+<br/><br/>
+As an example, let us introduce an ActionListener <a href="../../../../it.unibo.bls17/src/it/unibo/bls17/components/naive/ButtonListenerNaive.java" target="code"><img src="../../Material/source.gif">ButtonListenerNaive</a> that keeps track of the last event occured and that allows us to simulate the effects of a GUI and to insect the result:<br/>
+    <img src="./img/ButtonAwt.jpg" alt="show" width="218" height="116"/>  
+<br/>
+<i>Example</i> (project <a href="../../../../it.unibo.bls17/" target="code"><img src="../../Material/source.gif">it.unibo.bls17</a>) : 
+<a href="https://docs.oracle.com/javase/7/docs/api/java/awt/Button.html" target="code">java.awt.Button</a>
+<a href="../../../../it.unibo.bls17/src/it/unibo/bls17/naive/MainButtonGuiNaive.java" target="code"><img src="../../Material/source.gif">MainButtonGuiNaive</a>,    
+<a href="../../../../it.unibo.bls17/src/it/unibo/bls17/components/naive/ButtonListenerNaive.java" target="code"><img src="../../Material/source.gif">ButtonListenerNaive</a>,
+<a href="../../../../it.unibo.bls17/test/it/unibo/bls17/components/naive/TestButton.java" target="code"><img src="../../Material/source.gif">TestButton</a> 
+  
+    
+    
+    
+<h2><a name="BLSsystem">The BLS system</h2> 
+Now that we have built software for the basic components (<a href="../../../../it.unibo.bls17/src/it/unibo/bls17/components/naive/ButtonWithGui.java" target="code"><img src="../../Material/source.gif">ButtonWithGui</a> and <a href="../../../../it.unibo.bls17/src/it/unibo/bls17/components/Led.java" target="code"><img src="../../Material/source.gif">Led</a>) as standalone entities, we can formulate the following questions: 
+    <ul>
+    <li>is the required application logic already captured by one the available components?</li>
+    <li>if not, which entity should have the responsibility of the application logic? The Button? The Led? A listener? Another entity? </li>
+    <li>where should be located the 'core' of the system? In the Button? In the Led? In another entity?</li>
+    </ul>
+ 
+Our answers are:
+    <ul>
+    <li>An ActionLister is just a mechanism and should never have responsibilites related to the system application logic.</li>
+    <li>The application logic code should be defined in a specific class, different from any system component</li>
+    </ul>
+<h3><a name="Sprint1">A first <a href="../../Survey/SCRUM/SprintReviewMeet.html" target="show">SPRINT review meeting</a></h3>
+In our first prototype we follow a very technology-dependent approach by building:
+    <ul>
+    <li>a Java based <a href="../../../../it.unibo.bls17/src/it/unibo/bls17/components/naive/ButtonWithGui.java" target="code"><img src="../../Material/source.gif">ButtonWithGui</a></li>
+    <li>a Java based <a href="../../../../it.unibo.bls17/src/it/unibo/bls17/components/naive/LedWithGui.java" target="code"><img src="../../Material/source.gif">LedWithGui</a> </li>
+    <li>a specific class:
+<a href="../../../../it.unibo.bls17/src/it/unibo/bls17/naive/BlsApplicationLogic.java" target="code"><img src="../../Material/source.gif">BlsApplicationLogic</a> to define the application logic.</li>
+   </ul>
+<i>Prototype0</i> (project <a href="../../../../it.unibo.bls17/" target="code"><img src="../../Material/source.gif">it.unibo.bls17</a>) :         
+<a href="../../../../it.unibo.bls17/src/it/unibo/bls17/naive/MainBlsGuiBase.java" target="code"><img src="../../Material/source.gif">MainBlsGuiBase</a>  ,
+<a href="../../../../it.unibo.bls17/test/it/unibo/bls17/naive/TestBlsGuiBase.java" target="code"><img src="../../Material/source.gif">TestBlsGuiBase</a> 
+<br/>
+    <img src="./img/BLSNaive.jpg" alt="show" width="489" height="126"/>
+<br/>
+    The software works, but it defines only GUI-based components in Java. Moreover:
+<ul>   
+<li>Objects working in a GUI-based environment should show messages on some graphical output.</li>     
+<li>More generally, objects should have names and leave in some (domain specific) application environment, in order
+    to avoid the re-design and re-building of software parts non strictly related to the application logic
+    of the specific system to build.</li>
+</ul>
+    
+<h3><a name="Sprint1">A first <a href="../../Survey/SCRUM/SprintRetrospectiveMeet.html" target="show">SPRINT retrospective meeting</a></h3>
+
+    The building of GUI-based software takes a lot of time and requires attention to low-level mechanisms. 
+    Moreover the testing is not always easy.
+    <br/>
+    Our company aims at reducing the cost of building GUI-based prototypes in order to interact 
+    as soon as possible with the user by showing systems with an acceptable (even if not perfcet) GUI interface.
+     <br/>
+   Thus, we could invest some time in building an application <a href="../../Frameworks/Frameworks.html" target="show">FRAMEWORK</a> to facilitate the creation of GUI-based applications in Java.
+
+<!--
+=========================================================================
+-->
+<h1>Reusable code</h1>    
+<h2><a name="Uniboenvref">A Custom framework for GUI-based applications in Java</h2>      
+    The project <a href="../../../../it.unibo.envBaseAwt/" target="code"><img src="../../Material/source.gif">it.unibo.envBaseAwt</a> defines the framework called <a href="../../Frameworks/FramwCustomAppl.html" target="show">UniboEnv</a> that can help us to make a new version of the ButtonLed system:
+    
+    <ul>
+    <li>a UniboEnv based <a href="../../../../it.unibo.bls17/src/it/unibo/bls17/components/env/ButtonGui.java" target="code"><img src="../../Material/source.gif">ButtonGui</a></li>
+    <li>a UniboEnv based <a href="../../../../it.unibo.bls17/src/it/unibo/bls17/components/env/LedGui.java" target="code"><img src="../../Material/source.gif">LedGui</a> </li>
+    <li>a specific class:
+<a href="../../../../it.unibo.bls17/src/it/unibo/bls17/env/BlsControl.java" target="code"><img src="../../Material/source.gif">BlsControl</a> to define the application logic as a component that implements the interface 
+        <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IActivityBase.java" target="code"><img src="../../Material/source.gif">IActivityBase</a>.
+    </li>
+   </ul>
+<i>Prototype1</i> (project <a href="../../../../it.unibo.bls17/" target="code"><img src="../../Material/source.gif">it.unibo.bls17</a>) :         
+<a href="../../../../it.unibo.bls17/src/it/unibo/bls17/env/MainBlsUniboEnv.java" target="code"><img src="../../Material/source.gif">MainBlsUniboEnv</a>  ,
+<a href="../../../../it.unibo.bls17/test/it/unibo/bls17/env/TestBlsUniboEnv.java" target="code"><img src="../../Material/source.gif">TestBlsUniboEnv</a> 
+    
+ <br/>
+    <img src="./img/BLSUniboenv.jpg" alt="show" width="483" height="140"/>
+<br/>
+Each graphical component is now an element of the 
+  <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IBasicEnvAwt.java" target="code"><img src="../../Material/source.gif">IBasicEnvAwt</a> environment that provides a built-in graphical output device that implements the
+    <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IOutputEnvView.java" target="code"><img src="../../Material/source.gif">IOutputEnvView</a> interface.
+
+<h3>Testing UniboEnv features</h3>    
+<a href="../../../../it.unibo.envBaseAwt/test/it/unibo/envBaseAwt/TestUniboenv.java" target="code"><img src="../../Material/source.gif">TestUniboenv</a> can be used as a way to look at the main features of the UniboEnv framework.
+    
+<h2><a name="Interfaces">Basic (IOT domain) interfaces</h2>        
+ 
+The project <a href="../../../../it.unibo.interfaces/" target="code"><img src="../../Material/source.gif">it.unibo.interfaces</a> defines our basic, general purpures interfaces:
+<li>
+    Interfaces for observable objects: 
+<a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IObservable.java" target="code"><img src="../../Material/source.gif">IObservable</a>    
+<a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IObserver.java" target="code"><img src="../../Material/source.gif">IObserver</a>
+</li>
+<li>
+Interfaces for devices :
+<a href="../../../../it.unibo.interfaces/src/it/unibo/iot/interfaces/IDeviceIot.java" target="code"><img src="../../Material/source.gif">IDeviceIot</a>
+<a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IActivityBase.java" target="code"><img src="../../Material/source.gif">IActivityBase</a> 
+</li>
+<li>
+   Interfaces for uniboEnv :  
+<a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IOutputView.java" target="code"><img src="../../Material/source.gif">IOutputView</a>   
+<a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IOutputEnvView.java" target="code"><img src="../../Material/source.gif">IOutputEnvView</a>   
+
+</li>
+<br/>
+    <img src="./img/it.unibo.interfaces.jpg" alt="show" width="807" height="242"/>
+    
+<h2><a name="SituatedObj">A Custom framework for situated objects</h2>        
+    
+<h3>SituatedPlainObject</h3>  
+The project <a href="../../../../it.unibo.noawtsupports/" target="code"><img src="../../Material/source.gif">it.unibo.noawtsupports</a> (see also
+ <a href="../../Frameworks/FramwCustomAppl.html" target="blsLogic">UniboNoAwtSupport</a>) provides the concept of 
+    
+   <a href="../../../../it.unibo.noawtsupports/src/it/unibo/system/SituatedPlainObject.java" target="code"><img src="../../Material/source.gif">SituatedPlainObject</a>  that:
+<ul>
+ 
+<li>Conceives an object a named entity (software component) working in a 
+ <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IBasicUniboEnv.java" target="code"><img src="../../Material/source.gif">IBasicUniboEnv</a> environment. </li>   
+<li>Provides an internal built-in operations to write of the 'virtual' <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IOutputView.java" target="code"><img src="../../Material/source.gif">IOutputView</a> output device.</li>
+    <li>Conceives an object as an entity that extends <tt>java.util.Observable</tt> and implements the interface
+        <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IObservable.java" target="code"><img src="../../Material/source.gif">IObservable</a> </li>
+</ul>    
+ 
+<h3>SituatedActiveObject</h3>  
+The project <a href="../../../../it.unibo.noawtsupports/" target="code"><img src="../../Material/source.gif">it.unibo.noawtsupports</a>   provides also the concept of an abstract
+   <a href="../../../../it.unibo.noawtsupports/src/it/unibo/system/SituatedActiveObject.java" target="code"><img src="../../Material/source.gif">SituatedActiveObject</a>  that:
+<ul>
+<li>Provides an internal built-in operations to write of the 'virtual' <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IOutputView.java" target="code"><img src="../../Material/source.gif">IOutputView</a> output device.</li>
+
+<li>Conceives an object as a named, active entity (active software component) that, once activated, executes
+    <pre>
+startWork();
+doJob();
+endWork();
+    </pre>
+by delegating to a subclass the implementation of the operations:
+    <pre>
+protected abstract void doJob() throws Exception;
+protected abstract void startWork() throws Exception;
+protected abstract void endWork() throws Exception;
+   </pre>
+<li>Implements the interface
+        <a href="../../../../it.unibo.interfaces/src/it/unibo/iot/interfaces/ISituatedActiveObject.java" target="code"><img src="../../Material/source.gif">ISituatedActiveObject</a> to activate the component with a given <tt>java.util.concurrent.ScheduledExecutorService</tt>
+</li> 
+ 
+
+</ul> 
+    
+<h3>SituatedSysKb</h3> 
+The project <a href="../../../../it.unibo.noawtsupports/" target="code"><img src="../../Material/source.gif">it.unibo.noawtsupports</a> defines other useful classes, like
+<a href="../../../../it.unibo.noawtsupports/src/it/unibo/system/StandardOutEnvView.java" target="code"><img src="../../Material/source.gif">StandardOutEnvView</a> that provides an output devices that implments 
+    <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/IOutputEnvView.java" target="code"><img src="../../Material/source.gif">IOutputEnvView</a> 
+<br/><br/>    
+The class  <a href="../../../../it.unibo.noawtsupports/src/it/unibo/system/SituatedSysKb.java" target="code"><img src="../../Material/source.gif">SituatedSysKb</a> defines some useful pre-buit object including : 
+    <pre>
+IOutputEnvView standardOutEnvView  = new StandardOutEnvView();
+</pre>
+    
+
+</div>    
+</div>
+</div>    
+    &emsp; 
+<div style="background-color:#0ce0f2; width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div>    
+
+</body></html>

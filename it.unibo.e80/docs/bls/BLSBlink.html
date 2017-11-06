@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.o../html4/strict.dtd">
+<html>
+<!-- <link rel="stylesheet" type="text/css" href="../../css/plainStyle.css"> -->
+<link rel="stylesheet" type="text/css" href="../../css/tabStyle.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+<style>
+h2 {
+    font: 100% Lucida Sans;
+    background-color: #f6d8f8;
+}
+h3 {
+    font: 90% Lucida Sans; 
+    width: 100%;
+    background-color: #f3f3f7;
+    color: #191818;
+}
+#i {
+     color: #ff1010;
+} 
+b{
+	font: 100% Lucida Console;
+	color: #2219fd;
+    font-weight: bold;
+}
+tt{
+	font: 100% Lucida Console;
+	color: #c90b46;
+    font-weight: bold;
+}
+</style>
+<head>
+
+<title>BLSBlink</title></head>
+    
+<body>     
+<div class="container wrapper"> 
+<div class="wrapper">
+<div id="main"> 
+
+<h1>The ButtonLedBlink problem</h1>
+      <button onclick="window.location.href='../../Material/entry.html'">Home</button>
+
+<div style="background-color:#fbffb6; width:100%;float:left;"> 
+<h3>VISION</h3>
+<ul>
+    <li><a href="https://en.wikipedia.org/wiki/Self-documenting_code">Self documenting code</a> should enable understanding and use of a software system without prior specific knowledge. Our vision here is that code should reflect i a clear way the 
+    <a href="https://en.wikipedia.org/wiki/Software_architecture">(software) architecture</a>    
+ of the system.</li>
+    <li>Concrete problems pose often general problematics that entail some <a href="../Survey/AbstrGap.html" target="code">abstraction gap</a> between an application (domain) and the implementation technology. </li>
+</ul>
+ 
+    
+<h3>GOALS</h3>
+
+<ul>
+    <li>Show how a 'simple' system like a ButtonLed can propose new problematics, for example the issue of long computational actions that should be 'interruptable' by the user. These actions hould find they place in the (logical) architecture of the system. </li>
+</ul>
+ 
+</div>
+  
+    
+<div style="background-color:#d5faf1; width:100%;float:left;">
+<h3>WORK</h3>
+    Our starting point will be the definition of a logic architecture composed of entities modeled according to <b>problem requirements</b>  rather than  by using  a-priori the object model for every component.
+<ol>
+</ol>
+    
+</div>
+
+<div style="background-color:#04b779; width:100%;text-align:center;font-size:small;color:white">
+-------
+</div>
+<h2>Requirements</h2>
+<hr/>
+<b>User story</b>: <b>As</b> a <i>operator</i>, <b>I want</b> to press a <tt>BLINK</tt> Button</i> <b>so that</b> a Led can start to blink. Moreover, <b>I want</b> also to press a <tt>STOP</tt> Button</i> <b>so that</b> the Led can stop blinking and remain in a <tt>off</tt> state.
+<hr/>     
+
+ 
+<h2>Logical architecture (problem analysis)</h2>    
+<h3>All Pojo</h3>
+    Our object-orieted reference achiteture for a 'conventional' ButtonLed system is:<br/>
+     <img src="./img/BLSPojo.jpg" alt="show" width="598" height="168"/>
+<br/>
+However, <b>the problem now requires</b> that the BLSCotrol performs an action (blinking) without loosing the capability to 'react' to a <tt>STOP</tt> command. Some change is needed.
+
+<h2>Blink as active action</h2>
+Le us modify our reference logic architecture by introducing an <a href="../../../../it.unibo.noawtsupports/src/it/unibo/system/SituatedActiveObject.java" target="code"><img src="../../Material/source.gif">SituatedActiveObject</a> named  <i>BlinkAsynch</i>  that has the responsibility to execute the blinking action.
+<br/>
+<img src="./img/BLSBlink.jpg" alt="show" width="594" height="184"/>
+<br/>
+The <a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/BlinkAsynch.java" target="code"><img src="../../Material/source.gif">BlinkAsynch</a> active object works while a boolean variable (<tt>goon</tt>) is true.
+    The <i>BLSControl</i> observer <b>terminates</b> the action (sets <tt>goon</tt> to false) when it is updated with a <tt>STOP</tt> command.
+<br/><br/>    
+<i>Example</i>
+(project <a href="../../../../it.unibo.bls17Blink/" target="code"><img src="../../Material/source.gif">it.unibo.bls17Blink</a>):
+<a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/MainBlsBlink.java" target="code"><img src="../../Material/source.gif">MainBlsBlink</a>    
+    
+    
+<h2><a name="AtiAct"></a>Asynchronous, timed, interruptable actions (<tt>AtiAct</tt>) </h2>     
+The <a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/BlinkAsynch.java" target="code"><img src="../../Material/source.gif">BlinkAsynch</a> extension to our reference logical system is easy to introduce and easy to implement. However, it does not make us able to introduce a new <b>concept</b> (abstraction) to be reused in future applications that will present the same problematic of asynchronous, timed, interruptable actions (<tt>AtiAct</tt>). More precisely we could provide the idea of an action with the following properties:
+<ul>
+<li>The action can be activate both in synchronous (<tt>execSynch</tt>) or asynchronous (<tt>execASynch</tt>) way.</li>
+<li>The action must terminate after a prefixed amount of time (<tt>maxduration</tt>). </li>
+<li>The action can be 'interrupted' (<tt>suspendAction</tt>) by an external agent.</li>
+<li>The action can provide, if requested, a result of type String (<tt>getResultRep</tt>). </li> 
+<li>Once terminated, the action activated in asynchronous way sends the result to the 'registered' observers (if any). </li>
+
+</ul>
+
+    <h3>AsynchTimedAction</h3>    
+The <b>abstract</b> class <a href="../../../../it.unibo.bls17Blink/src/it/unibo/action/AsynchTimedAction.java" target="code"><img src="../../Material/source.gif">AsynchTimedAction</a> is a possible implementsation for this kind of action. It leaves to the application designer the job to define two operations:
+    
+<ul>
+<li><pre>protected abstract Callable<String> <b>getActionBodyAsCallable()</b></pre> that defines the behavior of the operation.</li>   
+<li><pre>protected abstract String <b>getApplicationResult()</b></pre> that returns the result of the operation</li>    
+</ul>
+<img src="./img/ActiAct.jpg" alt="show" width="502" height="329"/>
+      
+    <h3>An example of <tt>AtiAct</tt></h3>
+An asynchronous, timed, interruptable action that evalutes the n-th number of Fibonacci can be defined as follows:<br/>
+(project <a href="../../../../it.unibo.bls17Blink/" target="code"><img src="../../Material/source.gif">it.unibo.bls17Blink</a>):
+    <a href="../../../../it.unibo.bls17Blink/src/it/unibo/action/example/ActionFibonacciTimed.java" target="code"><img src="../../Material/source.gif">ActionFibonacciTimed</a>,
+ <a href="../../../../it.unibo.bls17Blink/src/it/unibo/action/example/FibonacciControl.java" target="code"><img src="../../Material/source.gif">FibonacciControl</a>
+ <a href="../../../../it.unibo.bls17Blink/src/it/unibo/action/example/MainFibonacciTimed.java" target="code"><img src="../../Material/source.gif">MainFibonacciTimed</a>, 
+<a href="../../../../it.unibo.bls17Blink/test/it/unibo/bls17Blink/TestAtiActFibo.java" target="code"><img src="../../Material/source.gif">TestAtiActFibo</a>    
+ 
+<h2>Blinking as an <tt>AtiAct</tt></h2>
+The introduction of a class able to implement the concept of Asynchronous, timed, interruptable actions (<tt>AtiAct</tt>) allows us to solve the <i>BluttonLedBlink</i> problem by introducing a control <tt>BlsBlinkControl</tt> that:
+    <ul>
+    <li>when the operator presses the <tt>START</tt> button, BlsBlinkControl activates in asynchronous way a  <a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/BlinkTimed.java" target="code"><img src="../../Material/source.gif">BlinkTimed</a> <tt>AtiAct</tt> action with a proper time-out;</li>
+        <li>when the operator presses the <tt>STOP</tt> button, BlsBlinkControl calls the suspendAction operation of the  <a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/BlinkTimed.java" target="code"><img src="../../Material/source.gif">BlinkTimed</a> object.</li>
+    </ul>
+Our first prototype will be implemented with Gui-based concrete devices:
+    <br/>
+<img src="./img/BLSBlinkAtiAct.jpg" alt="show" width="609" height="253"/>
+    
+<br/><br/>
+    (project <a href="../../../../it.unibo.bls17Blink/" target="code"><img src="../../Material/source.gif">it.unibo.bls17Blink</a>):<br/>
+<a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/BlsBlinkControl.java" target="code"><img src="../../Material/source.gif">BlsBlinkControl</a>,   ,
+    <a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/BlinkTimed.java" target="code"><img src="../../Material/source.gif">BlinkTimed</a>(<a href="../../../../it.unibo.bls17Blink/src/it/unibo/action/AsynchTimedAction.java" target="code"><img src="../../Material/source.gif">AsynchTimedAction</a>),
+    <a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/MainBlsBlinkAtiAct.java" target="code"><img src="../../Material/source.gif">MainBlsBlinkAtiAct</a>(<a href="../../../../it.unibo.buttonLedSystemHL/src/it/unibo/buttonLedSystem/BLSHLConfig.java" target="code"><img src="../../Material/source.gif">BLSHLConfig</a>),
+<a href="../../../../it.unibo.bls17Blink/test/it/unibo/bls17Blink/TestBlsBlinkAtiAct.java" target="code"><img src="../../Material/source.gif">TestBlsBlinkAtiAct</a>    
+    
+<h3>Work to do</h3>
+    Our product backlog can be now refined as follows:
+    <ol>
+    <li>Build a new version of the system in which the Led is a concrete physical device controlled by Arduino (and the rest of the system runs on a conventional PC) </li>
+    <li>Build a new version of the system in which the Button is a concrete physical device controlled by Arduino (and the rest of the system runs on a conventional PC)</li>
+    <li>Build a new version of the system in which the Led is a concrete physical device controlled by RaspberryPi (and the rest of the system runs on a conventional PC) </li>
+    <li>Build a new version of the system in which the Button is a concrete physical device controlled by RaspberryPi (and the rest of the system runs on a conventional PC) </li>
+    <li>Build a new version of the system in which all the system works on RaspberryPi connected to a concrete physical Led and a a concrete physical Button</li>
+        <li>...</li>
+    </ol>
+
+<br/>     
+</div>    
+</div>
+</div>    
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div>    
+
+</body></html>

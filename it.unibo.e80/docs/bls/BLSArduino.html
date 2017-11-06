@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.o../html4/strict.dtd">
+<html>
+<!-- <link rel="stylesheet" type="text/css" href="../../css/plainStyle.css"> -->
+<link rel="stylesheet" type="text/css" href="../../css/tabStyle.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+<style>
+h2 {
+    font: 100% Lucida Sans;
+    background-color: #f6d8f8;
+}
+h3 {
+    font: 90% Lucida Sans; 
+    width: 100%;
+    background-color: #f3f3f7;
+    color: #191818;
+}
+#i {
+     color: #ff1010;
+} 
+b{
+	font: 100% Lucida Console;
+	color: #2219fd;
+    font-weight: bold;
+}
+tt{
+	font: 100% Lucida Console;
+	color: #c90b46;
+    font-weight: bold;
+}
+</style>
+<head>
+
+<title>ButtonLedSystem including Arduino</title></head>
+    
+<body>     
+<div class="container wrapper"> 
+<div class="wrapper">
+<div id="main"> 
+
+<h1>ButtonLedSystem including Arduino</h1>
+     <button onclick="window.location.href='../../Material/entry.html'">Home</button>
+
+<div style="background-color:#fbffb6; width:100%;float:left;"> 
+ <h3>VISION</h3>
+<ul>
+    <li>Technology is fundamental, but it should be something to be <tt>properly used</tt>, not something we have to be subjected to. </li>
+</ul>
+ 
+    
+<h3>GOALS</h3>
+
+<ul>
+    <li>Show how a low-level compuational device (<a href="https://en.wikipedia.org/wiki/Microcontroller" target="code">Microcontroller</a>) like Arduino can be included in our reference ButtonLed case study accoding to a 'message passing' programming style. </li>
+</ul>
+ 
+</div>
+  
+    
+<div style="background-color:#d5faf1; width:100%;float:left;">
+<h3>WORK</h3>
+    Our starting point will be a survey of the main feature of Arduino form the programming point of view. <br/>
+Next we will build systems including a   <a href="../../Appls/ButtonLed/LedEntry.html" target="code">physical Led</a> a <a href="../../Appls/ButtonLed/buttonEntry.html" target="code">physical Button</a>. 
+    
+
+<ol>
+</ol>
+    
+</div>
+
+<div style="background-color:#04b779; width:100%;text-align:center;font-size:small;color:white">
+-------
+</div>
+<h2>Requirements</h2>
+<hr/>
+<b>User story</b>: <b>As</b> a <i>operator</i>, <b>I want</b> to press a <tt>BLINK</tt> Button</i> <b>so that</b> a Led can start to blink. Moreover, <b>I want</b> also to press a <tt>STOP</tt> Button</i> <b>so that</b> the Led can stop blinking and remain in a <tt>off</tt> state. The 
+    <a href="../../Appls/ButtonLed/buttonEntry.html">Button</a> and the
+    <a href="../../Appls/ButtonLed/LedEntry.html">Led</a>
+    can be <i>physical</i> devices connnected to an Arduino microcontroller or a <i>'virtual'</i> (GUI-based) device implemented on a PC.
+<hr/>     
+
+ 
+<h2>Logical architecture (problem analysis)</h2>    
+ 
+    Our reference achiteture is that introduced in <a href="./BLSBlink.html">BLSBlink.html</a>:<br/>
+     <br/>
+<img src="./img/BLSBlinkAtiAct.jpg" alt="show" width="609" height="253"/>
+    
+<br/><br/>
+The project <a href="../../../../it.unibo.bls17Blink/" target="code"><img src="../../Material/source.gif">it.unibo.bls17Blink</a> provide a start-up working prototype:<br/>
+<a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/BlsBlinkControl.java" target="code"><img src="../../Material/source.gif">BlsBlinkControl</a>,  
+    <a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/BlinkTimed.java" target="code"><img src="../../Material/source.gif">BlinkTimed</a>(<a href="../../../../it.unibo.bls17Blink/src/it/unibo/action/AsynchTimedAction.java" target="code"><img src="../../Material/source.gif">AsynchTimedAction</a>),
+    <a href="../../../../it.unibo.bls17Blink/src/it/unibo/bls17Blink/MainBlsBlinkAtiAct.java" target="code"><img src="../../Material/source.gif">MainBlsBlinkAtiAct</a>(<a href="../../../../it.unibo.buttonLedSystemHL/src/it/unibo/buttonLedSystem/BLSHLConfig.java" target="code"><img src="../../Material/source.gif">BLSHLConfig</a>),
+<a href="../../../../it.unibo.bls17Blink/test/it/unibo/bls17Blink/TestBlsBlinkAtiAct.java" target="code"><img src="../../Material/source.gif">TestBlsBlinkAtiAct</a>    
+    
+<h3>Work to do</h3>
+    Our product backlog is now refined as follows:
+    <ol>
+        <li>Read an <a href="https://blog.udemy.com/arduino-tutorial-learn-the-basics/" target="code">Arduino tutorial</a> (as a platform built around a <a href="https://en.wikipedia.org/wiki/Microcontroller" target="code">Microcontroller</a>) and make some <b>basic experiment</b>:
+<ul>
+    <li>
+       <h2>Pins</h2> 
+        We can connect devices to special <a href="https://www.arduino.cc/en/Tutorial/DigitalPins" target="code">DigitalPins</a>, and read or change the state of these pins through special instructions<br/>
+    <a href="../../../../it.unibo.buttonLedSystem.arduino/arduino/Led13/Led13.ino" target="code"><img src="../../Material/source.gif">Led13.ino</a>, 
+<a href="../../../../it.unibo.buttonLedSystem.arduino/arduino/buttonPolling/buttonPolling.ino" target="code"><img src="../../Material/source.gif">buttonPolling.ino</a>,    
+<a href="../../../../it.unibo.buttonLedSystem.arduino/arduino/buttonInterrupt/buttonInterrupt.ino" target="code"><img src="../../Material/source.gif">buttonInterrupt.ino</a>
+    </li>
+<li>
+    <h2>Resistors</h2>
+    Sometimes we need some resistor (see
+    <a href="../../../docs/imgs/devices/Resistor-Colour-Code.gif" target="code">Resistor-Colour-Code</a>,
+<a href="../../../docs/imgs/devices/resistor-color-code-all.gif" target="code">resistor-color-code-all</a>,
+<a href="http://www.digikey.com/en/resources/conversion-calculators/conversion-calculator-resistor-color-code-4-band">evalColor</a>)
+but we could activate (va software) internel  <a href="https://learn.sparkfun.com/tutorials/pull-up-resistors/what-is-a-pull-up-resistor" target="code">Pull-up Resistor</a></li>
+    </li>
+
+<li>
+    <h2>Serial line</h2>
+    Arduino can receive commands from a connected PC and send information to a PC, by using the <b>serial line</b><br/>
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/bls/arduino/serial/SerialTest.java" target="code"><img src="../../Material/source.gif">SerialTest</a>, <a href="../../../../it.unibo.buttonLedSystem.arduino/arduino/serialWriteNaive/serialWriteNaive.ino" target="code"><img src="../../Material/source.gif">serialWriteNaive.ino</a>
+    
+ 
+    </li>   
+
+<li></li>
+</ul>
+        
+        </li>
+    <li>Build a new version of the system in which ....  (physical devices on Arduino)       </li>
+    
+    </ol>
+
+<h1>IConnInteraction</h1>     
+
+
+The project  <a href="../../../../it.unibo.noawtsupports/" target="code"><img src="../../Material/source.gif">it.unibo.noawtsupports</a> defines a support for communications over the network based on two-way connected protocols (like TCP, UDP) or a serial line (the case of Arduino). It provides:
+    <ol>
+    <li>A factory <a href="../../../../it.unibo.noawtsupports/src/it/unibo/supports/FactoryProtocol">FactoryProtocol</a> to create supports for a server or for a client (in the case of TCP/UDP) or for the user of a serial line.</li>
+        <li>Each operation of the factory returns an object thet implements the  interface <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/protocols/IConnInteraction.java" target="code"><img src="../../Material/source.gif">IConnInteraction</a> (defined in project  <a href="../../../../it.unibo.interfaces/" target="code"><img src="../../Material/source.gif">it.unibo.interfaces</a>) that can be used to send/receive information on the connection.</li>
+    </ol>
+In this way the applicative software does not depend on the protocol used for communications. If we want to change a protocol, software moidification is limited to the system configuration phase.
+<br/>
+ 
+     
+<h1>Physical devices on Arduino</h1>  
+Project <a href="../../../../it.unibo.buttonLedSystem.arduino/" target="code"><img src="../../Material/source.gif">it.unibo.buttonLedSystem.arduino</a>
+
+<h2>Proxy</h2>  
+    
+By following the  <a href="https://sourcemaking.com/design_patterns/proxy" target="code">Proxy</a> design pattern, we will 'inject' in our logic architecture  concrete devices acting as 'proxy' for a Led or Button working on Arduino.
+    
+    
+    
+<h2>Arduino bls support</h2>   
+Let us introduce a very simple support on Arduino to receive/send commands (<b>0|1</b>) from/to the PC on the serial line:
+    <br/>
+<a href="../../../../it.unibo.buttonLedSystem.arduino/arduino/blsSupportNaive/blsSupportNaive.ino" target="code"><img src="../../Material/source.gif">blsSupportNaive.ino</a>        <br/>
+Let us introduce also an utility class to get a <a href="../../../../it.unibo.interfaces/src/it/unibo/is/interfaces/protocols/IConnInteraction.java" target="code"><img src="../../Material/source.gif">IConnInteraction</a> on the serial line:
+
+<br/>
+    <a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/buttonLedSystem/arduino/BlsArduinoSysKb.java" target="code"><img src="../../Material/source.gif">BlsArduinoSysKb</a>    
+    
+<h2>Physical Led on Arduino</h2>
+    <li>Build a new version of the system in which the Led is a concrete physical device controlled by Arduino (and the rest of the system runs on a conventional PC) </li>
+    
+    <img src="./img/BLSArduinoLed.jpg" alt="show" width="647" height="364"/> 
+<br/>
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/bls/arduino/components/DeviceLedArduino.java" target="code"><img src="../../Material/source.gif">DeviceLedArduino</a>  
+ <br/>   
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/buttonLedSystem/arduino/BLSLedOnArduinoMain.java" target="code"><img src="../../Material/source.gif">BLSLedOnArduinoMain</a>    
+
+<h2>Physical Button on Arduino</h2>
+ <li>Build a new version of the system in which the Button is a concrete physical device controlled by Arduino (and the rest of the system runs on a conventional PC)</li>  
+<img src="./img/BLSArduinoButton.jpg" alt="show" width="631" height="371"/> 
+<br/>
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/bls/arduino/components/DeviceButtonArduino.java" target="code"><img src="../../Material/source.gif">DeviceButtonArduino</a>  
+ <br/>  
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/buttonLedSystem/arduino/BLSButtonOnArduinoMain.java" target="code"><img src="../../Material/source.gif">BLSButtonOnArduinoMain</a>    
+
+    
+    
+    <h2>Blink control on PC</h2>
+    
+<a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/buttonLedSystem/arduino/blinkAtiAct/BLSOnArduinoBlinkMain.java" target="code"><img src="../../Material/source.gif">BLSOnArduinoBlinkMain</a>    
+
+<h1>A more structured Arduino support</h1>   
+Since Arduino can be programmed with (a subset of)  C++, we can write a more structured Arduino support for the ButtonLed system based on objects. For esample:<br/>
+<a href="../../../../it.unibo.buttonLedSystem.arduino/arduino/blsMain/blsMain.ino" target="code"><img src="../../Material/source.gif">blsMain.ino</a>  ,
+<a href="../../../../it.unibo.buttonLedSystem.arduino/arduino/blsMain/bls.h" target="code"><img src="../../Material/source.gif">bls.h</a> , 
+<a href="../../../../it.unibo.buttonLedSystem.arduino/arduino/blsMain/bls.cpp" target="code"><img src="../../Material/source.gif">bls.cpp</a>      
+<h2>Messages</h2>
+In this version, Arduino sends to the connected PC messages in the 'standard' form we will use in our more advanced systems:
+<pre>
+<b>msg( command, dispatch, arduinoLed13, connectedpc, ld1(V),0)</b> with v=0/1
+</pre>    
+On the PC we could run the testing program: <a href="../../../../it.unibo.buttonLedSystem.arduino/src/it/unibo/bls/arduino/serial/BlsMainSerial.java" target="code"><img src="../../Material/source.gif">BlsMainSerial</a>   
+    <br/> <br/>
+</div>    
+</div>
+</div>    
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div>    
+
+</body></html>

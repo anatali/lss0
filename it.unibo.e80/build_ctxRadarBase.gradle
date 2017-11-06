@@ -5,7 +5,7 @@ GENERATED ONLY ONCE
 USAGE:	 
 	gradle -b build_ctxRadarBase.gradle eclipse	//to set the dependency on the library
 	gradle -b build_ctxRadarBase.gradle build
-	gradle -b build_ctxRadarBase cleanDistDir	    //to clean the src directory
+	gradle -b build_ctxRadarBase.gradle cleanDistDir	    //to clean the src directory
 ================================================================================
 */
 apply plugin: 'java'

@@ -17,7 +17,11 @@ import java.util.concurrent.Callable;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import it.unibo.qactors.action.ActorTimedAction;
-public abstract class AbstractQatester extends QActor { 
+import it.unibo.baseEnv.basicFrame.EnvFrame;
+import alice.tuprolog.SolveInfo;
+import it.unibo.is.interfaces.IActivity;
+import it.unibo.is.interfaces.IIntent;
+public abstract class AbstractQatester extends QActor implements IActivity{ 
 	protected AsynchActionResult aar = null;
 	protected boolean actionResult = true;
 	protected alice.tuprolog.SolveInfo sol;
@@ -29,14 +33,28 @@ public abstract class AbstractQatester extends QActor {
 	 
 	
 		protected static IOutputEnvView setTheEnv(IOutputEnvView outEnvView ){
-			return outEnvView;
+			EnvFrame env = new EnvFrame( "Env_qatester", java.awt.Color.yellow  , java.awt.Color.black );
+			env.init();
+			env.setSize(800,430); 
+			IOutputEnvView newOutEnvView = ((EnvFrame) env).getOutputEnvView();
+			return newOutEnvView;
 		}
 		public AbstractQatester(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qatester/WorldTheory.pl",
 			setTheEnv( outEnvView )  , "init");		
+			addInputPanel(80);
+			addCmdPanels();	
 			this.planFilePath = "./srcMore/it/unibo/qatester/plans.txt";
 	  	}
+	protected void addInputPanel(int size){
+		((EnvFrame) env).addInputPanel(size);			
+	}
+	protected void addCmdPanels(){
+		((EnvFrame) env).addCmdPanel("input", new String[]{"INPUT"}, this);
+		((EnvFrame) env).addCmdPanel("alarm", new String[]{"FIRE"}, this);
+		((EnvFrame) env).addCmdPanel("help",  new String[]{"HELP"}, this);				
+	}
 		@Override
 		protected void doJob() throws Exception {
 			String name  = getName().replace("_ctrl", "");
@@ -78,6 +96,8 @@ public abstract class AbstractQatester extends QActor {
 	    	aar = delayReactive(1000,"" , "");
 	    	if( aar.getInterrupted() ) curPlanInExec   = "init";
 	    	if( ! aar.getGoon() ) return ;
+	    	temporaryStr = "\"generate\"";
+	    	println( temporaryStr );  
 	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?p(X,Y)" )) != null ){
 	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"p(Distance,Angle)","p(X,Y)", guardVars ).toString();
 	    	sendMsg("polarMsg","radarguibase", QActorContext.dispatch, temporaryStr ); 
@@ -102,4 +122,57 @@ public abstract class AbstractQatester extends QActor {
 	    	//doing nothing in a QActor
 	    }
 	
+		/* 
+		* ------------------------------------------------------------
+		* IACTIVITY (aactor with GUI)
+		* ------------------------------------------------------------
+		*/
+		private String[] actions = new String[]{
+		    	"println( STRING | TERM )", 
+		    	"play('./audio/music_interlude20.wav'),20000,'alarm,obstacle', 'handleAlarm,handleObstacle'",
+		"emit(EVID,EVCONTENT)  ",
+		"move(MOVE,DURATION,ANGLE)  with MOVE=mf|mb|ml|mr|ms",
+		"forward( DEST, MSGID, MSGCONTENTTERM)"
+		    };
+		    protected void doHelp(){
+				println("  GOAL ");
+				println("[ GUARD ], ACTION  ");
+				println("[ GUARD ], ACTION, DURATION ");
+				println("[ GUARD ], ACTION, DURATION, ENDEVENT");
+				println("[ GUARD ], ACTION, DURATION, EVENTS, PLANS");
+				println("Actions:");
+				for( int i=0; i<actions.length; i++){
+					println(" " + actions[i] );
+				}
+		    }
+		@Override
+		public void execAction(String cmd) {
+			if( cmd.equals("HELP") ){
+				doHelp();
+				return;
+			}
+			if( cmd.equals("FIRE") ){
+				emit("alarm", "alarm(fire)");
+				return;
+			}
+			String input = env.readln();
+			//input = "\""+input+"\"";
+			input = it.unibo.qactors.web.GuiUiKb.buildCorrectPrologString(input);
+			//println("input=" + input);
+			try {
+				Term.createTerm(input);
+	 			String eventMsg=it.unibo.qactors.web.QActorHttpServer.inputToEventMsg(input);
+				//println("QActor eventMsg " + eventMsg);
+				emit("local_"+it.unibo.qactors.web.GuiUiKb.inputCmd, eventMsg);
+	  		} catch (Exception e) {
+		 		println("QActor input error " + e.getMessage());
+			}
+		}
+	 	
+		@Override
+		public void execAction() {}
+		@Override
+		public void execAction(IIntent input) {}
+		@Override
+		public String execActionWithAnswer(String cmd) {return null;}
 	}

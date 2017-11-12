@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BLSHLConfig.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">it.unibo.e80</a> &gt; <a href="index.source.html" class="el_package">it.unibo.buttonLedSystem</a> &gt; <span class="el_source">BLSHLConfig.java</span></div><h1>BLSHLConfig.java</h1><pre class="source lang-java linenums">package it.unibo.buttonLedSystem;
+import it.unibo.bls.highLevel.interfaces.IBLSControl;
+import it.unibo.bls.highLevel.interfaces.IDevButton;
+import it.unibo.bls.highLevel.interfaces.IDevLed;
+import it.unibo.bls.lowLevel.interfaces.IDeviceButtonImpl;
+import it.unibo.bls.lowLevel.interfaces.IDeviceLedImpl;
+import it.unibo.is.interfaces.IOutputEnvView;
+import it.unibo.system.SituatedPlainObject;
+ 
+
+/*
+ * =======================================================================
+ * Build a LOGIC BLS system given three concrete devices 
+ * =======================================================================
+ */
+public class BLSHLConfig extends SituatedPlainObject{
+	/*
+	 * Messages  
+	 */
+	public final static String on  = &quot;1&quot;;
+	public final static String off = &quot;0&quot;; 
+
+//Concrete devices	
+	protected IDeviceLedImpl concreteLed;
+	protected IDeviceButtonImpl concreteButton;	
+//Logic devices		
+	protected IDevButton logicalButton ;
+	protected IDevLed logicalLed ;
+//Control
+	protected IBLSControl control;
+
+ 	public BLSHLConfig(IOutputEnvView outEnvView)  {
+<span class="fc" id="L33">		super(outEnvView);</span>
+<span class="fc" id="L34">	}</span>
+ 	public BLSHLConfig(IDeviceButtonImpl button, IDeviceLedImpl led, IBLSControl control, IOutputEnvView outEnvView)  {
+<span class="nc" id="L36">		super(outEnvView);</span>
+<span class="nc" id="L37">		this.concreteButton  = button;</span>
+<span class="nc" id="L38">		this.concreteLed     = led;</span>
+<span class="nc" id="L39">		this.control         = control;</span>
+<span class="nc" id="L40">		createTheLogicElements(concreteButton,concreteLed,control);</span>
+<span class="nc" id="L41">	}</span>
+	
+	public IDeviceButtonImpl getConcreteButton(){
+<span class="fc" id="L44">		return concreteButton;</span>
+	}
+	public IDeviceLedImpl getConcreteLed(){
+<span class="fc" id="L47">		return concreteLed;</span>
+	}	
+	public IDevButton getButton(){
+<span class="fc" id="L50">		return logicalButton;</span>
+	}
+	public IDevLed getLed(){
+<span class="fc" id="L53">		return logicalLed;</span>
+	}
+	public IBLSControl getController(){
+<span class="nc" id="L56">		return control;</span>
+	}	
+   	protected void createTheLogicElements(IDeviceButtonImpl concreteButton, IDeviceLedImpl concreteLed, IBLSControl controller){
+		try{
+<span class="fc" id="L60">	 	 	logicalButton  = BLSHLFactory.createLogicalButton(&quot;devBtn&quot;,outEnvView);</span>
+<span class="fc" id="L61"> 		 	logicalButton.setDevImpl(concreteButton);	 </span>
+// 		 	concreteButton.addObserver(logicalButton);
+<span class="fc" id="L63"> 		 	logicalLed     = BLSHLFactory.createLogicalLed(&quot;devLed&quot;,outEnvView);</span>
+<span class="fc" id="L64"> 		 	logicalLed.setDevImpl( concreteLed );</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered."> 		 	if( controller == null ) controller = </span>
+<span class="fc" id="L66"> 		 			BLSHLFactory.createBlsControlNaive(outEnvView, concreteLed);</span>
+<span class="fc" id="L67"> 		 	controller.setLed(logicalLed);</span>
+<span class="fc" id="L68"> 		 	logicalButton.addObserver(controller);</span>
+<span class="nc" id="L69"> 		 }catch(Exception e){</span>
+<span class="nc" id="L70">			println(&quot;BLSHLConfig ERROR &quot; + e.getMessage());</span>
+<span class="fc" id="L71">		}	 		</span>
+<span class="fc" id="L72">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

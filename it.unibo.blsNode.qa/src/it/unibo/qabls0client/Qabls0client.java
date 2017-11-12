@@ -16,8 +16,7 @@ public class Qabls0client extends AbstractQabls0client {
  */
 	public void sendPut(String msg, int port) {
 		RestClientHttp.setCtx( this.getQActorContext() );
-// 		RestClientHttp.connectGet();
-		RestClientHttp.sendPut("{\"-d\":d1}", "http://localhost:"+port);
+		RestClientHttp.sendPut(msg, "http://localhost:"+port);
 		
 	}
 //	public void work1( ) {

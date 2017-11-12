@@ -123,7 +123,8 @@ eval( gt, X,Y ) :- X > Y.
 divisible( V1, V2 ) :- 0 is mod(V1,V2). 
 
 getVal( I, V ):-
-	value(I,V).
+	value(I,V), !.
+getVal( I, failure ).
 
 assign( I,V ):-
 	retract( value(I,_) ),!,

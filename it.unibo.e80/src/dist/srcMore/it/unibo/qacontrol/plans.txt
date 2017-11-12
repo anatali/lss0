@@ -1,0 +1,3 @@
+plan(1,init, sentence(true,move(print(qacontrol( starts))),'','' ))
+plan(2,init, sentence(true,move(actorOp(createAButtonPojo)),'','' ))
+plan(1,waitForClick, sentence(true,move(actorOp(noOP)),'','' ))

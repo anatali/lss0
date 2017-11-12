@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<style type="text/css">
+<!--
+
+body
+{
+    font-size: 14pt;
+    margin-left: 35px;
+    margin-right: 35px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+    font-size: 100%;
+}
+h4 {
+    background-color: #fcf8c7;
+    font-size: 100%;
+}
+    #i {
+    color: #ff1010;
+}
+  -->
+</style>
+    
+<head>
+   
+<title>Workflow BLS</title></head>
+    
+<body>
+<h1>WORKFLOW (The ButtonLed system)</h1>
+    
+    <h2>Bottom-up (Technology dependent)</h2>
+<ol>
+    
+    <li>Java very naive:   
+    	<a href="blsNaiveWrong.pdf" target="bls">blsNaiveWrong.pdf</a><br/>
+     </li> 
+    <li>Java:   
+    	<a href="blsNaive.pdf" target="bls">blsNaive.pdf</a>, 
+    	code: <tt>it.unibo.bls17.naive</tt>
+    </li> 
+    <li>Led GUI:    code <tt>it.unibo.bls17.naive.LedWithGui</tt> that extends 
+    	<tt>it.unibo.bls17.naive.Led</tt>
+    <li>RaspberryPi:  <a href="BLSRaspberry.html" target="bls">BLSRaspberry.html</a></li>    
+
+<li>Testing: 
+	code: <tt>TestBlsGuiBase</tt> in directory <tt>test/it.unibo.bls17.naive</tt>
+	</li>  
+ 
+</ol>    
+
+<h2>Top-down (Logic first)</h2>
+<ol>
+    
+<li>Top-down: <a href="blsApproach.pdf" target="bls">blsApproach.pdf</a> </li>  
+
+<li>Inject the implementation: 
+	  see <tt>it.unibo.buttonLed.components.DevLed.java</tt>  and
+	  <tt>it.unibo.buttonLed.components.LedMock.java</tt> 
+</li>  
+<li>Testing: </li>  
+ 
+</ol>    
+
+<hr/>    
+<div id="bottom" >
+By AN Unibo-DISI    
+</div>
+    
+</body>
+</html>

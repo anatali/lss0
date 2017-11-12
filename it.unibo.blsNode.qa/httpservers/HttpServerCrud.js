@@ -5,6 +5,9 @@
 */
 var http = require("http");
 var dataStore = [];	//Array of Buffers
+var fs      = require('fs');
+var path    = require('path');
+var file    = path.join(process.cwd(), '../sharedFiles/cmd.txt');
 
 http.createServer(function(request, response) {
 	//The request object is an instance of IncomingMessage (a ReadableStream; it's also an EventEmitter)
@@ -48,8 +51,16 @@ function buildResponse( url, method, response ){
 	      dataStore:   dataStore 
 	    };	
 	    response.write( JSON.stringify(responseBody) );
+	    storeData(file,"press");
 	    response.end();
 	    //response.end(JSON.stringify(responseBody)) //compact form		
 }
 console.log('Server running on 8080');
- 
+
+
+function storeData(file, newData) {
+	  fs.writeFile(file, newData, 'utf8', function(err) {
+	    if (err) throw err;
+	    console.log('Saved: ' + newData);
+	  });
+	}

@@ -1,3 +1,3 @@
 plan(1,init, sentence(true,move(print("qabls0led STARTS")),'','' ))
 plan(2,init, sentence(true,move(actorOp(createLedGui)),'','' ))
-plan(1,work, sentence(true,move(actorOp(watchFileInDir( "C:/repoGitHub/it.unibo.blsNode.qa/sharedFiles"))),'','' ))
+plan(1,work, sentence(true,move(print("qabls0led waits")),'','' ))

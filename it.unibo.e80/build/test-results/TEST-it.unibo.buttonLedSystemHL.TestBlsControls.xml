@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.unibo.buttonLedSystemHL.TestBlsControls" tests="2" skipped="0" failures="0" errors="0" timestamp="2017-11-12T18:02:15" hostname="anataliTHINK" time="0.053">
+  <properties/>
+  <testcase name="testControlFsm" classname="it.unibo.buttonLedSystemHL.TestBlsControls" time="0.038"/>
+  <testcase name="testControlSwitch" classname="it.unibo.buttonLedSystemHL.TestBlsControls" time="0.015"/>
+  <system-out><![CDATA[device(led(led),GREEN,false)
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
+DevButton update true
+BLSControlFSM update cmd=true
+BLSControlFSM curstate=SOdd/result=on
+device(led(led),GREEN,true)
+BLSControlFSM FSM done ON
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
+DevButton update true
+BLSControlFSM update cmd=true
+BLSControlFSM curstate=SOdd/result=null
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
+DevButton update false
+BLSControlFSM update cmd=false
+BLSControlFSM curstate=SOn/result=
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
+DevButton update false
+BLSControlFSM update cmd=false
+BLSControlFSM curstate=SOn/result=null
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
+DevButton update true
+BLSControlFSM update cmd=true
+BLSControlFSM curstate=SEven/result=off
+device(led(led),GREEN,false)
+BLSControlFSM FSM done OFF
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
+DevButton update true
+BLSControlFSM update cmd=true
+BLSControlFSM curstate=SEven/result=null
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
+DevButton update false
+BLSControlFSM update cmd=false
+BLSControlFSM curstate=S0/result=
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
+DevButton update true
+BLSControlFSM update cmd=true
+BLSControlFSM curstate=SOdd/result=on
+device(led(led),GREEN,true)
+BLSControlFSM FSM done ON
+device(led(led),GREEN,false)
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
+DevButton update true
+BLSControlSwitch update input=true sodd=true
+device(led(led),GREEN,true)
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
+DevButton update true
+BLSControlSwitch update input=true sodd=false
+device(led(led),GREEN,false)
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
+DevButton update false
+BLSControlSwitch update input=false sodd=true
+device(led(led),GREEN,true)
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
+DevButton update false
+BLSControlSwitch update input=false sodd=false
+device(led(led),GREEN,false)
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
+DevButton update true
+BLSControlSwitch update input=true sodd=true
+device(led(led),GREEN,true)
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
+DevButton update true
+BLSControlSwitch update input=true sodd=false
+device(led(led),GREEN,false)
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
+DevButton update false
+BLSControlSwitch update input=false sodd=true
+device(led(led),GREEN,true)
+DeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
+DevButton update true
+BLSControlSwitch update input=true sodd=false
+device(led(led),GREEN,false)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

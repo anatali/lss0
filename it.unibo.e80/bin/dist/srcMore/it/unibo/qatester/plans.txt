@@ -1,0 +1,4 @@
+plan(1,init, sentence(true,delay( 1000) ,'','' ))
+plan(2,init, sentence(true,move(print("generate")),'','' ))
+plan(3,init, sentence( p( X,Y),forward(radarguibase, polarMsg,p( X,Y)),'','' ))
+plan(4,init, sentence(-  p( X,Y) ,raise( polar , p( X,Y) )'),'','' ))

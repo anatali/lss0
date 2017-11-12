@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.unibo.bls17.naive.TestBlsGuiBase" tests="2" skipped="0" failures="0" errors="0" timestamp="2017-11-12T18:02:11" hostname="anataliTHINK" time="3.786">
+  <properties/>
+  <testcase name="testWrongCmd" classname="it.unibo.bls17.naive.TestBlsGuiBase" time="1.75"/>
+  <testcase name="testSystemLogic" classname="it.unibo.bls17.naive.TestBlsGuiBase" time="2.036"/>
+  <system-out><![CDATA[actionPerformed CLICK id=0 from:it.unibo.bls17.naive.ButtonWithGui[button0,8,31,85x161,label=LEDSWITCH]
+actionPerformed 01/01/1970 01:00:00
+actionPerformed CLICK id=0 from:it.unibo.bls17.naive.ButtonWithGui[button0,8,31,85x161,label=LEDSWITCH]
+actionPerformed 01/01/1970 01:00:00
+actionPerformed LEDSWITCH id=0 from:it.unibo.bls17.naive.ButtonWithGui[button1,8,31,85x161,label=LEDSWITCH]
+actionPerformed 01/01/1970 01:00:00
+BlsApplicationLogic LEDSWITCH ledstate=false
+actionPerformed LEDSWITCH id=0 from:it.unibo.bls17.naive.ButtonWithGui[button1,8,31,85x161,label=LEDSWITCH]
+actionPerformed 01/01/1970 01:00:00
+BlsApplicationLogic LEDSWITCH ledstate=true
+actionPerformed LEDSWITCH id=0 from:it.unibo.bls17.naive.ButtonWithGui[button1,8,31,85x161,label=LEDSWITCH]
+actionPerformed 01/01/1970 01:00:00
+BlsApplicationLogic LEDSWITCH ledstate=false
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

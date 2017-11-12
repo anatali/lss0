@@ -1,12 +1,10 @@
 System httpClient                 
 Event httpinfo : httpinfo(X)     //emitted by PUT GET
-
-Context ctxHttpClient ip [ host="localhost"  port=8029 ]   
+Context ctxHttpClient ip [ host="localhost"  port=8049 ]   
  
 QActor qahttpclient context ctxHttpClient  {  
 Rules{
-	data( item1 ).
-	data( item2 ).
+	data( a ).	data( b ). 	data( c ). data( d ). data( e ). data( f ).
 }
 	Plan init normal [         
    		println( "qahttpclient STARTS"  )  ;
@@ -15,7 +13,7 @@ Rules{
    		delay 500
     ]
     finally repeatPlan
-}
+} 
 
 QActor qahttpanswerhandler context ctxHttpClient  {
 	Plan init normal [
@@ -25,5 +23,3 @@ QActor qahttpanswerhandler context ctxHttpClient  {
    		whenEvent httpinfo : httpinfo(X) do println( httpinfo(X) )
    		finally repeatPlan
 }
-
-

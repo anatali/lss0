@@ -1,0 +1,21 @@
+/*
+*
+* A GraphViz DOT FSM description 
+* Please use a GraphViz visualizer (like http://www.webgraphviz.com)
+*  
+*/
+
+digraph finite_state_machine {
+	rankdir=LR
+	size="8,5"
+	
+	init [ color = red ][ fontcolor = red ][ penwidth = 3 ]
+	waitSonarInfo [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	handleSonarInfo [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	
+	waitSonarInfo -> handleSonarInfo [ label = "polarMsg" ][ color = red ][ fontcolor = red ][ dir = both ]
+	init -> waitSonarInfo [ label = "switch" ][ color = black ][ fontcolor = black ]
+	waitSonarInfo -> waitSonarInfo [ label = "repeat "][ style = dashed ][ color = blue ][ fontcolor = blue ]
+	waitSonarInfo -> handleToutBuiltIn [ label = "timeout(10000)" ][ color = green ][ fontcolor = green ]
+	waitSonarInfo -> handleSonarInfo [ label = "polar" ][ color = red ][ fontcolor = red ][ dir = both ]
+}

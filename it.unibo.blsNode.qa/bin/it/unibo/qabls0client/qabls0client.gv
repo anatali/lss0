@@ -12,4 +12,5 @@ digraph finite_state_machine {
 	init [ color = red ][ fontcolor = red ][ penwidth = 3 ]
 	init [ color = blue ][ fontcolor = blue ][ penwidth = 3 ]
 	
+	init -> init [ label = "repeat 5"][ style = dashed ][ color = blue ][ fontcolor = blue ]
 }

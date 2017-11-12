@@ -1,12 +1,7 @@
 System bls0                 
 Event fileChanged : fileChanged(FNAME,CONTENT)   //emitted by watchFileInDir      
-    
 Context ctxBls0 ip [ host="localhost"  port=8029 ]  //-g cyan 
- 
-/*
- * A Node.js HTTP server writes 'press' on the file  
- * 	C:/repoGitHub/it.unibo.blsNode.qa/blsOop/cmd.txt
- */   
+//ASSUMPTION: A Node.js HttpServerCrud writes 'click' on the file sharedFiles/cmd.txt
 QActor qabls0led context ctxBls0 -g yellow{  
 	Plan init normal [         
    		println( "qabls0led STARTS"  )  ;
@@ -14,19 +9,26 @@ QActor qabls0led context ctxBls0 -g yellow{
    	]
    	switchTo  work      
    	
-  	Plan work [ 
-   		actorOp watchFileInDir("C:/repoGitHub/it.unibo.blsNode.qa/sharedFiles") -asynch
-  	]
-	transition stopAfter 300000  
-		whenEvent fileChanged : fileChanged(F,press) do actorOp ledSwitch 
- 		finally repeatPlan 	
+  	Plan work [  
+  		println("qabls0led waits") 
+    ]
+   	transition stopAfter 600000 
+   		whenEvent fileChanged : fileChanged(F,press) do actorOp ledSwitch 
+   		finally repeatPlan
 } 
-
+QActor qafilewatcher context ctxBls0  {
+	Plan init normal [
+		actorOp watchFileInDir("./sharedFiles")  //C:/repoGitHub/it.unibo.blsNode.qa/sharedFiles
+	]  
+    finally repeatPlan
+}
 QActor qabls0client context ctxBls0  {  
 	Plan init normal [         
-   		println( "qabls0client STARTS"  )  ;
-   		actorOp sendPut("pressButton", 8080)
+   		println( "qabls0client sendPut"  )  ;
+   		actorOp sendPut("click", 8080) ;
+   		delay 500
    	]
+   	finally repeatPlan 5
 }
 
 /*

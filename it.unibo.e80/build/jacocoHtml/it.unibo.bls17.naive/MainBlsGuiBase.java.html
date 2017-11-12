@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MainBlsGuiBase.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">it.unibo.e80</a> &gt; <a href="index.source.html" class="el_package">it.unibo.bls17.naive</a> &gt; <span class="el_source">MainBlsGuiBase.java</span></div><h1>MainBlsGuiBase.java</h1><pre class="source lang-java linenums">package it.unibo.bls17.naive;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.Frame;
+/*
+ * -----------------------------------------------------------
+ * A ButtonLed system built in a (JAVA) technology-dependent way
+ * -----------------------------------------------------------
+ */
+public class MainBlsGuiBase  {
+	private Frame frame ;
+	private ButtonListener buttonListener ; 
+ 	private IButton btn;
+ 	private ILed led;
+<span class="fc" id="L18"> 	private BorderLayout layout = new BorderLayout();</span>
+<span class="fc" id="L19"> 	private final String btnLabel = &quot;LEDSWITCH&quot;;</span>
+ 	
+ 	public static MainBlsGuiBase createTheSystem(){
+<span class="fc" id="L22"> 		return new MainBlsGuiBase();</span>
+ 	}
+ 	
+<span class="fc" id="L25"> 	protected MainBlsGuiBase( ) {</span>
+<span class="fc" id="L26">		initFrame();</span>
+<span class="fc" id="L27">		createComponents();</span>
+<span class="fc" id="L28"> 	}	</span>
+	
+	public ButtonListener getActionListener(){
+<span class="fc" id="L31">		return buttonListener;</span>
+	}
+	public IButton getButton(){
+<span class="fc" id="L34">		return btn;</span>
+	}
+	public ILed getLed(){
+<span class="fc" id="L37">		return led;</span>
+	}
+	public String getCmd(){
+<span class="fc" id="L40">		return btnLabel;</span>
+	}
+	
+ 	protected void createComponents(){
+  		//Create Led
+<span class="fc" id="L45"> 		led = LedWithGui.createLed( frame );</span>
+ 		//Create the application logic
+<span class="fc" id="L47"> 		BlsApplicationLogic applLogic = new BlsApplicationLogic(led);</span>
+ 		//Create Button
+<span class="fc" id="L49">		buttonListener = new ButtonListener( applLogic, btnLabel ); </span>
+<span class="fc" id="L50">		btn            = ButtonWithGui.createButton(frame, btnLabel, buttonListener);</span>
+<span class="fc" id="L51"> 		led.turnOff();</span>
+<span class="fc" id="L52">	}</span>
+ 	
+ 	public void initFrame(){
+<span class="fc" id="L55"> 		frame = new Frame();</span>
+<span class="fc" id="L56"> 		frame.setSize( new Dimension(400,200) );</span>
+<span class="fc" id="L57"> 		frame.setLayout(layout);		</span>
+<span class="fc" id="L58"> 		frame.addWindowListener(new WindowListener() {			</span>
+			@Override
+<span class="fc" id="L60">			public void windowOpened(WindowEvent e) {}				</span>
+			@Override
+<span class="nc" id="L62">			public void windowIconified(WindowEvent e) {}</span>
+			@Override
+<span class="nc" id="L64">			public void windowDeiconified(WindowEvent e) {}</span>
+			@Override
+<span class="fc" id="L66">			public void windowDeactivated(WindowEvent e) {}</span>
+			@Override
+			public void windowClosing(WindowEvent e) {
+<span class="nc" id="L69">				System.exit(0);				</span>
+<span class="nc" id="L70">			}			</span>
+			@Override
+<span class="nc" id="L72">			public void windowClosed(WindowEvent e) {}</span>
+			@Override
+<span class="fc" id="L74">			public void windowActivated(WindowEvent e) {}</span>
+		}); 	
+<span class="fc" id="L76">		frame.setVisible(true);</span>
+<span class="fc" id="L77"> 	}</span>
+ 	
+
+	public static void main(String[] args) {
+<span class="nc" id="L81">		createTheSystem();</span>
+<span class="nc" id="L82"> 	}</span>
+}
+
+ 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -1,0 +1,3 @@
+plan(1,init, sentence(true,move(print(qaled( starts))),'','' ))
+plan(2,init, sentence(true,move(actorOp(createLedPojo)),'','' ))
+plan(1,waitForCmd, sentence(true,move(print("LED WAITS")),'','' ))

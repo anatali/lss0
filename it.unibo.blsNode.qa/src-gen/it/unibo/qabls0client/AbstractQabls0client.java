@@ -71,13 +71,18 @@ public abstract class AbstractQabls0client extends QActor {
 	    
 	    StateFun init = () -> {	
 	    try{	
-	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
+	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_init",5);
+	     pr.incNumIter(); 	
 	    	String myselfName = "init";  
-	    	temporaryStr = "\"qabls0client STARTS\"";
+	    	temporaryStr = "\"qabls0client sendPut\"";
 	    	println( temporaryStr );  
-	    	parg = "sendPut(\"pressButton\",8080)"; 
+	    	parg = "sendPut(\"click\",8080)"; 
 	    	actorOpExecute(parg, false);	//OCT17		 
-	    	repeatPlanNoTransition(pr,myselfName,"qabls0client_"+myselfName,false,false);
+	    	//delay  ( no more reactive within a plan)
+	    	aar = delayReactive(500,"" , "");
+	    	if( aar.getInterrupted() ) curPlanInExec   = "init";
+	    	if( ! aar.getGoon() ) return ;
+	    	repeatPlanNoTransition(pr,myselfName,"qabls0client_"+myselfName,true,false);
 	    }catch(Exception e_init){  
 	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 

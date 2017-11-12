@@ -7,6 +7,7 @@
 */
 var onoff = require('onoff'); 
 var Gpio  = onoff.Gpio;
+var LedHL = require("./Led");
 
 var LedImplGpio = function(name,ledpin){
 	this.name      = name;
@@ -24,6 +25,19 @@ LedImplGpio.prototype.turnOff = function(){
 }
  
 
+
+
+
+test = function(){
+	var ledRasp = new LedImplGpio("led1", 6);	//6 wpi is 25 BCM
+	var led     = new LedHL.Led("led1",ledRasp);
+	console.log("led=" + led.getDefaultRep() );
+	for( i=1; i<=5; i++){
+ 		setTimeout( led.turnOn, 500*i );
+ 		setTimeout( led.turnOff, 1000*i );
+	}
+}
+test();
 // EXPORTS
 if(typeof document == "undefined") module.exports.LedImplGpio = LedImplGpio;
  

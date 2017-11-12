@@ -123,7 +123,8 @@ eval( gt, X,Y ) :- X > Y.
 divisible( V1, V2 ) :- 0 is mod(V1,V2). 
 
 getVal( I, V ):-
-	value(I,V).
+	value(I,V), !.
+getVal( I, failure ).
 
 assign( I,V ):-
 	retract( value(I,_) ),!,
@@ -141,8 +142,12 @@ actorPrintln( X ):- actorobj(A), text_term(XS,X), A  <- println( XS ).
 %-------------------------------------------------
 %  User static rules about qahttpclient
 %------------------------------------------------- 
-data( item1).
-data( item2).
+data( a).
+data( b).
+data( c).
+data( d).
+data( e).
+data( f).
 /*
 ------------------------------------------------------------------------
 testex :- actorPrintln( testex ),

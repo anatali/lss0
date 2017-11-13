@@ -1,6 +1,0 @@
-plan(1,init, sentence(true,move(print("RADAR init the GUI ... ")),'','' ))
-plan(2,init, sentence(true,move(actorOp(activateGui)),'','' ))
-plan(1,waitSonarInfo, sentence(true,move(actorOp(noOp)),'','' ))
-plan(1,handleSonarInfo, sentence(true,msgswitch(polarMsg, p( D,A) , move(actorOp(sendDataToGui( D,A)))),'','' ))
-plan(2,handleSonarInfo, sentence(true,eventswitch(polar, »p( D,A), move(actorOp(sendDataToGui( D,A))) ),'','' ))
-plan(3,handleSonarInfo, sentence(true,move(resumeplan),'','' ))

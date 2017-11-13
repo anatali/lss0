@@ -1,0 +1,38 @@
+/*
+ * blsBlink.qa
+ * This is A MODEL, result of problem analysis 
+ * written in the CUSTOM meta-model/language qa
+ */     
+System blsBlink        
+Event  usercmd : usercmd(X)
+Context ctxBlsBlink ip [host="localhost" port=8030] //-httpserver    
+
+/*     
+ * Led
+ */  
+QActor ledblink context ctxBlsBlink   {     
+ 	Plan init  normal  [    
+ 		println("ledgpio STARTS")
+// 		actorOp createPi4jLed( 25 ) ;	//BCM 25 WPI 6
+ 	]
+ 	switchTo blink 
+ 	
+ 	Plan blink [
+ 		println("ledSwitch")
+// 		actorOp ledSwitch 
+ 	]
+ 	transition  whenTime 500 -> handleTout
+ 		whenEvent usercmd : usercmd(X) do endPlan "'blink ends'" 
+ 	finally repeatPlan
+ 	
+ 	Plan handleTout resumeLastPlan[
+ 		actorOp noOp
+ 	]
+}
+
+QActor cmdemitter context ctxBlsBlink   {  
+	Plan init  normal  [    
+ 		delay 2000;
+ 		emit usercmd : usercmd(test)
+  	]
+ }  

@@ -1,0 +1,22 @@
+/*
+*
+* A GraphViz DOT FSM description 
+* Please use a GraphViz visualizer (like http://www.webgraphviz.com)
+*  
+*/
+
+digraph finite_state_machine {
+	rankdir=LR
+	size="8,5"
+	
+	init [ color = red ][ fontcolor = red ][ penwidth = 3 ]
+	interactWithRestServer [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	putData [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	interactWithWotServer [ color = blue ][ fontcolor = blue ][ penwidth = 3 ]
+	interactWithAServer [ color = blue ][ fontcolor = blue ][ penwidth = 3 ]
+	
+	interactWithRestServer -> putData [ label = "[ !? data(X) ], switch" ][ color = red ][ fontcolor = red ][ dir = both ]
+	interactWithRestServer -> interactWithRestServer [ label = "repeat "][ style = dashed ][ color = blue ][ fontcolor = blue ]
+	init -> interactWithAServer [ label = "switch" ][ color = black ][ fontcolor = black ]
+	putData -> putData [ label = "repeat "][ style = dashed ][ color = blue ][ fontcolor = blue ]
+}

@@ -21,12 +21,12 @@ public class Qacontrol extends AbstractQacontrol implements IActivity{
 		createAButtonWithGui();		
 	}
 	protected void createAButtonWithGui(){
-		outEnvView.getEnv().addCmdPanel("btn", new String[]{"click"}, this);		
+		outEnvView.getEnv().addCmdPanel("btn", new String[]{"push"}, this);		
 	}
 	@Override 
 	public void execAction(String cmd) {
 		try {
-			//println("++++ " + cmd);
+			println("++++ " + cmd);
  			//sendMsg("turn","qaled", QActorContext.dispatch, "switch(" + count++ + ")" );
 			this.emit("local_click", "clicked("+count++ +")");
 		} catch (Exception e) {

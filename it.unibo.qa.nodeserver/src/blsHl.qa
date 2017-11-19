@@ -1,0 +1,69 @@
+/*
+ * This is A MODEL, result of problem analysis 
+ * written in the CUSTOM meta-model/language qa
+ */  
+System blshl  
+Dispatch turn     : switch   
+Event local_click : clicked(N)  //N : natural
+Event usercmd     : usercmd(N)
+
+Context ctxBlsHl ip [ host="localhost"  port=8029 ]  -httpserver   
+EventHandler evconvert for usercmd -print {
+	emit local_click fromContent usercmd (N) to clicked(N) 
+};
+
+QActor qaledhl context ctxBlsHl -g cyan {
+Rules{
+// 	config( led,  mock ).
+  	config( led,  gui ).
+//	config( led,  rasp ).  
+//	config( led,  arduino ).
+}
+	Plan init normal  [         
+		[ !? config( led, X )] println( X )  ;
+    	[ !? config( led, X )] actorOp createLedObject( X )  
+    ]
+   	switchTo waitForCmd   
+   	  
+  	Plan waitForCmd [  
+  		println("LED WAITS")
+  	]
+    transition stopAfter 3000000
+    	whenMsg turn : switch do actorOp ledSwitch
+    finally repeatPlan	
+}
+ 
+QActor qacontrolhl context ctxBlsHl {
+	Plan init normal [         
+   		actorOp createButtonObject("gui") //must emit local_click
+   	]
+   	switchTo waitForClick       
+ 
+    Plan waitForClick[
+    	println("BUTTON WAITS")
+//     	actorOp noOP   
+    ]  
+    transition stopAfter 100000 
+     	whenEvent local_click : clicked(N) do forward qaledhl -m turn : switch
+    finally repeatPlan	
+}
+     
+/* 
+QActor ledtester context bls0Ctx   {  
+Rules{
+	//debug.
+}
+ 	Plan init normal [     
+ 		actorOp noOp
+ 	]
+ 	 switchTo [ !? debug] work
+ 	
+ 	Plan work  [     
+   		delay 1000 ;
+ 		forward qaled -m turn : switch ;
+ 		delay 500 ;
+ 		forward qaled -m turn : switch  
+	]	
+ 	finally	repeatPlan 2	
+}
+*/

@@ -1,5 +1,6 @@
 System bls0                 
 Event fileChanged : fileChanged(FNAME,CONTENT)   //emitted by watchFileInDir      
+
 Context ctxBls0 ip [ host="localhost"  port=8029 ]  //-g cyan 
 //ASSUMPTION: A Node.js HttpServerCrud writes 'click' on the file sharedFiles/cmd.txt
 QActor qabls0led context ctxBls0 -g yellow{  

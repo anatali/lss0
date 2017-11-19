@@ -44,7 +44,7 @@ QActor qacontrol context bls0Ctx{
      	actorOp noOP   
     ]  
     transition stopAfter 100000 
-     	whenEvent local_click : clicked(N) do forward qaled -m turn : switch
+     	whenEvent local_click : clicked(N) do printCurrentEvent //forward qaled -m turn : switch
     finally repeatPlan	
 }
      

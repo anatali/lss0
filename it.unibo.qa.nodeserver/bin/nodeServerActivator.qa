@@ -1,0 +1,38 @@
+System nodeServerActivator
+Event   usercmd    : usercmd(X)
+Dispatch serverCmd : usercmd(X)
+Dispatch answer    : answer(X)
+
+Context ctxNodeServerActivator  ip[ host="localhost" port=8071] -g cyan
+//Context ctxNodeServer ip[ host="localhost" port=8080] -standalone 
+
+EventHandler evh for usercmd -print {	
+ 	forwardEvent qaservercmds -m serverCmd 	//to avoid event loss
+};
+  
+QActor qaserveractivator context ctxNodeServerActivator  {
+	Plan init normal [
+		actorOp runNodeJs("./node/NodeServerCrud.js localhost 8071" , "true");
+		println("qaserveractivator STARTED")
+	]
+//	transition stopAfter 3600000 //1hour 
+}  
+
+QActor qaservercmds context ctxNodeServerActivator  {
+	Plan init normal [
+ 		actorOp noOp  
+	] 
+   	transition stopAfter 3600000 //1hour  
+   		whenMsg serverCmd ->  handleServerCmd
+   		finally repeatPlan
+   		
+   	Plan handleServerCmd resumeLastPlan[
+   		printCurrentMessage ;
+   		onMsg serverCmd : usercmd(X) -> println( dddddddddddddddddddddddddddddddddd(X) ) ;
+    	onMsg serverCmd : usercmd(X) -> actorOp sendAnswer(X)
+   	]
+}
+
+//QActor nodeserver context ctxNodeServer {
+//	Plan init normal[ println("never here") ]
+//}

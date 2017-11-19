@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Panel;
 import alice.tuprolog.SolveInfo;
-import it.unibo.bls.highLevel.interfaces.IDevLed;
 import it.unibo.bls.highLevel.interfaces.IDevLed.LedColor;
 import it.unibo.bls.lowLevel.interfaces.IDeviceLedImpl;
 import it.unibo.buttonLed.components.LedMock;

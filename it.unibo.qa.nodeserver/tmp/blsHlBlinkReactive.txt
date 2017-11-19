@@ -1,0 +1,82 @@
+/*
+ * This is A MODEL, result of problem analysis 
+ * written in the CUSTOM meta-model/language qa
+ */  
+System blsHlBlinkReactive 
+Dispatch turn     : turn(X)   
+Event local_click : clicked(N)  //N : natural
+Event usercmd     : usercmd(N)
+
+Context ctxBlsHlBlimkreactive ip [ host="localhost"  port=8029 ]  -httpserver   
+EventHandler evconvert for usercmd -print {
+	emit local_click fromContent usercmd (N) to clicked(N) 
+};
+
+QActor qaledhlreactive context ctxBlsHlBlimkreactive -g cyan {
+Rules{
+// 	config( led,  mock ).
+  	config( led,  gui ).
+//	config( led,  rasp ).  
+//	config( led,  arduino ).
+}
+	Plan init normal  [         
+		[ !? config( led, X )] println( X )  ;
+    	[ !? config( led, X )] actorOp createLedObject( X )  
+    ]
+   	switchTo waitForCmd   
+   	  
+  	Plan waitForCmd [  
+  		actorOp noOP
+  	]
+    transition stopAfter 3000000
+     	whenMsg turn ->  doLedCmd
+    finally repeatPlan	
+    
+    Plan doLedCmd[
+    	onMsg turn : turn(switch) -> actorOp ledswitch;
+    	onMsg turn : turn(blink)  -> switchTo doLedBlink
+    ]
+    
+    Plan doLedBlink[
+    	actorOp ledblink
+    ]
+    reactive actorOp  ledBlink
+   		whenEnd               -> waitForCmd
+   		whenTout 30000        -> endWork    		
+   		whenEvent local_click -> stopBlink 
+   	
+   	
+   	Plan stopBlink[
+    	actorOp ledblinkstop ;
+    	actorOp suspendCurrentAction
+    ]
+    switchTo waitForCmd
+   	
+   	Plan endWork[ println("led ends") ]
+}
+
+/*
+ * CONTROL
+ */ 
+QActor qacontrolhlblinkreactive context ctxBlsHlBlimkreactive {
+	Plan init normal [         
+   		actorOp createButtonObject("gui") //must emit local_click
+   	]
+   	switchTo waitForClick       
+ 
+    Plan waitForClick[
+      	println("qacontrolhlblink waitForClick") 
+    ]  
+    transition stopAfter 100000 
+     	whenEvent local_click -> blink
+     
+    Plan blink resumeLastPlan[
+     	 forward qaledhlreactive -m turn : turn(blink)  
+    ]
+    transition whenTime 300   ->  blink 
+     	whenEvent local_click : clicked(N) do switchTo waitForClick
+    finally repeatPlan	
+    
+    
+ }
+     

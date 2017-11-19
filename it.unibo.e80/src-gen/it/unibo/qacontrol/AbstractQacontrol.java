@@ -102,11 +102,8 @@ public abstract class AbstractQacontrol extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentEvent.getMsg().startsWith("clicked") ){
-	            	String parg="switch";
-	            	/* SendDispatch */
-	            	parg = updateVars(Term.createTerm("clicked(N)"),  Term.createTerm("clicked(N)"), 
-	            		    		  					Term.createTerm(currentEvent.getMsg()), parg);
-	            	if( parg != null ) sendMsg("turn","qaled", QActorContext.dispatch, parg ); 
+	            	//println("WARNING: variable substitution not yet implmented " ); 
+	            	printCurrentEvent(false);
 	             }
 	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
 	          }catch(Exception e ){  

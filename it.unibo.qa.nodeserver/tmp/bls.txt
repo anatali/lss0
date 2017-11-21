@@ -1,0 +1,41 @@
+/*
+ * This is A MODEL, result of problem analysis 
+ * written in the CUSTOM meta-model/language qa
+ */  
+System bls
+Dispatch cmd : payload(X)
+
+
+//Context ctxChiara ip [ host="localhost"  port=8029 ]    -g cyan  
+//Context ctxPia ip [ host="localhost"  port=8039 ]    -g yellow  
+
+Context ctxdebug ip [ host="localhost"  port=8079 ]
+QActor qachiara context ctxdebug  {
+ 	Plan init normal  [    
+ 		println("init qachiara")    
+    ]
+    switchTo work
+    Plan work[
+    	forward qapia -m cmd : payload("accendi")
+    ]
+ }
+ 
+QActor qapia context ctxdebug -g yellow {
+	Plan init normal [         
+   		println("init qacpia")  ;
+   		actorOp createBlsSystem 
+   	]
+    switchTo work
+    Plan work[
+    	actorOp noOp
+    ]
+    transition stopAfter 60000 
+    	whenMsg cmd ->  handleCmd
+    	
+    Plan handleCmd[
+    	printCurrentMessage ;
+    	onMsg cmd : payload(accendi) -> actorOp accendiLed; //println( "TODO: devo accendere il led" );
+    	delay 60000
+    ]
+}
+     

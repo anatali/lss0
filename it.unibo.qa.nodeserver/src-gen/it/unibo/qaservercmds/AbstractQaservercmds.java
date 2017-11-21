@@ -104,7 +104,7 @@ public abstract class AbstractQaservercmds extends QActor {
 	    	}
 	    	//onMsg
 	    	if( currentMessage != null && currentMessage.msgId().equals("serverCmd") ){
-	    		String parg = "sendAnswer(X)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@3f7a2b11
+	    		String parg = "sendAnswer(X)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@5bc1c426
 	    		{/* ActorOp */
 	    		parg =  updateVars( Term.createTerm("usercmd(X)"), 
 	    			                Term.createTerm("usercmd(X)"), 

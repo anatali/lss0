@@ -1,0 +1,8 @@
+plan(1,init, sentence( config( led,X),move(print(X)),'','' ))
+plan(2,init, sentence( config( led,X),move(actorOp(createLedObject( X))),'','' ))
+plan(1,waitForCmd, sentence(true,move(print("qaledhlreactive WAITS")),'','' ))
+plan(1,doLedCmd, sentence(true,msgswitch(turn, turn( blink) , not here StateMoveNormal),'','' ))
+plan(1,doLedBlink, sentence(true,move(actorOp(setupLedBlink)),'','' ))
+plan(1,stopBlink, sentence(true,move(actorOp(ledblinkstop)),'','' ))
+plan(2,stopBlink, sentence(true,raise( local_ledstate , ledstate( ready) )'),'','' ))
+plan(1,endWork, sentence(true,move(print("qaledhlreactive ends")),'','' ))

@@ -1,0 +1,4 @@
+plan(1,init, sentence(true,move(actorOp(createButtonObject( "gui"))),'','' ))
+plan(1,waitForClick, sentence(true,move(actorOp(noOp)),'','' ))
+plan(1,blink, sentence(true,forward(qaledhl, turn,switch),'','' ))
+plan(2,blink, sentence(true,move(resumeplan),'','' ))

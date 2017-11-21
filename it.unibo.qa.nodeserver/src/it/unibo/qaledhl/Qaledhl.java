@@ -10,6 +10,7 @@ import it.unibo.bls.highLevel.interfaces.IDevLed.LedColor;
 import it.unibo.bls.lowLevel.interfaces.IDeviceLedImpl;
 import it.unibo.buttonLed.components.DevLed;
 import it.unibo.buttonLed.components.DeviceLedMock;
+import it.unibo.buttonLed.components.DeviceLedRasp;
 import it.unibo.buttonLedSystem.gui.components.DeviceLedGui;
 import it.unibo.is.interfaces.IOutputEnvView;
 import it.unibo.qactors.QActorContext;
@@ -27,6 +28,7 @@ public class Qaledhl extends AbstractQaledhl {
 	public void  createLedObject(String devType){
 		if(  devType.equals("gui")) createLedObjecGui();
 		else if(  devType.equals("mock")) createLedObjecMock();
+		else if(  devType.equals("rasp")) createLedObjectRasp();
 		if( env != null) {	//env is null if we use mock
 			((EnvFrame) env).setSize(350, 300);
 			((EnvFrame) env).setLocation(400, 150);
@@ -51,6 +53,16 @@ public class Qaledhl extends AbstractQaledhl {
 			ledHighlevel = new DevLed("led1",outEnvView);
 			ledHighlevel.setDevImpl(ledLowLevel);	
  		} catch (Exception e) {
+ 			e.printStackTrace();
+		}
+	}
+	public void  createLedObjectRasp(){
+		try {
+			println("createLedObjectRasp "  );
+ 			ledLowLevel  = new DeviceLedRasp("led6wpi", outEnvView, LedColor.RED );
+			ledHighlevel = new DevLed("led6wpi",outEnvView);
+			ledHighlevel.setDevImpl(ledLowLevel);				
+  		} catch (Exception e) {
  			e.printStackTrace();
 		}
 	}

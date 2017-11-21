@@ -20,7 +20,7 @@ private static CustomBlsGui curBlsGui = null;
 	private QActor myActor;
     private JFrame frm       = new JFrame();
     private JPanel pnl       = new JPanel();
-    private JButton btnGui   = new JButton("Click");
+    private JButton btnGui   ;
     private JPanel ledGui    = new JPanel();
     private int count        = 1;    
     
@@ -35,6 +35,9 @@ private static CustomBlsGui curBlsGui = null;
     public static synchronized CustomBlsGui createCustomButtonGui(QActor myActor) {
     	return new CustomBlsGui(myActor, "button");
      }
+    public static synchronized CustomBlsGui createCustomButtonGui(QActor myActor, String devName) {
+    	return new CustomBlsGui(myActor, "button", devName);
+     }
     /*
      * CONSTRUCTORS
      */
@@ -42,18 +45,24 @@ private static CustomBlsGui curBlsGui = null;
     	this.myActor = myActor;
     	initAll();
     }
-    public  CustomBlsGui(QActor myActor, String device) {
+    public  CustomBlsGui(QActor myActor, String device, String devName) {
     	this.myActor = myActor;
     	if( device == "led") initLedGui();
-    	else if( device == "button") initButtonGui();
+    	else if( device == "button") initButtonGui(devName);
     }
-    
+    public  CustomBlsGui(QActor myActor, String device) {
+//    	this.myActor = myActor;
+//    	if( device == "led") initLedGui();
+//    	else if( device == "button") initButtonGui();
+    	this(myActor,   device, "click");
+    }
+   
     protected void initAll() {
-    	initFrame("all");
+    	initFrame("all","");
        	System.out.println("CustomBlsGui initAll done   "    );
     }
     
-    protected void initFrame(String device) {
+    protected void initFrame(String device, String devanme) {
          if( device == "button") {
             pnl.setPreferredSize(new Dimension(140, 100));
         	pnl.add( btnGui, BorderLayout.SOUTH);
@@ -76,21 +85,27 @@ private static CustomBlsGui curBlsGui = null;
         frm.setVisible(true);
        	System.out.println("CustomBlsGui init done for " + device  );   	
     }
-    
-    protected void initButtonGui() {
-    	initFrame("button");
+ 
+    protected void initButtonGui(String btnName) {
+    	System.out.println("initButtonGui " + btnName  );
+       	btnGui = new JButton(btnName);
+       	initFrame("button", btnName);
         btnGui.setPreferredSize(new Dimension(100, 40));
         btnGui.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
-                //System.out.println("actionPerformed " + e.getActionCommand());
-                if(myActor!=null) myActor.emit("local_click", "clicked("+count++ +")");
+                System.out.println("actionPerformed " + e.getActionCommand());
+                if(myActor!=null) myActor.emit("local_click", "clicked("+btnName+")");
             }
-        });    	
+        });    	  	
+    }
+
+    protected void initButtonGui() {
+    	initButtonGui("click");
     }
     
     protected void initLedGui() {
-       	initFrame("led");
+       	initFrame("led","");
        	ledGui.setBackground(Color.RED);
        	ledGui.setPreferredSize(smallGui);
        	setLedGui(ledGuiOff); 	
@@ -101,8 +116,15 @@ private static CustomBlsGui curBlsGui = null;
     	if(on) ledGui.setSize(largeGui);
     	else ledGui.setSize(smallGui);
     	ledGui.repaint();
+		btnGui.setVisible(false);		
     }
     
+    public void showTheButton(){
+		btnGui.setVisible(true);
+	}
+    public void hideTheButton(){
+		btnGui.setVisible(false);		
+	}
 
     /*
      * Just to test	  

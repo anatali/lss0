@@ -74,8 +74,11 @@ public abstract class AbstractQacontrolhl extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
+	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(button,gui)" )) != null ){
 	    	parg = "createButtonObject(\"gui\")"; 
+	    	parg = QActorUtils.substituteVars(guardVars,parg);
 	    	actorOpExecute(parg, false);	//OCT17		 
+	    	}
 	    	//switchTo waitForClick
 	        switchToPlanAsNextState(pr, myselfName, "qacontrolhl_"+myselfName, 
 	              "waitForClick",false, false, null); 
@@ -111,9 +114,27 @@ public abstract class AbstractQacontrolhl extends QActor {
 	             println( getName() + " plan=waitForClick WARNING:" + e.getMessage() );
 	             //QActorContext.terminateQActorSystem(this); 
 	          }
+	          },
+	           
+	          () -> {	//AD HOC state to execute an action and resumeLastPlan
+	          try{
+	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
+	            //ActionSwitch for a message or event
+	             if( currentEvent.getMsg().startsWith("usercmd") ){
+	            	String parg="switch";
+	            	/* SendDispatch */
+	            	parg = updateVars(Term.createTerm("usercmd(N)"),  Term.createTerm("usercmd(X)"), 
+	            		    		  					Term.createTerm(currentEvent.getMsg()), parg);
+	            	if( parg != null ) sendMsg("turn","qaledhl", QActorContext.dispatch, parg ); 
+	             }
+	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
+	          }catch(Exception e ){  
+	             println( getName() + " plan=waitForClick WARNING:" + e.getMessage() );
+	             //QActorContext.terminateQActorSystem(this); 
+	          }
 	          }
 	          },//new StateFun[]
-	          new String[]{"true","E","local_click" },
+	          new String[]{"true","E","local_click", "true","E","usercmd" },
 	          100000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_waitForClick){  
 	    	 println( getName() + " plan=waitForClick WARNING:" + e_waitForClick.getMessage() );

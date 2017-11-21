@@ -124,11 +124,7 @@ TO BE ADDED by the application designer for :
 AFTER TEST
 --------------------------------------------------------------
 */
-test {
-    afterTest { desc, result -> 
-        println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
-    }
-}
+
 /*
 ---------------------------------------------------------------------
 JAR: incldes src-gen code (excluding Java) in the executable jar

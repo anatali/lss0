@@ -116,8 +116,8 @@ public abstract class AbstractQaledhl extends QActor implements IActivity{
 	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_waitForCmd",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "waitForCmd";  
-	    	temporaryStr = "\"LED WAITS\"";
-	    	println( temporaryStr );  
+	    	parg = "noOp"; 
+	    	actorOpExecute(parg, false);	//OCT17		 
 	    	//bbb
 	     msgTransition( pr,myselfName,"qaledhl_"+myselfName,false,
 	          new StateFun[]{
@@ -126,7 +126,7 @@ public abstract class AbstractQaledhl extends QActor implements IActivity{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@5348fd02
+	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@77ea5630
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("switch"), 
 	            		                Term.createTerm("switch"), 

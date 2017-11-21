@@ -3,7 +3,7 @@
  * written in the CUSTOM meta-model/language qa
  */  
 System blshl  
-Dispatch turn     : switch   
+Dispatch turn     : switch     
 Event local_click : clicked(N)  //N : natural
 Event usercmd     : usercmd(N)
 
@@ -12,16 +12,15 @@ EventHandler evconvert for usercmd -print {
 	emit local_click fromContent usercmd (N) to clicked(N) 
 };
 
-QActor qaledhl context ctxBlsHl -g cyan {
+QActor qaledhl context ctxBlsHl   {
 Rules{
 // 	config( led,  mock ).
-  	config( led,  gui ).
-//	config( led,  rasp ).  
+// 	config( led,  gui ).
+ 	config( led,  rasp ).  
 //	config( led,  arduino ).
 }
 	Plan init normal  [         
-		[ !? config( led, X )] println( X )  ;
-    	[ !? config( led, X )] actorOp createLedObject( X )  
+     	[ !? config( led, X )] actorOp createLedObject( X )  
     ]
    	switchTo waitForCmd   
    	  
@@ -34,8 +33,13 @@ Rules{
 }
  
 QActor qacontrolhl context ctxBlsHl {
+Rules{
+// 	config( button,  gui ).
+ 	config( button,  web ).  
+}
+
 	Plan init normal [         
-   		actorOp createButtonObject("gui") //must emit local_click
+   		[ !? config( button, gui )] actorOp createButtonObject("gui") //must emit local_click
    	]
    	switchTo waitForClick       
  
@@ -44,7 +48,8 @@ QActor qacontrolhl context ctxBlsHl {
 //     	actorOp noOP   
     ]  
     transition stopAfter 100000 
-     	whenEvent local_click : clicked(N) do forward qaledhl -m turn : switch
+     	whenEvent local_click : clicked(N) do forward qaledhl -m turn : switch,
+     	whenEvent usercmd : usercmd(X) do forward qaledhl -m turn : switch
     finally repeatPlan	
 }
      

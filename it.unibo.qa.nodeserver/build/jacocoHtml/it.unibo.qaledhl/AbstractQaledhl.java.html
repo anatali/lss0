@@ -93,67 +93,72 @@ public abstract class AbstractQaledhl extends QActor implements IActivity{
 <span class="nc" id="L93">	     PlanRepeat pr = PlanRepeat.setUp(&quot;init&quot;,-1);</span>
 <span class="nc" id="L94">	    	String myselfName = &quot;init&quot;;  </span>
 <span class="nc bnc" id="L95" title="All 2 branches missed.">	    	if( (guardVars = QActorUtils.evalTheGuard(this, &quot; !?config(led,X)&quot; )) != null ){</span>
-<span class="nc" id="L96">	    	parg = &quot;createLedObject(X)&quot;; </span>
-<span class="nc" id="L97">	    	parg = QActorUtils.substituteVars(guardVars,parg);</span>
-<span class="nc" id="L98">	    	actorOpExecute(parg, false);	//OCT17		 </span>
+<span class="nc" id="L96">	    	temporaryStr = &quot;X&quot;;</span>
+<span class="nc" id="L97">	    	temporaryStr = QActorUtils.substituteVars(guardVars,temporaryStr);</span>
+<span class="nc" id="L98">	    	println( temporaryStr );  </span>
+	    	}
+<span class="nc bnc" id="L100" title="All 2 branches missed.">	    	if( (guardVars = QActorUtils.evalTheGuard(this, &quot; !?config(led,X)&quot; )) != null ){</span>
+<span class="nc" id="L101">	    	parg = &quot;createLedObject(X)&quot;; </span>
+<span class="nc" id="L102">	    	parg = QActorUtils.substituteVars(guardVars,parg);</span>
+<span class="nc" id="L103">	    	actorOpExecute(parg, false);	//OCT17		 </span>
 	    	}
 	    	//switchTo waitForCmd
-<span class="nc" id="L101">	        switchToPlanAsNextState(pr, myselfName, &quot;qaledhl_&quot;+myselfName, </span>
+<span class="nc" id="L106">	        switchToPlanAsNextState(pr, myselfName, &quot;qaledhl_&quot;+myselfName, </span>
 	              &quot;waitForCmd&quot;,false, false, null); 
-<span class="nc" id="L103">	    }catch(Exception e_init){  </span>
-<span class="nc" id="L104">	    	 println( getName() + &quot; plan=init WARNING:&quot; + e_init.getMessage() );</span>
-<span class="nc" id="L105">	    	 QActorContext.terminateQActorSystem(this); </span>
-<span class="nc" id="L106">	    }</span>
-<span class="nc" id="L107">	    };//init</span>
+<span class="nc" id="L108">	    }catch(Exception e_init){  </span>
+<span class="nc" id="L109">	    	 println( getName() + &quot; plan=init WARNING:&quot; + e_init.getMessage() );</span>
+<span class="nc" id="L110">	    	 QActorContext.terminateQActorSystem(this); </span>
+<span class="nc" id="L111">	    }</span>
+<span class="nc" id="L112">	    };//init</span>
 	    
-<span class="nc" id="L109">	    StateFun waitForCmd = () -&gt; {	</span>
+<span class="nc" id="L114">	    StateFun waitForCmd = () -&gt; {	</span>
 	    try{	
-<span class="nc" id="L111">	     PlanRepeat pr = PlanRepeat.setUp(getName()+&quot;_waitForCmd&quot;,0);</span>
-<span class="nc" id="L112">	     pr.incNumIter(); 	</span>
-<span class="nc" id="L113">	    	String myselfName = &quot;waitForCmd&quot;;  </span>
-<span class="nc" id="L114">	    	temporaryStr = &quot;\&quot;LED WAITS\&quot;&quot;;</span>
-<span class="nc" id="L115">	    	println( temporaryStr );  </span>
+<span class="nc" id="L116">	     PlanRepeat pr = PlanRepeat.setUp(getName()+&quot;_waitForCmd&quot;,0);</span>
+<span class="nc" id="L117">	     pr.incNumIter(); 	</span>
+<span class="nc" id="L118">	    	String myselfName = &quot;waitForCmd&quot;;  </span>
+<span class="nc" id="L119">	    	parg = &quot;noOp&quot;; </span>
+<span class="nc" id="L120">	    	actorOpExecute(parg, false);	//OCT17		 </span>
 	    	//bbb
-<span class="nc" id="L117">	     msgTransition( pr,myselfName,&quot;qaledhl_&quot;+myselfName,false,</span>
+<span class="nc" id="L122">	     msgTransition( pr,myselfName,&quot;qaledhl_&quot;+myselfName,false,</span>
 	          new StateFun[]{
 	          () -&gt; {	//AD HOC state to execute an action and resumeLastPlan
 	          try{
-<span class="nc" id="L121">	            PlanRepeat pr1 = PlanRepeat.setUp(&quot;adhocstate&quot;,-1);</span>
+<span class="nc" id="L126">	            PlanRepeat pr1 = PlanRepeat.setUp(&quot;adhocstate&quot;,-1);</span>
 	            //ActionSwitch for a message or event
-<span class="nc bnc" id="L123" title="All 2 branches missed.">	             if( currentMessage.msgContent().startsWith(&quot;switch&quot;) ){</span>
-<span class="nc" id="L124">	            	String parg = &quot;ledSwitch&quot;; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@371671aa</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">	             if( currentMessage.msgContent().startsWith(&quot;switch&quot;) ){</span>
+<span class="nc" id="L129">	            	String parg = &quot;ledSwitch&quot;; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@4b3db28a</span>
 	            	{/* ActorOp */
-<span class="nc" id="L126">	            	parg =  updateVars( Term.createTerm(&quot;switch&quot;), </span>
-<span class="nc" id="L127">	            		                Term.createTerm(&quot;switch&quot;), </span>
-<span class="nc" id="L128">	            		                Term.createTerm(currentMessage.msgContent()), parg);</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">	            	if(parg != null) actorOpExecute(parg, false); //JUNE2017 OCT17</span>
+<span class="nc" id="L131">	            	parg =  updateVars( Term.createTerm(&quot;switch&quot;), </span>
+<span class="nc" id="L132">	            		                Term.createTerm(&quot;switch&quot;), </span>
+<span class="nc" id="L133">	            		                Term.createTerm(currentMessage.msgContent()), parg);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">	            	if(parg != null) actorOpExecute(parg, false); //JUNE2017 OCT17</span>
 	            	}
 	             }
-<span class="nc" id="L132">	            repeatPlanNoTransition(pr1,&quot;adhocstate&quot;,&quot;adhocstate&quot;,false,true);</span>
-<span class="nc" id="L133">	          }catch(Exception e ){  </span>
-<span class="nc" id="L134">	             println( getName() + &quot; plan=waitForCmd WARNING:&quot; + e.getMessage() );</span>
+<span class="nc" id="L137">	            repeatPlanNoTransition(pr1,&quot;adhocstate&quot;,&quot;adhocstate&quot;,false,true);</span>
+<span class="nc" id="L138">	          }catch(Exception e ){  </span>
+<span class="nc" id="L139">	             println( getName() + &quot; plan=waitForCmd WARNING:&quot; + e.getMessage() );</span>
 	             //QActorContext.terminateQActorSystem(this); 
-<span class="nc" id="L136">	          }</span>
-<span class="nc" id="L137">	          }</span>
+<span class="nc" id="L141">	          }</span>
+<span class="nc" id="L142">	          }</span>
 	          },//new StateFun[]
 	          new String[]{&quot;true&quot;,&quot;M&quot;,&quot;turn&quot; },
 	          3000000, &quot;handleToutBuiltIn&quot; );//msgTransition
-<span class="nc" id="L141">	    }catch(Exception e_waitForCmd){  </span>
-<span class="nc" id="L142">	    	 println( getName() + &quot; plan=waitForCmd WARNING:&quot; + e_waitForCmd.getMessage() );</span>
-<span class="nc" id="L143">	    	 QActorContext.terminateQActorSystem(this); </span>
-<span class="nc" id="L144">	    }</span>
-<span class="nc" id="L145">	    };//waitForCmd</span>
+<span class="nc" id="L146">	    }catch(Exception e_waitForCmd){  </span>
+<span class="nc" id="L147">	    	 println( getName() + &quot; plan=waitForCmd WARNING:&quot; + e_waitForCmd.getMessage() );</span>
+<span class="nc" id="L148">	    	 QActorContext.terminateQActorSystem(this); </span>
+<span class="nc" id="L149">	    }</span>
+<span class="nc" id="L150">	    };//waitForCmd</span>
 	    
 	    protected void initSensorSystem(){
 	    	//doing nothing in a QActor
-<span class="nc" id="L149">	    }</span>
+<span class="nc" id="L154">	    }</span>
 	
 		/* 
 		* ------------------------------------------------------------
 		* IACTIVITY (aactor with GUI)
 		* ------------------------------------------------------------
 		*/
-<span class="nc" id="L156">		private String[] actions = new String[]{</span>
+<span class="nc" id="L161">		private String[] actions = new String[]{</span>
 		    	&quot;println( STRING | TERM )&quot;, 
 		    	&quot;play('./audio/music_interlude20.wav'),20000,'alarm,obstacle', 'handleAlarm,handleObstacle'&quot;,
 		&quot;emit(EVID,EVCONTENT)  &quot;,
@@ -161,45 +166,45 @@ public abstract class AbstractQaledhl extends QActor implements IActivity{
 		&quot;forward( DEST, MSGID, MSGCONTENTTERM)&quot;
 		    };
 		    protected void doHelp(){
-<span class="nc" id="L164">				println(&quot;  GOAL &quot;);</span>
-<span class="nc" id="L165">				println(&quot;[ GUARD ], ACTION  &quot;);</span>
-<span class="nc" id="L166">				println(&quot;[ GUARD ], ACTION, DURATION &quot;);</span>
-<span class="nc" id="L167">				println(&quot;[ GUARD ], ACTION, DURATION, ENDEVENT&quot;);</span>
-<span class="nc" id="L168">				println(&quot;[ GUARD ], ACTION, DURATION, EVENTS, PLANS&quot;);</span>
-<span class="nc" id="L169">				println(&quot;Actions:&quot;);</span>
-<span class="nc bnc" id="L170" title="All 2 branches missed.">				for( int i=0; i&lt;actions.length; i++){</span>
-<span class="nc" id="L171">					println(&quot; &quot; + actions[i] );</span>
+<span class="nc" id="L169">				println(&quot;  GOAL &quot;);</span>
+<span class="nc" id="L170">				println(&quot;[ GUARD ], ACTION  &quot;);</span>
+<span class="nc" id="L171">				println(&quot;[ GUARD ], ACTION, DURATION &quot;);</span>
+<span class="nc" id="L172">				println(&quot;[ GUARD ], ACTION, DURATION, ENDEVENT&quot;);</span>
+<span class="nc" id="L173">				println(&quot;[ GUARD ], ACTION, DURATION, EVENTS, PLANS&quot;);</span>
+<span class="nc" id="L174">				println(&quot;Actions:&quot;);</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">				for( int i=0; i&lt;actions.length; i++){</span>
+<span class="nc" id="L176">					println(&quot; &quot; + actions[i] );</span>
 				}
-<span class="nc" id="L173">		    }</span>
+<span class="nc" id="L178">		    }</span>
 		@Override
 		public void execAction(String cmd) {
-<span class="nc bnc" id="L176" title="All 2 branches missed.">			if( cmd.equals(&quot;HELP&quot;) ){</span>
-<span class="nc" id="L177">				doHelp();</span>
-<span class="nc" id="L178">				return;</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">			if( cmd.equals(&quot;HELP&quot;) ){</span>
+<span class="nc" id="L182">				doHelp();</span>
+<span class="nc" id="L183">				return;</span>
 			}
-<span class="nc bnc" id="L180" title="All 2 branches missed.">			if( cmd.equals(&quot;FIRE&quot;) ){</span>
-<span class="nc" id="L181">				emit(&quot;alarm&quot;, &quot;alarm(fire)&quot;);</span>
-<span class="nc" id="L182">				return;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			if( cmd.equals(&quot;FIRE&quot;) ){</span>
+<span class="nc" id="L186">				emit(&quot;alarm&quot;, &quot;alarm(fire)&quot;);</span>
+<span class="nc" id="L187">				return;</span>
 			}
-<span class="nc" id="L184">			String input = env.readln();</span>
+<span class="nc" id="L189">			String input = env.readln();</span>
 			//input = &quot;\&quot;&quot;+input+&quot;\&quot;&quot;;
-<span class="nc" id="L186">			input = it.unibo.qactors.web.GuiUiKb.buildCorrectPrologString(input);</span>
+<span class="nc" id="L191">			input = it.unibo.qactors.web.GuiUiKb.buildCorrectPrologString(input);</span>
 			//println(&quot;input=&quot; + input);
 			try {
-<span class="nc" id="L189">				Term.createTerm(input);</span>
-<span class="nc" id="L190">	 			String eventMsg=it.unibo.qactors.web.QActorHttpServer.inputToEventMsg(input);</span>
+<span class="nc" id="L194">				Term.createTerm(input);</span>
+<span class="nc" id="L195">	 			String eventMsg=it.unibo.qactors.web.QActorHttpServer.inputToEventMsg(input);</span>
 				//println(&quot;QActor eventMsg &quot; + eventMsg);
-<span class="nc" id="L192">				emit(&quot;local_&quot;+it.unibo.qactors.web.GuiUiKb.inputCmd, eventMsg);</span>
-<span class="nc" id="L193">	  		} catch (Exception e) {</span>
-<span class="nc" id="L194">		 		println(&quot;QActor input error &quot; + e.getMessage());</span>
-<span class="nc" id="L195">			}</span>
-<span class="nc" id="L196">		}</span>
+<span class="nc" id="L197">				emit(&quot;local_&quot;+it.unibo.qactors.web.GuiUiKb.inputCmd, eventMsg);</span>
+<span class="nc" id="L198">	  		} catch (Exception e) {</span>
+<span class="nc" id="L199">		 		println(&quot;QActor input error &quot; + e.getMessage());</span>
+<span class="nc" id="L200">			}</span>
+<span class="nc" id="L201">		}</span>
 	 	
 		@Override
-<span class="nc" id="L199">		public void execAction() {}</span>
+<span class="nc" id="L204">		public void execAction() {}</span>
 		@Override
-<span class="nc" id="L201">		public void execAction(IIntent input) {}</span>
+<span class="nc" id="L206">		public void execAction(IIntent input) {}</span>
 		@Override
-<span class="nc" id="L203">		public String execActionWithAnswer(String cmd) {return null;}</span>
+<span class="nc" id="L208">		public String execActionWithAnswer(String cmd) {return null;}</span>
 	}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

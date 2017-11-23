@@ -126,7 +126,7 @@ public abstract class AbstractQaledhl extends QActor implements IActivity{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@6c8f6519
+	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@7477705e
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("switch"), 
 	            		                Term.createTerm("switch"), 

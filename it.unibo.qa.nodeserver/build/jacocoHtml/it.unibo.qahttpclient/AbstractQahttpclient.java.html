@@ -56,142 +56,63 @@ public abstract class AbstractQahttpclient extends QActor {
 	    protected void initStateTable(){  	
 <span class="nc" id="L57">	    	stateTab.put(&quot;handleToutBuiltIn&quot;,handleToutBuiltIn);</span>
 <span class="nc" id="L58">	    	stateTab.put(&quot;init&quot;,init);</span>
-<span class="nc" id="L59">	    	stateTab.put(&quot;interactWithWotServer&quot;,interactWithWotServer);</span>
-<span class="nc" id="L60">	    	stateTab.put(&quot;interactWithAServer&quot;,interactWithAServer);</span>
-<span class="nc" id="L61">	    	stateTab.put(&quot;interactWithRestServer&quot;,interactWithRestServer);</span>
-<span class="nc" id="L62">	    	stateTab.put(&quot;putData&quot;,putData);</span>
-<span class="nc" id="L63">	    }</span>
-<span class="nc" id="L64">	    StateFun handleToutBuiltIn = () -&gt; {	</span>
+<span class="nc" id="L59">	    	stateTab.put(&quot;interactWithAServer&quot;,interactWithAServer);</span>
+<span class="nc" id="L60">	    }</span>
+<span class="nc" id="L61">	    StateFun handleToutBuiltIn = () -&gt; {	</span>
 	    	try{	
-<span class="nc" id="L66">	    		PlanRepeat pr = PlanRepeat.setUp(&quot;handleTout&quot;,-1);</span>
-<span class="nc" id="L67">	    		String myselfName = &quot;handleToutBuiltIn&quot;;  </span>
-<span class="nc" id="L68">	    		println( &quot;qahttpclient tout : stops&quot;);  </span>
-<span class="nc" id="L69">	    		repeatPlanNoTransition(pr,myselfName,&quot;application_&quot;+myselfName,false,false);</span>
-<span class="nc" id="L70">	    	}catch(Exception e_handleToutBuiltIn){  </span>
-<span class="nc" id="L71">	    		println( getName() + &quot; plan=handleToutBuiltIn WARNING:&quot; + e_handleToutBuiltIn.getMessage() );</span>
-<span class="nc" id="L72">	    		QActorContext.terminateQActorSystem(this); </span>
-<span class="nc" id="L73">	    	}</span>
-<span class="nc" id="L74">	    };//handleToutBuiltIn</span>
+<span class="nc" id="L63">	    		PlanRepeat pr = PlanRepeat.setUp(&quot;handleTout&quot;,-1);</span>
+<span class="nc" id="L64">	    		String myselfName = &quot;handleToutBuiltIn&quot;;  </span>
+<span class="nc" id="L65">	    		println( &quot;qahttpclient tout : stops&quot;);  </span>
+<span class="nc" id="L66">	    		repeatPlanNoTransition(pr,myselfName,&quot;application_&quot;+myselfName,false,false);</span>
+<span class="nc" id="L67">	    	}catch(Exception e_handleToutBuiltIn){  </span>
+<span class="nc" id="L68">	    		println( getName() + &quot; plan=handleToutBuiltIn WARNING:&quot; + e_handleToutBuiltIn.getMessage() );</span>
+<span class="nc" id="L69">	    		QActorContext.terminateQActorSystem(this); </span>
+<span class="nc" id="L70">	    	}</span>
+<span class="nc" id="L71">	    };//handleToutBuiltIn</span>
 	    
-<span class="nc" id="L76">	    StateFun init = () -&gt; {	</span>
+<span class="nc" id="L73">	    StateFun init = () -&gt; {	</span>
 	    try{	
-<span class="nc" id="L78">	     PlanRepeat pr = PlanRepeat.setUp(&quot;init&quot;,-1);</span>
-<span class="nc" id="L79">	    	String myselfName = &quot;init&quot;;  </span>
-<span class="nc" id="L80">	    	parg = &quot;noOp&quot;; </span>
-<span class="nc" id="L81">	    	actorOpExecute(parg, false);	//OCT17		 </span>
+<span class="nc" id="L75">	     PlanRepeat pr = PlanRepeat.setUp(&quot;init&quot;,-1);</span>
+<span class="nc" id="L76">	    	String myselfName = &quot;init&quot;;  </span>
+<span class="nc" id="L77">	    	parg = &quot;noOp&quot;; </span>
+<span class="nc" id="L78">	    	actorOpExecute(parg, false);	//OCT17		 </span>
 	    	//switchTo interactWithAServer
-<span class="nc" id="L83">	        switchToPlanAsNextState(pr, myselfName, &quot;qahttpclient_&quot;+myselfName, </span>
+<span class="nc" id="L80">	        switchToPlanAsNextState(pr, myselfName, &quot;qahttpclient_&quot;+myselfName, </span>
 	              &quot;interactWithAServer&quot;,false, false, null); 
-<span class="nc" id="L85">	    }catch(Exception e_init){  </span>
-<span class="nc" id="L86">	    	 println( getName() + &quot; plan=init WARNING:&quot; + e_init.getMessage() );</span>
-<span class="nc" id="L87">	    	 QActorContext.terminateQActorSystem(this); </span>
-<span class="nc" id="L88">	    }</span>
-<span class="nc" id="L89">	    };//init</span>
+<span class="nc" id="L82">	    }catch(Exception e_init){  </span>
+<span class="nc" id="L83">	    	 println( getName() + &quot; plan=init WARNING:&quot; + e_init.getMessage() );</span>
+<span class="nc" id="L84">	    	 QActorContext.terminateQActorSystem(this); </span>
+<span class="nc" id="L85">	    }</span>
+<span class="nc" id="L86">	    };//init</span>
 	    
-<span class="nc" id="L91">	    StateFun interactWithWotServer = () -&gt; {	</span>
+<span class="nc" id="L88">	    StateFun interactWithAServer = () -&gt; {	</span>
 	    try{	
-<span class="nc" id="L93">	     PlanRepeat pr = PlanRepeat.setUp(&quot;interactWithWotServer&quot;,-1);</span>
-<span class="nc" id="L94">	    	String myselfName = &quot;interactWithWotServer&quot;;  </span>
-<span class="nc" id="L95">	    	parg = &quot;sendGet(\&quot;http://localhost:8484/pi/actuators/leds\&quot;)&quot;; </span>
+<span class="nc" id="L90">	     PlanRepeat pr = PlanRepeat.setUp(getName()+&quot;_interactWithAServer&quot;,0);</span>
+<span class="nc" id="L91">	     pr.incNumIter(); 	</span>
+<span class="nc" id="L92">	    	String myselfName = &quot;interactWithAServer&quot;;  </span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">	    	if( (guardVars = QActorUtils.evalTheGuard(this, &quot; ??data(X)&quot; )) != null ){</span>
+<span class="nc" id="L94">	    	parg = &quot;sendPut(X,\&quot;http://localhost:8080\&quot;)&quot;; </span>
+<span class="nc" id="L95">	    	parg = QActorUtils.substituteVars(guardVars,parg);</span>
 <span class="nc" id="L96">	    	actorOpExecute(parg, false);	//OCT17		 </span>
-	    	//delay  ( no more reactive within a plan)
-<span class="nc" id="L98">	    	aar = delayReactive(400,&quot;&quot; , &quot;&quot;);</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">	    	if( aar.getInterrupted() ) curPlanInExec   = &quot;interactWithWotServer&quot;;</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">	    	if( ! aar.getGoon() ) return ;</span>
-<span class="nc" id="L101">	    	parg = &quot;sendPut(\&quot;{%value%:%true%}\&quot;,\&quot;http://localhost:8484/pi/actuators/leds/1\&quot;)&quot;; </span>
-<span class="nc" id="L102">	    	actorOpExecute(parg, false);	//OCT17		 </span>
-	    	//delay  ( no more reactive within a plan)
-<span class="nc" id="L104">	    	aar = delayReactive(400,&quot;&quot; , &quot;&quot;);</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">	    	if( aar.getInterrupted() ) curPlanInExec   = &quot;interactWithWotServer&quot;;</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">	    	if( ! aar.getGoon() ) return ;</span>
-<span class="nc" id="L107">	    	parg = &quot;sendGet(\&quot;http://localhost:8484/pi/actuators/leds\&quot;)&quot;; </span>
-<span class="nc" id="L108">	    	actorOpExecute(parg, false);	//OCT17		 </span>
-	    	//delay  ( no more reactive within a plan)
-<span class="nc" id="L110">	    	aar = delayReactive(400,&quot;&quot; , &quot;&quot;);</span>
-<span class="nc bnc" id="L111" title="All 2 branches missed.">	    	if( aar.getInterrupted() ) curPlanInExec   = &quot;interactWithWotServer&quot;;</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">	    	if( ! aar.getGoon() ) return ;</span>
-<span class="nc" id="L113">	    	parg = &quot;sendPut(\&quot;{%value%:%true%}\&quot;,\&quot;http://localhost:8484/pi/actuators/leds/2\&quot;)&quot;; </span>
-<span class="nc" id="L114">	    	actorOpExecute(parg, false);	//OCT17		 </span>
-	    	//delay  ( no more reactive within a plan)
-<span class="nc" id="L116">	    	aar = delayReactive(400,&quot;&quot; , &quot;&quot;);</span>
-<span class="nc bnc" id="L117" title="All 2 branches missed.">	    	if( aar.getInterrupted() ) curPlanInExec   = &quot;interactWithWotServer&quot;;</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">	    	if( ! aar.getGoon() ) return ;</span>
-<span class="nc" id="L119">	    	parg = &quot;sendGet(\&quot;http://localhost:8484/pi/actuators/leds\&quot;)&quot;; </span>
-<span class="nc" id="L120">	    	actorOpExecute(parg, false);	//OCT17		 </span>
-<span class="nc" id="L121">	    	repeatPlanNoTransition(pr,myselfName,&quot;qahttpclient_&quot;+myselfName,false,false);</span>
-<span class="nc" id="L122">	    }catch(Exception e_interactWithWotServer){  </span>
-<span class="nc" id="L123">	    	 println( getName() + &quot; plan=interactWithWotServer WARNING:&quot; + e_interactWithWotServer.getMessage() );</span>
-<span class="nc" id="L124">	    	 QActorContext.terminateQActorSystem(this); </span>
-<span class="nc" id="L125">	    }</span>
-<span class="nc" id="L126">	    };//interactWithWotServer</span>
-	    
-<span class="nc" id="L128">	    StateFun interactWithAServer = () -&gt; {	</span>
-	    try{	
-<span class="nc" id="L130">	     PlanRepeat pr = PlanRepeat.setUp(&quot;interactWithAServer&quot;,-1);</span>
-<span class="nc" id="L131">	    	String myselfName = &quot;interactWithAServer&quot;;  </span>
-<span class="nc" id="L132">	    	parg = &quot;sendPut(\&quot;a\&quot;,\&quot;http://localhost:8080\&quot;)&quot;; </span>
-<span class="nc" id="L133">	    	actorOpExecute(parg, false);	//OCT17		 </span>
-	    	//delay  ( no more reactive within a plan)
-<span class="nc" id="L135">	    	aar = delayReactive(1000,&quot;&quot; , &quot;&quot;);</span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">	    	if( aar.getInterrupted() ) curPlanInExec   = &quot;interactWithAServer&quot;;</span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">	    	if( ! aar.getGoon() ) return ;</span>
-<span class="nc" id="L138">	    	parg = &quot;sendGet(\&quot;http://localhost:8080\&quot;)&quot;; </span>
-<span class="nc" id="L139">	    	actorOpExecute(parg, false);	//OCT17		 </span>
-<span class="nc" id="L140">	    	repeatPlanNoTransition(pr,myselfName,&quot;qahttpclient_&quot;+myselfName,false,false);</span>
-<span class="nc" id="L141">	    }catch(Exception e_interactWithAServer){  </span>
-<span class="nc" id="L142">	    	 println( getName() + &quot; plan=interactWithAServer WARNING:&quot; + e_interactWithAServer.getMessage() );</span>
-<span class="nc" id="L143">	    	 QActorContext.terminateQActorSystem(this); </span>
-<span class="nc" id="L144">	    }</span>
-<span class="nc" id="L145">	    };//interactWithAServer</span>
-	    
-<span class="nc" id="L147">	    StateFun interactWithRestServer = () -&gt; {	</span>
-	    try{	
-<span class="nc" id="L149">	     PlanRepeat pr = PlanRepeat.setUp(getName()+&quot;_interactWithRestServer&quot;,0);</span>
-<span class="nc" id="L150">	     pr.incNumIter(); 	</span>
-<span class="nc" id="L151">	    	String myselfName = &quot;interactWithRestServer&quot;;  </span>
-<span class="nc" id="L152">	    	parg = &quot;sendGet&quot;; </span>
-<span class="nc" id="L153">	    	actorOpExecute(parg, false);	//OCT17		 </span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">	    	if( (guardVars = QActorUtils.evalTheGuard(this, &quot; not !?data(X)&quot; )) != null )</span>
-	    	{
-<span class="nc" id="L156">	    	println( &quot;qahttpclient ends&quot; ); </span>
-<span class="nc" id="L157">	    	pr.terminate(); </span>
 	    	}
-	    	//switchTo putData
-<span class="nc" id="L160">	        switchToPlanAsNextState(pr, myselfName, &quot;qahttpclient_&quot;+myselfName, </span>
-	              &quot;putData&quot;,true, false, &quot; !?data(X)&quot;); 
-<span class="nc" id="L162">	    }catch(Exception e_interactWithRestServer){  </span>
-<span class="nc" id="L163">	    	 println( getName() + &quot; plan=interactWithRestServer WARNING:&quot; + e_interactWithRestServer.getMessage() );</span>
-<span class="nc" id="L164">	    	 QActorContext.terminateQActorSystem(this); </span>
-<span class="nc" id="L165">	    }</span>
-<span class="nc" id="L166">	    };//interactWithRestServer</span>
-	    
-<span class="nc" id="L168">	    StateFun putData = () -&gt; {	</span>
-	    try{	
-<span class="nc" id="L170">	     PlanRepeat pr = PlanRepeat.setUp(getName()+&quot;_putData&quot;,0);</span>
-<span class="nc" id="L171">	     pr.incNumIter(); 	</span>
-<span class="nc" id="L172">	    	String myselfName = &quot;putData&quot;;  </span>
-	    	//delay  ( no more reactive within a plan)
-<span class="nc" id="L174">	    	aar = delayReactive(500,&quot;&quot; , &quot;&quot;);</span>
-<span class="nc bnc" id="L175" title="All 2 branches missed.">	    	if( aar.getInterrupted() ) curPlanInExec   = &quot;putData&quot;;</span>
-<span class="nc bnc" id="L176" title="All 2 branches missed.">	    	if( ! aar.getGoon() ) return ;</span>
-<span class="nc bnc" id="L177" title="All 2 branches missed.">	    	if( (guardVars = QActorUtils.evalTheGuard(this, &quot; ??data(X)&quot; )) != null ){</span>
-<span class="nc" id="L178">	    	parg = &quot;sendPut(X)&quot;; </span>
-<span class="nc" id="L179">	    	parg = QActorUtils.substituteVars(guardVars,parg);</span>
-<span class="nc" id="L180">	    	actorOpExecute(parg, false);	//OCT17		 </span>
-	    	}
-<span class="nc" id="L182">	    	else{ println( &quot;no more data&quot; ); </span>
-<span class="nc" id="L183">	    	pr.terminate(); </span>
-	    	}
-<span class="nc" id="L185">	    	repeatPlanNoTransition(pr,myselfName,&quot;qahttpclient_&quot;+myselfName,true,true);</span>
-<span class="nc" id="L186">	    }catch(Exception e_putData){  </span>
-<span class="nc" id="L187">	    	 println( getName() + &quot; plan=putData WARNING:&quot; + e_putData.getMessage() );</span>
-<span class="nc" id="L188">	    	 QActorContext.terminateQActorSystem(this); </span>
-<span class="nc" id="L189">	    }</span>
-<span class="nc" id="L190">	    };//putData</span>
+<span class="nc" id="L98">	    	else{ println( &quot;end http client&quot; ); </span>
+<span class="nc" id="L99">	    	pr.terminate(); </span>
+	    	}//delay  ( no more reactive within a plan)
+<span class="nc" id="L101">	    	aar = delayReactive(500,&quot;&quot; , &quot;&quot;);</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">	    	if( aar.getInterrupted() ) curPlanInExec   = &quot;interactWithAServer&quot;;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">	    	if( ! aar.getGoon() ) return ;</span>
+<span class="nc" id="L104">	    	parg = &quot;sendGet(\&quot;http://localhost:8080\&quot;)&quot;; </span>
+<span class="nc" id="L105">	    	actorOpExecute(parg, false);	//OCT17		 </span>
+<span class="nc" id="L106">	    	repeatPlanNoTransition(pr,myselfName,&quot;qahttpclient_&quot;+myselfName,true,false);</span>
+<span class="nc" id="L107">	    }catch(Exception e_interactWithAServer){  </span>
+<span class="nc" id="L108">	    	 println( getName() + &quot; plan=interactWithAServer WARNING:&quot; + e_interactWithAServer.getMessage() );</span>
+<span class="nc" id="L109">	    	 QActorContext.terminateQActorSystem(this); </span>
+<span class="nc" id="L110">	    }</span>
+<span class="nc" id="L111">	    };//interactWithAServer</span>
 	    
 	    protected void initSensorSystem(){
 	    	//doing nothing in a QActor
-<span class="nc" id="L194">	    }</span>
+<span class="nc" id="L115">	    }</span>
 	
 	}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

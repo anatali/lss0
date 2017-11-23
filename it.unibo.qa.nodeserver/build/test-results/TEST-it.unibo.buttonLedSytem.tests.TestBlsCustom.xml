@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="it.unibo.buttonLedSytem.tests.TestBlsCustom" tests="1" skipped="0" failures="0" errors="0" timestamp="2017-11-23T10:21:37" hostname="anataliTHINK" time="8.615">
+<testsuite name="it.unibo.buttonLedSytem.tests.TestBlsCustom" tests="1" skipped="0" failures="0" errors="0" timestamp="2017-11-23T10:37:36" hostname="anataliTHINK" time="8.914">
   <properties/>
-  <testcase name="aTest" classname="it.unibo.buttonLedSytem.tests.TestBlsCustom" time="8.615"/>
+  <testcase name="aTest" classname="it.unibo.buttonLedSytem.tests.TestBlsCustom" time="8.914"/>
   <system-out><![CDATA[	%%% Starting the http server ... 
 	*** QActorHttpServer starts dirPath=./srcMore/it/unibo/ctxBlsCustom
-	ACTIVATING it.unibo.qactors.QActorContext@3ca17bee ctxblscustom ncores=4 port=8029 webDir=./srcMore/it/unibo/ctxBlsCustom testing=false
+	ACTIVATING it.unibo.qactors.QActorContext@72d186eb ctxblscustom ncores=4 port=8029 webDir=./srcMore/it/unibo/ctxBlsCustom testing=false
 	%%% activateAkkaSystem in progress ...ctxblscustom
 	%%% CtxServerAgent ctxblscustom_Server WORKING on  port 8029
 	$$$ QActorUtils activateAkkaQActor-eventsevconvert | actorNum=0
@@ -15,27 +15,27 @@ led still not set
 getLedState  ledState=null
 getLedState  ledState=failure
 led still not set
-initButtonGui click
 getLedState  ledState=null
 getLedState  ledState=failure
 led still not set
 getLedState  ledState=null
 getLedState  ledState=failure
 led still not set
-CustomBlsGui init done for button
-"BUTTON WAITS"
 CustomBlsGui init done for led
 CustomBlsGui setLedGui state=false
 createCustomLedObject state= false
 CustomBlsGui setLedGui state=true
 CustomBlsGui setLedGui state=false
 "LED WAITS"
+initButtonGui click
 getLedState  ledState=null
 getLedState  ledState=false
-====== setUp  led=it.unibo.qaledcustom.Qaledcustom@59bd4032
+====== setUp  led=it.unibo.qaledcustom.Qaledcustom@63f4e51e
 ====== aTest ===============
 getLedState  ledState=null
 getLedState  ledState=false
+CustomBlsGui init done for button
+"BUTTON WAITS"
 			||| btn WILL EMIT event:local_click after 100
 "BUTTON WAITS"
 CustomBlsGui setLedGui state=true
@@ -60,7 +60,7 @@ CustomBlsGui setLedGui state=false
 "LED WAITS"
 getLedState  ledState=true
 getLedState  ledState=false
-====== terminate  it.unibo.qactors.QActorContext@3ca17bee
+====== terminate  it.unibo.qactors.QActorContext@72d186eb
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

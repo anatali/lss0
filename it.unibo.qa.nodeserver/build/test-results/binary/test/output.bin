@@ -1,6 +1,6 @@
 $	%%% Starting the http server ... 
 F	*** QActorHttpServer starts dirPath=./srcMore/it/unibo/ctxBlsCustom
-Š	ACTIVATING it.unibo.qactors.QActorContext@3ca17bee ctxblscustom ncores=4 port=8029 webDir=./srcMore/it/unibo/ctxBlsCustom testing=false
+Š	ACTIVATING it.unibo.qactors.QActorContext@72d186eb ctxblscustom ncores=4 port=8029 webDir=./srcMore/it/unibo/ctxBlsCustom testing=false
 5	%%% activateAkkaSystem in progress ...ctxblscustom
 ?	%%% CtxServerAgent ctxblscustom_Server WORKING on  port 8029
 B	$$$ QActorUtils activateAkkaQActor-eventsevconvert | actorNum=0
@@ -11,27 +11,27 @@
 getLedState  ledState=null
 getLedState  ledState=failure
 led still not set
-initButtonGui click
 getLedState  ledState=null
 getLedState  ledState=failure
 led still not set
 getLedState  ledState=null
 getLedState  ledState=failure
 led still not set
-#CustomBlsGui init done for button
-"BUTTON WAITS"
  CustomBlsGui init done for led
 $CustomBlsGui setLedGui state=false
 $createCustomLedObject state= false
 #CustomBlsGui setLedGui state=true
 $CustomBlsGui setLedGui state=false
 "LED WAITS"
+initButtonGui click
 getLedState  ledState=null
 getLedState  ledState=false
-======= setUp  led=it.unibo.qaledcustom.Qaledcustom@59bd4032
+======= setUp  led=it.unibo.qaledcustom.Qaledcustom@63f4e51e
 ====== aTest ===============
 getLedState  ledState=null
 getLedState  ledState=false
+#CustomBlsGui init done for button
+"BUTTON WAITS"
 2			||| btn WILL EMIT event:local_click after 100
 "BUTTON WAITS"
 #CustomBlsGui setLedGui state=true
@@ -56,12 +56,12 @@
 "LED WAITS"
 getLedState  ledState=true
 getLedState  ledState=false
-;====== terminate  it.unibo.qactors.QActorContext@3ca17bee
+;====== terminate  it.unibo.qactors.QActorContext@72d186eb
  *** setUp 
 	testCreation ... 
  *** tearDown 
  *** setUp 
-	testRepUnify ... 
+	testTurnOn ... 
  *** tearDown 
  *** setUp 
 	testTurnOff ... 
@@ -70,7 +70,7 @@
 	testSwitch ... 
  *** tearDown 
  *** setUp 
-	testTurnOn ... 
+	testRepUnify ... 
  *** tearDown 
 	 *** setUp 
 		testrep ... 

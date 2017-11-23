@@ -6,7 +6,7 @@ Context ctxBls0 ip [ host="localhost"  port=8029 ]  //-g cyan
 QActor qabls0led context ctxBls0 -g yellow{  
 	Plan init normal [         
    		println( "qabls0led STARTS"  )  ;
-   		actorOp createLedGui
+   		actorOp createLedGui 
    	]
    	switchTo  work      
    	
@@ -25,13 +25,26 @@ QActor qafilewatcher context ctxBls0  {
 }
 QActor qabls0client context ctxBls0  {  
 	Plan init normal [         
+      	println( "qabls0client wait for server activation ... "  )  ;
+   		delay 4000
+   	]
+   	switchTo work
+   	
+   	Plan work[
    		println( "qabls0client sendPut"  )  ;
    		actorOp sendPut("click", 8080) ;
-   		delay 500
+   		delay 500  		
    	]
-   	finally repeatPlan 5
+   	finally repeatPlan 3
 }
 
+QActor qaserveractivator context ctxBls0  {
+	Plan init normal [
+  		actorOp runNodeJs("./httpservers/HttpServerCrud.js" , "true") ;
+		println("qaserveractivator STARTED")
+	]
+//	transition stopAfter 3600000 //1hour 
+}  
 /*
  //Launched here seems fail to write the file
 QActor qabls0nodestarter context ctxBls0{       

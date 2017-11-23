@@ -1,0 +1,59 @@
+/*
+ * blsCustom.qa
+ * -------------------------------------------------------------
+ * The led    is created by a it.unibo.custom.gui.CustomBlsGui
+ * The button is created by a it.unibo.custom.gui.CustomBlsGui
+ * The led can be activated also by using a browser (usercmd)
+ */  
+System blsCustom
+Dispatch turn     : switch     
+Event local_click : clicked(N)  //N : natural
+Event usercmd     : usercmd(N)
+
+Context ctxBlsCustom ip [ host="localhost"  port=8029 ] -httpserver   
+EventHandler evconvert for usercmd -print {
+	emit local_click fromContent usercmd(N) to clicked(N) 
+};
+
+QActor qaledcustom context ctxBlsCustom   {
+Rules{
+// 	config( led,  mock ).
+  	config( led,  gui ).
+// 	config( led,  rasp ).  
+//	config( led,  arduino ).
+}
+	Plan init normal  [         
+     	[ !? config( led, X )] actorOp createCustomLedObject( X )  
+    ]
+   	switchTo waitForCmd   
+   	  
+  	Plan waitForCmd [  
+  		println("LED WAITS")
+  	]
+    transition stopAfter 3000000
+    	whenMsg turn : switch do actorOp ledSwitch
+    finally repeatPlan	
+}
+ 
+QActor qacontrolcustom context ctxBlsCustom {
+Rules{ 
+  	config( button,  gui ).
+// 	config( button,  web ).  
+}
+
+	Plan init normal [         
+   		[ !? config( button, gui )] actorOp createCustomButtonObject("gui") //must emit local_click
+   	]
+   	switchTo waitForClick       
+ 
+    Plan waitForClick[
+    	println("BUTTON WAITS")
+//     	actorOp noOP   
+    ]  
+    transition stopAfter 100000 
+     	whenEvent local_click : clicked(N) do forward qaledcustom -m turn : switch,
+     	whenEvent usercmd : usercmd(X) do forward qaledcustom -m turn : switch
+    finally repeatPlan	
+}
+     
+ 

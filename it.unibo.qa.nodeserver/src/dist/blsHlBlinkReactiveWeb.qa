@@ -1,6 +1,5 @@
 /*
- * This is A MODEL, result of problem analysis 
- * written in the CUSTOM meta-model/language qa
+ * blsHlBlinkReactiveWeb.qa
  */  
 System blsHlBlinkReactiveWeb 
 Event cmd     : cmd(V)			//V : start/stop
@@ -45,6 +44,3 @@ Rules{
    		delay 3000
    	]
 }
-
- 
-     

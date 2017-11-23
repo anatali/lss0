@@ -1,10 +1,24 @@
+/*
+ * nodeServerActivator.qa
+ * -------------------------------------------------------------------------------
+ * Activates a node server that work on port 8080.
+ * The server connects itslef via TCP with the ctxNodeServerActivator (port 8071)
+ * and emits a serverCmd : usercmd(X) event for each GET or PUT/POST request.
+ * An eventhandler converts each serverCmd event into a serverCmd dispatch
+ * sent to the internal actor qaservercmds.
+ * The actor qaservercmds handles the serverCmd events and sends an answer to the
+ * node server.
+ * 
+ * To send PUT/POST request we can use curl, POSTMAN or the httpClinet
+ * The node server stores the data sent via  PUT/POST into an internal structure
+ * To GET the data we can use a normal browser
+ */
 System nodeServerActivator
 Event   usercmd    : usercmd(X)
 Dispatch serverCmd : usercmd(X)
 Dispatch answer    : answer(X)
 
-Context ctxNodeServerActivator  ip[ host="localhost" port=8071] -g cyan
-//Context ctxNodeServer ip[ host="localhost" port=8080] -standalone 
+Context ctxNodeServerActivator  ip[ host="localhost" port=8071]  
 
 EventHandler evh for usercmd -print {	
  	forwardEvent qaservercmds -m serverCmd 	//to avoid event loss
@@ -15,7 +29,6 @@ QActor qaserveractivator context ctxNodeServerActivator  {
 		actorOp runNodeJs("./node/NodeServerCrud.js localhost 8071" , "true");
 		println("qaserveractivator STARTED")
 	]
-//	transition stopAfter 3600000 //1hour 
 }  
 
 QActor qaservercmds context ctxNodeServerActivator  {
@@ -28,11 +41,7 @@ QActor qaservercmds context ctxNodeServerActivator  {
    		
    	Plan handleServerCmd resumeLastPlan[
    		printCurrentMessage ;
-   		onMsg serverCmd : usercmd(X) -> println( dddddddddddddddddddddddddddddddddd(X) ) ;
+   		onMsg serverCmd : usercmd(X) -> println( data(X) ) ;
     	onMsg serverCmd : usercmd(X) -> actorOp sendAnswer(X)
    	]
 }
-
-//QActor nodeserver context ctxNodeServer {
-//	Plan init normal[ println("never here") ]
-//}

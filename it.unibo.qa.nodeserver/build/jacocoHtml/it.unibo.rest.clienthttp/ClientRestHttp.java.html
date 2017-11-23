@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ClientRestHttp.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">it.unibo.qa.nodeserver</a> &gt; <a href="index.source.html" class="el_package">it.unibo.rest.clienthttp</a> &gt; <span class="el_source">ClientRestHttp.java</span></div><h1>ClientRestHttp.java</h1><pre class="source lang-java linenums">package it.unibo.rest.clienthttp;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import it.unibo.qactors.QActorContext;
+import it.unibo.qactors.QActorUtils;
+
+public class ClientRestHttp {
+
+<span class="nc" id="L17">private  QActorContext ctx = null;</span>
+private String host;
+private int port;
+private CloseableHttpClient httpclient;
+
+<span class="nc" id="L22"> 	public ClientRestHttp( QActorContext ctx , String host, int port ) {</span>
+<span class="nc" id="L23">		this.ctx  = ctx;</span>
+<span class="nc" id="L24">		this.host = host;</span>
+<span class="nc" id="L25">		this.port = port;</span>
+<span class="nc" id="L26">		httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L27">	}</span>
+<span class="nc" id="L28">	public ClientRestHttp( QActorContext ctx  ) {</span>
+<span class="nc" id="L29">		this.ctx  = ctx;</span>
+<span class="nc" id="L30"> 		httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L31">	}</span>
+
+	public  void sendGet(  ) {
+<span class="nc" id="L34">		String url = &quot;http://&quot;+host+&quot;:&quot;+port;</span>
+<span class="nc" id="L35">		sendGet(url);		</span>
+<span class="nc" id="L36">	}	</span>
+	
+	public  void sendGet( String url ) {
+	  try {
+<span class="nc" id="L40">		System.out.println(&quot;		ClientRestHttp sendGet url=&quot; + url);</span>
+<span class="nc" id="L41">		HttpGet httpGet = new HttpGet(url);	</span>
+<span class="nc" id="L42">		CloseableHttpResponse response = httpclient.execute(httpGet);</span>
+//		System.out.println(&quot;RestClientHttp response=&quot; + response);
+<span class="nc bnc" id="L44" title="All 2 branches missed.">		if (response.getStatusLine().getStatusCode() != 200) {</span>
+<span class="nc" id="L45">			throw new RuntimeException(&quot;Failed : HTTP error code : &quot;</span>
+<span class="nc" id="L46">			   + response.getStatusLine().getStatusCode());</span>
+		}
+<span class="nc" id="L48">		BufferedReader br = new BufferedReader(</span>
+<span class="nc" id="L49">                         new InputStreamReader((response.getEntity().getContent())));</span>
+		String data;
+<span class="nc" id="L51">		String info = &quot;&quot;;</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">		while ( (data = br.readLine() ) != null) {</span>
+<span class="nc" id="L53">			info = info + data;</span>
+		}
+<span class="nc" id="L55">			String msg =  &quot;httpinfo('&quot;+info+&quot;')&quot;;</span>
+<span class="nc" id="L56">				System.out.println(&quot;raise event &quot; + msg);</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">			if( ctx != null ) {</span>
+<span class="nc" id="L58">				QActorUtils.raiseEvent( ctx, &quot;clienthttp&quot;, &quot;httpinfo&quot;,msg);</span>
+			}
+<span class="nc" id="L60"> 	  } catch ( Exception e) {</span>
+<span class="nc" id="L61">		e.printStackTrace();</span>
+<span class="nc" id="L62">	 }		</span>
+<span class="nc" id="L63">	}</span>
+	public  int sendPut( String data ) {
+<span class="nc" id="L65">		String url = &quot;http://&quot;+host+&quot;:&quot;+port;</span>
+<span class="nc" id="L66">		return sendPut(data, url );</span>
+ 	}
+
+	public  int sendPut( String data, String url ) {
+<span class="nc" id="L70">		System.out.println(&quot;		ClientRestHttp sendPut url=&quot; + url);</span>
+<span class="nc" id="L71">	    int responseCode = -1;</span>
+<span class="nc" id="L72">  	        HttpPut request = new HttpPut(url);</span>
+<span class="nc" id="L73">	        StringEntity params =new StringEntity(data,&quot;UTF-8&quot;);</span>
+<span class="nc" id="L74">	        params.setContentType(&quot;application/json&quot;);</span>
+<span class="nc" id="L75">	        request.addHeader(&quot;content-type&quot;, &quot;application/json&quot;);</span>
+<span class="nc" id="L76">	        request.addHeader(&quot;Accept&quot;, &quot;*/*&quot;);</span>
+<span class="nc" id="L77">	        request.addHeader(&quot;Accept-Encoding&quot;, &quot;gzip,deflate,sdch&quot;);</span>
+<span class="nc" id="L78">	        request.addHeader(&quot;Accept-Language&quot;, &quot;en-US,en;q=0.8&quot;);</span>
+<span class="nc" id="L79">	        request.setEntity(params);</span>
+	        CloseableHttpResponse response;
+			try {
+<span class="nc" id="L82">				response      = httpclient.execute(request);</span>
+<span class="nc" id="L83">		        responseCode  = response.getStatusLine().getStatusCode();</span>
+<span class="nc" id="L84">		        handleResponse(response);</span>
+<span class="nc" id="L85">			} catch (ClientProtocolException e) {</span>
+<span class="nc" id="L86"> 				e.printStackTrace();</span>
+<span class="nc" id="L87">			} catch (IOException e) {</span>
+<span class="nc" id="L88"> 				e.printStackTrace();</span>
+<span class="nc" id="L89">			}  </span>
+<span class="nc" id="L90">	        return responseCode;</span>
+	}
+
+	protected  void handleResponse(CloseableHttpResponse response) {
+ 	try {
+<span class="nc" id="L95">        int responseCode = response.getStatusLine().getStatusCode();</span>
+//      System.out.println(&quot;responseCode &quot; + responseCode);
+<span class="nc bnc" id="L97" title="All 4 branches missed.">        if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 204) {</span>
+
+<span class="nc" id="L99">            BufferedReader br = new BufferedReader(</span>
+<span class="nc" id="L100">                    new InputStreamReader((response.getEntity().getContent())));</span>
+
+            String data;
+           // System.out.println(&quot;Output from Server ....&quot; + response.getStatusLine().getStatusCode() + &quot;\n&quot;);
+<span class="nc" id="L104">	    	String info = &quot;&quot;;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">    		while ((data = br.readLine()) != null) {</span>
+<span class="nc" id="L106">    			info = info + data;</span>
+    			//System.out.println(data);
+    		}
+<span class="nc bnc" id="L109" title="All 2 branches missed.">    		if( ctx != null ) {</span>
+<span class="nc" id="L110">    			String msg =  &quot;httpinfo('&quot;+info+&quot;')&quot;;</span>
+<span class="nc" id="L111">    			QActorUtils.raiseEvent( ctx, &quot;clienthttp&quot;, &quot;httpinfo&quot;,msg);</span>
+    		}
+<span class="nc" id="L113">        }</span>
+        else{ 
+<span class="nc" id="L115">            throw new RuntimeException(&quot;Failed : HTTP error code : &quot;</span>
+<span class="nc" id="L116">                    + response.getStatusLine().getStatusCode());</span>
+        }
+
+<span class="nc" id="L119">    }catch (Exception ex) {</span>
+<span class="nc" id="L120">	} finally {</span>
+//	    	httpclient.close();
+<span class="nc" id="L122">    }</span>
+		
+<span class="nc" id="L124">	}//handleResponse</span>
+	
+
+	
+	 /*	
+	public static void main (String args[]){
+		System.out.println(&quot;ClientRestHttp&quot;);
+ 		connectGet();
+		sendPut(&quot;{\&quot;value\&quot;:false}&quot;, &quot;http://localhost:8484/pi/actuators/leds/2&quot;);
+		sendPut(&quot;{\&quot;value\&quot;:true}&quot;, &quot;http://localhost:8484/pi/actuators/leds/1&quot;);
+ 		connectGet();
+	}
+*/
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

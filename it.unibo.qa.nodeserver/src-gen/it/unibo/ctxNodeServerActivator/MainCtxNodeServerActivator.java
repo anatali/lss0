@@ -8,10 +8,6 @@ public class MainCtxNodeServerActivator  {
 //MAIN
 public static QActorContext initTheContext() throws Exception{
 	IOutputEnvView outEnvView = SituatedSysKb.standardOutEnvView;
-	it.unibo.is.interfaces.IBasicEnvAwt env=new it.unibo.baseEnv.basicFrame.EnvFrame( 
-		"Env_ctxNodeServerActivator",java.awt.Color.cyan , java.awt.Color.black );
-	env.init();
-	outEnvView = env.getOutputEnvView();
 	String webDir = null;
 	return QActorContext.initQActorSystem(
 		"ctxnodeserveractivator", "./srcMore/it/unibo/ctxNodeServerActivator/nodeserveractivator.pl", 

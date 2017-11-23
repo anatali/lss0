@@ -1,6 +1,9 @@
 /*
- * This is A MODEL, result of problem analysis 
- * written in the CUSTOM meta-model/language qa
+ * blsHL.qa
+ * -------------------------------------------------------------
+ * The led is a domain object
+ * The button is created by a it.unibo.custom.gui.CustomBlsGui
+ * The led can be activated by using a browser
  */  
 System blshl  
 Dispatch turn     : switch     
@@ -12,11 +15,11 @@ EventHandler evconvert for usercmd -print {
 	emit local_click fromContent usercmd (N) to clicked(N) 
 };
 
-QActor qaledhl context ctxBlsHl   {
+QActor qaledhl context ctxBlsHl -g cyan  {
 Rules{
 // 	config( led,  mock ).
-// 	config( led,  gui ).
- 	config( led,  rasp ).  
+  	config( led,  gui ).
+// 	config( led,  rasp ).  
 //	config( led,  arduino ).
 }
 	Plan init normal  [         
@@ -33,9 +36,9 @@ Rules{
 }
  
 QActor qacontrolhl context ctxBlsHl {
-Rules{
-// 	config( button,  gui ).
- 	config( button,  web ).  
+Rules{ 
+  	config( button,  gui ).
+// 	config( button,  web ).  
 }
 
 	Plan init normal [         

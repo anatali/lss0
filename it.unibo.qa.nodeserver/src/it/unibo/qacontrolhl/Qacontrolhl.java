@@ -4,15 +4,6 @@ This code is generated only ONCE
 */
 package it.unibo.qacontrolhl;
 import it.unibo.baseEnv.basicFrame.EnvFrame;
-import it.unibo.bls.highLevel.interfaces.IDevButton;
-import it.unibo.bls.highLevel.interfaces.IDevLed;
-import it.unibo.bls.highLevel.interfaces.IDevLed.LedColor;
-import it.unibo.bls.lowLevel.interfaces.IDeviceButtonImpl;
-import it.unibo.bls.lowLevel.interfaces.IDeviceLedImpl;
-import it.unibo.buttonLed.components.DevButton;
-import it.unibo.buttonLed.components.DevLed;
-import it.unibo.buttonLed.components.DeviceLedMock;
-import it.unibo.buttonLedSystem.gui.components.DeviceButtonGui;
 import it.unibo.custom.gui.CustomBlsGui;
 import it.unibo.is.interfaces.IOutputEnvView;
 import it.unibo.qactors.QActorContext;
@@ -24,9 +15,7 @@ public class Qacontrolhl extends AbstractQacontrolhl {
 /*
  * ADDED BY THE APPLICATION DESIGNER	
  */
-	private IDevButton buttonHighlevel ;	
-	private IDeviceButtonImpl buttonLowLevel;
-	
+ 	
 	public void  createButtonObject(String devType){
 		if(  devType.equals("gui")) createButtonObjecGui();
  		if( env != null) {	//env is null if we use mock

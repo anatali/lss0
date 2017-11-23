@@ -18,12 +18,11 @@ public class Qaservercmds extends AbstractQaservercmds {
  * ADDED BY THE APPLICATION DESIGNER	
  */
 	public void sendAnswer( String msg ) {
-		println("sendAnswer " + this.currentEvent );
 		try {
 //			String answer= this.getName(), "answer", "nodeserver", "dispatch", "answer("+msg+")");
 			IEventItem qamsg = this.currentEvent;  
 			IConnInteraction conn = ReceiverAgent.externalEventConns.get(  "nodeserver" );
-			println("sendAnswer conn= " + conn);
+//			println("sendAnswer conn= " + conn);
 			if( conn != null ) conn.sendALine("answer("+msg+")");
 		} catch (Exception e) {
 // 			e.printStackTrace();

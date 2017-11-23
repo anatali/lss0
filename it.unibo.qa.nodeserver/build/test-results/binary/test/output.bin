@@ -1,0 +1,78 @@
+$	%%% Starting the http server ... 
+F	*** QActorHttpServer starts dirPath=./srcMore/it/unibo/ctxBlsCustom
+Š	ACTIVATING it.unibo.qactors.QActorContext@3ca17bee ctxblscustom ncores=4 port=8029 webDir=./srcMore/it/unibo/ctxBlsCustom testing=false
+5	%%% activateAkkaSystem in progress ...ctxblscustom
+?	%%% CtxServerAgent ctxblscustom_Server WORKING on  port 8029
+B	$$$ QActorUtils activateAkkaQActor-eventsevconvert | actorNum=0
+@	%%% SystemCreationActor numOfcontexts= 1 application actors=4
+getLedState  ledState=null
+getLedState  ledState=failure
+led still not set
+getLedState  ledState=null
+getLedState  ledState=failure
+led still not set
+initButtonGui click
+getLedState  ledState=null
+getLedState  ledState=failure
+led still not set
+getLedState  ledState=null
+getLedState  ledState=failure
+led still not set
+#CustomBlsGui init done for button
+"BUTTON WAITS"
+ CustomBlsGui init done for led
+$CustomBlsGui setLedGui state=false
+$createCustomLedObject state= false
+#CustomBlsGui setLedGui state=true
+$CustomBlsGui setLedGui state=false
+"LED WAITS"
+getLedState  ledState=null
+getLedState  ledState=false
+======= setUp  led=it.unibo.qaledcustom.Qaledcustom@59bd4032
+====== aTest ===============
+getLedState  ledState=null
+getLedState  ledState=false
+2			||| btn WILL EMIT event:local_click after 100
+"BUTTON WAITS"
+#CustomBlsGui setLedGui state=true
+"LED WAITS"
+getLedState  ledState=false
+getLedState  ledState=true
+2			||| btn WILL EMIT event:local_click after 100
+"BUTTON WAITS"
+$CustomBlsGui setLedGui state=false
+"LED WAITS"
+getLedState  ledState=true
+getLedState  ledState=false
+2			||| btn WILL EMIT event:local_click after 100
+"BUTTON WAITS"
+#CustomBlsGui setLedGui state=true
+"LED WAITS"
+getLedState  ledState=false
+getLedState  ledState=true
+2			||| btn WILL EMIT event:local_click after 100
+"BUTTON WAITS"
+$CustomBlsGui setLedGui state=false
+"LED WAITS"
+getLedState  ledState=true
+getLedState  ledState=false
+;====== terminate  it.unibo.qactors.QActorContext@3ca17bee
+ *** setUp 
+	testCreation ... 
+ *** tearDown 
+ *** setUp 
+	testRepUnify ... 
+ *** tearDown 
+ *** setUp 
+	testTurnOff ... 
+ *** tearDown 
+ *** setUp 
+	testSwitch ... 
+ *** tearDown 
+ *** setUp 
+	testTurnOn ... 
+ *** tearDown 
+	 *** setUp 
+		testrep ... 
+	Mrep=device(led(led1),GREEN,false) repExpected=device(led(led1),GREEN,false)
+	 *** tearDown 

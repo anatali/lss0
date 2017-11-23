@@ -3,7 +3,7 @@ package it.unibo.buttonLed.components;
 import java.util.Observable;
 import it.unibo.bls.highLevel.interfaces.IDevButton;
 import it.unibo.bls.lowLevel.interfaces.IDeviceInputImpl;
-import it.unibo.buttonLedSystem.BLSHLConfig;
+
 import it.unibo.is.interfaces.IOutputView;
 import it.unibo.system.SituatedPlainObject;
 
@@ -25,7 +25,7 @@ public void setDevImpl(IDeviceInputImpl  buttonImpl){
 	@Override
 	public boolean isPressed()   {
  		try {
- 			int von = Integer.parseInt(BLSHLConfig.on);
+ 			int von = Integer.parseInt("1");
 			return concreteButton.getInput() == von;
 		} catch (Exception e) {
  			e.printStackTrace();

@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="QActorWebUI.css">
+<script type="text/javascript" src="QActorWebUI.js"></script>
+</head>
+<body>
+<!--
+MODIFIED BY THE APPLICATION DESIGNER
+-->
+<h3 id="h3">ButtonLed System Web UI</h3>
+<div id="bottom">
+	<table id="robots">
+		<tr>
+			<td>
+				<table>
+ 					<tr>
+	 						<td>Connection</td>
+						<td><input size=30% type="text" id="connection" value="CONNECTING ..." /></td>
+	 				</tr>
+					<tr>
+						<td>Sending</td>
+ 						<td><input size=30% type="text" id="sending" value=" ... " /></td>
+ 						 
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+                <center>
+				<table style="background-color: #d9f7f3">
+	 						<tr>
+						<td align="center"><input
+							style="height: 40px; width: 90px; color:blue" type="button"
+							id="ExternalAlarm" value="CLICK" onmousedown="send('e(cmd(click))');" /></td>
+					</tr>
+				</table>
+                </center>
+			</td>
+		</tr>
+	</table>
+
+ </div> 
+
+
+ </body>
+</html>

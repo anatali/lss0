@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LedMock.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">it.unibo.qa.nodeserver</a> &gt; <a href="index.source.html" class="el_package">it.unibo.buttonLed.components</a> &gt; <span class="el_source">LedMock.java</span></div><h1>LedMock.java</h1><pre class="source lang-java linenums">package it.unibo.buttonLed.components;
+
+import it.unibo.bls.highLevel.interfaces.IDevLed.LedColor;
+import it.unibo.bls.lowLevel.interfaces.ILed;
+
+public class LedMock  implements ILed{
+<span class="pc" id="L7">private boolean on = false;</span>
+private String name;
+protected LedColor color;
+
+<span class="fc" id="L11">	public LedMock( String name, LedColor color) throws Exception{</span>
+<span class="fc" id="L12">		this.name = &quot;led(&quot;+name+&quot;)&quot;;</span>
+<span class="pc bpc" id="L13" title="1 of 4 branches missed.">		if( color == LedColor.RED || color == LedColor.GREEN)</span>
+<span class="fc" id="L14">			this.color=color;</span>
+<span class="nc" id="L15">		else throw new Exception(&quot;a led can be only RED or GREEN&quot;);		</span>
+<span class="fc" id="L16">	}</span>
+<span class="nc" id="L17">	public LedMock( String defaltRep ) throws Exception{</span>
+<span class="nc" id="L18">		throw new Exception(&quot;Not yet implemented&quot;);</span>
+	}
+	@Override
+	public void doSwitch() {
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		 if( isOn() ) turnOff();</span>
+<span class="fc" id="L23">		 else turnOn();</span>
+<span class="fc" id="L24">	}</span>
+	@Override
+	public void turnOn() {
+<span class="fc" id="L27">		on = true;		</span>
+<span class="fc" id="L28">	}</span>
+	@Override
+	public void turnOff() {
+<span class="fc" id="L31">		on = false;		</span>
+<span class="fc" id="L32">	}</span>
+	@Override
+	public LedColor getLedColor() {
+<span class="fc" id="L35">		return color;</span>
+	}
+	@Override
+	public boolean isOn() {
+<span class="fc" id="L39">		return on;</span>
+	}
+	@Override
+ 	public String getDefaultRep() { 		
+<span class="pc bpc" id="L43" title="1 of 2 branches missed."> 		String ledLedColor = getLedColor()==LedColor.RED ? &quot;RED&quot; : &quot;GREEN&quot;;</span>
+<span class="fc" id="L44">   		return &quot;device(&quot;+this.name+&quot;,&quot; + ledLedColor + &quot;,&quot;+ isOn() +&quot;)&quot;;</span>
+ 	}
+	@Override
+	public String getName() {
+<span class="fc" id="L48">		return name;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

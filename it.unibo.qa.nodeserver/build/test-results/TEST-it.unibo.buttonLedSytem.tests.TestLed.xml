@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.unibo.buttonLedSytem.tests.TestLed" tests="6" skipped="0" failures="0" errors="0" timestamp="2017-11-23T10:21:46" hostname="anataliTHINK" time="0.022">
+  <properties/>
+  <testcase name="testCreation" classname="it.unibo.buttonLedSytem.tests.TestLed" time="0.0"/>
+  <testcase name="testRepUnify" classname="it.unibo.buttonLedSytem.tests.TestLed" time="0.018"/>
+  <testcase name="testTurnOff" classname="it.unibo.buttonLedSytem.tests.TestLed" time="0.001"/>
+  <testcase name="testSwitch" classname="it.unibo.buttonLedSytem.tests.TestLed" time="0.001"/>
+  <testcase name="testTurnOn" classname="it.unibo.buttonLedSytem.tests.TestLed" time="0.0"/>
+  <testcase name="testRep" classname="it.unibo.buttonLedSytem.tests.TestLed" time="0.0"/>
+  <system-out><![CDATA[ *** setUp 
+	testCreation ... 
+ *** tearDown 
+ *** setUp 
+	testRepUnify ... 
+ *** tearDown 
+ *** setUp 
+	testTurnOff ... 
+ *** tearDown 
+ *** setUp 
+	testSwitch ... 
+ *** tearDown 
+ *** setUp 
+	testTurnOn ... 
+ *** tearDown 
+ *** setUp 
+	testrep ... 
+rep=device(led(led1),GREEN,false) repExpected=device(led(led1),GREEN,false)
+ *** tearDown 
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

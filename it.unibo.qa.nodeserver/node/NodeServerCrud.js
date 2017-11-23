@@ -39,13 +39,21 @@ process.on("uncaughtException", function(reason) {
  */
 connectToQaNode();
 
-
+/*
+ * Handle the qaanswer from the qa node
+ */
 if( socketToQaCtx != null){
-	console.log("SETUP socketToQaCtx --------------------------------- ");
+var qaanswer = "";
+	console.log("NodeServer SETUP socketToQaCtx ---- ");
 	socketToQaCtx.on('data',function(data) {
-		console.log(data);
-	});
-	 
+ 		qaanswer = qaanswer + data;
+  		if( qaanswer === "" ) return;
+		if( data.includes("\n") ){
+			console.log(  "uu "+qaanswer );
+			qaanswer = "";
+		}
+	});  
+	  
 	socketToQaCtx.on('close',function() {
 		console.log('connection is closed');
 	});
@@ -77,7 +85,7 @@ http.createServer(function(request, response) {
 			outS = outS +  i + ")" + v + "\n"
 		});
 		response.write( outS )
-		response.end();			//answer to the caller
+		response.end();			//qaanswer to the caller
 		emitQaEvent( "get" );	//emit event usercmd
 		//WARNING: The response should be given by the qa
 	}//if GET
@@ -116,8 +124,6 @@ function buildHtmlResponse( url, method, data, response ){
 	      dataStore:   dataStore 
 	    };	
 	    response.write( JSON.stringify(responseBody) );
-
-	    
 	    response.end();
 	    //response.end(JSON.stringify(responseBody)) //compact form		
 }
@@ -130,7 +136,7 @@ function emitQaEvent( payload ) {
   		if(socketToQaCtx !== null ){
   	  		console.log('emitQaEvent mmsg=' + msg    );
   			socketToQaCtx.write(msg+"\n");
-  			//TDOO: wait an answer from the qa
+  			//TDOO: wait an qaanswer from the qa before responding to the HTTP user
   		}
 	}catch(e){ 
   		console.log("WARNING: "  + e ); 
@@ -140,4 +146,5 @@ function emitQaEvent( payload ) {
 /*
 USAGE
 node NodeServerCrud.js localhost 8071
+or run nodeServerActivator
 */

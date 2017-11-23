@@ -51,9 +51,6 @@ private static CustomBlsGui curBlsGui = null;
     	else if( device == "button") initButtonGui(devName);
     }
     public  CustomBlsGui(QActor myActor, String device) {
-//    	this.myActor = myActor;
-//    	if( device == "led") initLedGui();
-//    	else if( device == "button") initButtonGui();
     	this(myActor,   device, "click");
     }
    
@@ -112,11 +109,10 @@ private static CustomBlsGui curBlsGui = null;
     }
     
     public void setLedGui(boolean on) {
-     	System.out.println("CustomBlsGui setLedGui " + on);
+     	System.out.println("CustomBlsGui setLedGui state=" + on);
     	if(on) ledGui.setSize(largeGui);
     	else ledGui.setSize(smallGui);
     	ledGui.repaint();
-		btnGui.setVisible(false);		
     }
     
     public void showTheButton(){

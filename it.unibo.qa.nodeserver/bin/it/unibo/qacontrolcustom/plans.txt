@@ -1,0 +1,2 @@
+plan(1,init, sentence( config( button,gui),move(actorOp(createCustomButtonObject( "gui"))),'','' ))
+plan(1,waitForClick, sentence(true,move(print("BUTTON WAITS")),'','' ))

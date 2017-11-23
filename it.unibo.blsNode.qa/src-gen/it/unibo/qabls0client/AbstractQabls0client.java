@@ -56,6 +56,7 @@ public abstract class AbstractQabls0client extends QActor {
 	    protected void initStateTable(){  	
 	    	stateTab.put("handleToutBuiltIn",handleToutBuiltIn);
 	    	stateTab.put("init",init);
+	    	stateTab.put("work",work);
 	    }
 	    StateFun handleToutBuiltIn = () -> {	
 	    	try{	
@@ -71,23 +72,42 @@ public abstract class AbstractQabls0client extends QActor {
 	    
 	    StateFun init = () -> {	
 	    try{	
-	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_init",5);
-	     pr.incNumIter(); 	
+	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
+	    	temporaryStr = "\"qabls0client wait for server activation ... \"";
+	    	println( temporaryStr );  
+	    	//delay  ( no more reactive within a plan)
+	    	aar = delayReactive(4000,"" , "");
+	    	if( aar.getInterrupted() ) curPlanInExec   = "init";
+	    	if( ! aar.getGoon() ) return ;
+	    	//switchTo work
+	        switchToPlanAsNextState(pr, myselfName, "qabls0client_"+myselfName, 
+	              "work",false, false, null); 
+	    }catch(Exception e_init){  
+	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//init
+	    
+	    StateFun work = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_work",3);
+	     pr.incNumIter(); 	
+	    	String myselfName = "work";  
 	    	temporaryStr = "\"qabls0client sendPut\"";
 	    	println( temporaryStr );  
 	    	parg = "sendPut(\"click\",8080)"; 
 	    	actorOpExecute(parg, false);	//OCT17		 
 	    	//delay  ( no more reactive within a plan)
 	    	aar = delayReactive(500,"" , "");
-	    	if( aar.getInterrupted() ) curPlanInExec   = "init";
+	    	if( aar.getInterrupted() ) curPlanInExec   = "work";
 	    	if( ! aar.getGoon() ) return ;
 	    	repeatPlanNoTransition(pr,myselfName,"qabls0client_"+myselfName,true,false);
-	    }catch(Exception e_init){  
-	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );
+	    }catch(Exception e_work){  
+	    	 println( getName() + " plan=work WARNING:" + e_work.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 
 	    }
-	    };//init
+	    };//work
 	    
 	    protected void initSensorSystem(){
 	    	//doing nothing in a QActor

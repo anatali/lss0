@@ -1,3 +1,5 @@
-plan(1,init, sentence(true,move(print("qabls0client sendPut")),'','' ))
-plan(2,init, sentence(true,move(actorOp(sendPut( "click",8080))),'','' ))
-plan(3,init, sentence(true,delay( 500) ,'','' ))
+plan(1,init, sentence(true,move(print("qabls0client wait for server activation ... ")),'','' ))
+plan(2,init, sentence(true,delay( 4000) ,'','' ))
+plan(1,work, sentence(true,move(print("qabls0client sendPut")),'','' ))
+plan(2,work, sentence(true,move(actorOp(sendPut( "click",8080))),'','' ))
+plan(3,work, sentence(true,delay( 500) ,'','' ))

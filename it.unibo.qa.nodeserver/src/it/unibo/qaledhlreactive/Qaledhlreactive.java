@@ -61,25 +61,26 @@ public class Qaledhlreactive extends AbstractQaledhlreactive {
 //  		println("AFTER ledSwitch=" + ledHighlevel.isOn() );
  	}
 
-  	boolean goon = false;
-  	
-  	public void setupLedBlink() {
-//  		println("setupLedBlink");
-  		goon = true;
-  	}
+//  	boolean goon = false;
+//  	
+//  	public void setupLedBlink() {
+////  		println("setupLedBlink");
+//  		goon = true;
+//  	}
   	public void ledBlink(){
-//  		println("ledBlink STARTS");
-   		while( goon ) {
-  			ledSwitch();
-  			this.waitfor(500);
-  		}
-//  		println("ledBlink ENDS ");
+//   			println("		ledBlink STARTS");
+//   		while( goon ) {
+//  			ledSwitch();
+//  			this.waitfor(500);
+//  		}
+////  		println("ledBlink ENDS ");
+   		 it.unibo.custom.led.LedFactory.ledBlink("l1" ) ;
  	}
   	
-  	public void ledblinkstop(){
-//  		println("ledblinkstop");
-  		goon = false;
-  	}
+//  	public void ledblinkstop(){
+////  		println("ledblinkstop");
+//  		goon = false;
+//  	}
   	
  	public void memoLedState(boolean ledState){
 		String goal = "assign(ledState,"+ledState+")";

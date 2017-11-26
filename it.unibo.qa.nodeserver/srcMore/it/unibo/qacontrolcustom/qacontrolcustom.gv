@@ -12,7 +12,7 @@ digraph finite_state_machine {
 	init [ color = red ][ fontcolor = red ][ penwidth = 3 ]
 	waitForClick [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	
-	waitForClick -> handleToutBuiltIn [ label = "timeout(100000)" ][ color = green ][ fontcolor = green ]
+	waitForClick -> handleToutBuiltIn [ label = "timeout(6000000)" ][ color = green ][ fontcolor = green ]
 	init -> waitForClick [ label = "switch" ][ color = black ][ fontcolor = black ]
 	waitForClick -> action [ label = "usercmd" ][ color = red ][ fontcolor = red ][ dir = both ]
 	waitForClick -> waitForClick [ label = "repeat "][ style = dashed ][ color = blue ][ fontcolor = blue ]

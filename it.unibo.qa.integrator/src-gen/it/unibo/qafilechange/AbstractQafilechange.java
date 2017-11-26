@@ -76,8 +76,7 @@ public abstract class AbstractQafilechange extends QActor {
 	    	String myselfName = "init";  
 	    	temporaryStr = "\"START WATCHING\"";
 	    	println( temporaryStr );  
-	    	parg = "watchFileInDir(\"C:/repoGitHub/it.unibo.qa.integrator/sharedFiles\")"; 
-	    	actorOpExecute(parg, false);	//OCT17		 
+	    	watchFileInDir("C:/repoGitHub/it.unibo.qa.integrator/sharedFiles");
 	    	repeatPlanNoTransition(pr,myselfName,"qafilechange_"+myselfName,true,false);
 	    }catch(Exception e_init){  
 	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );

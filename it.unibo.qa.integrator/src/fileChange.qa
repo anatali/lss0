@@ -8,7 +8,8 @@ Context ctxFileChange ip[ host="localhost" port=8061]
  */
 QActor qafilechange context ctxFileChange {
 	Plan init normal[ println("START WATCHING"); 
- 		actorOp watchFileInDir("C:/repoGitHub/it.unibo.qa.integrator/sharedFiles")
+		javaOp "watchFileInDir(\"C:/repoGitHub/it.unibo.qa.integrator/sharedFiles\")"
+// 		actorOp watchFileInDir("C:/repoGitHub/it.unibo.qa.integrator/sharedFiles")
 	]
  	finally repeatPlan 
 }

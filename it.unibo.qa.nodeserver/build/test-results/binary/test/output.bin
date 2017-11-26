@@ -17,21 +17,36 @@
 getLedState  ledState=null
 getLedState  ledState=failure
 led still not set
+getLedState  ledState=null
+getLedState  ledState=failure
+led still not set
+initButtonGui click
+getLedState  ledState=null
+getLedState  ledState=failure
+led still not set
+getLedState  ledState=null
+getLedState  ledState=failure
+led still not set
+getLedState  ledState=null
+#CustomBlsGui init done for button
+getLedState  ledState=failure
+led still not set
+"BUTTON WAITS"
  CustomBlsGui init done for led
 $CustomBlsGui setLedGui state=false
+getLedState  ledState=null
+getLedState  ledState=failure
+led still not set
 $createCustomLedObject state= false
 #CustomBlsGui setLedGui state=true
 $CustomBlsGui setLedGui state=false
 "LED WAITS"
-initButtonGui click
 getLedState  ledState=null
 getLedState  ledState=false
-======= setUp  led=it.unibo.qaledcustom.Qaledcustom@63f4e51e
+======= setUp  led=it.unibo.qaledcustom.Qaledcustom@128c027d
 ====== aTest ===============
 getLedState  ledState=null
 getLedState  ledState=false
-#CustomBlsGui init done for button
-"BUTTON WAITS"
 2			||| btn WILL EMIT event:local_click after 100
 "BUTTON WAITS"
 #CustomBlsGui setLedGui state=true
@@ -58,21 +73,21 @@
 getLedState  ledState=false
 ;====== terminate  it.unibo.qactors.QActorContext@72d186eb
  *** setUp 
-	testCreation ... 
+	testTurnOff ... 
  *** tearDown 
  *** setUp 
 	testTurnOn ... 
  *** tearDown 
  *** setUp 
-	testTurnOff ... 
+	testSwitch ... 
  *** tearDown 
  *** setUp 
-	testSwitch ... 
+	testrep ... 
+Mrep=device(led(led1),GREEN,false) repExpected=device(led(led1),GREEN,false)
  *** tearDown 
  *** setUp 
 	testRepUnify ... 
  *** tearDown 
 	 *** setUp 
-		testrep ... 
-	Mrep=device(led(led1),GREEN,false) repExpected=device(led(led1),GREEN,false)
+		testCreation ... 
 	 *** tearDown 

@@ -1,2 +1,2 @@
 plan(1,init, sentence(true,move(print("qareceiver WAITS")),'','' ))
-plan(1,endOfwork, sentence(true,eventswitch(alarm, Â»alarm( X), move(print(endOfwork( X))) ),'','' ))
+plan(1,endOfwork, sentence(true,eventswitch(alarm, »alarm( X), move(print(endOfwork( X))) ),'','' ))

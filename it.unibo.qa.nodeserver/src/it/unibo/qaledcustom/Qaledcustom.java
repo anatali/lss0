@@ -3,8 +3,10 @@
 This code is generated only ONCE
 */
 package it.unibo.qaledcustom;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import alice.tuprolog.SolveInfo;
-import it.unibo.baseEnv.basicFrame.EnvFrame;
 import it.unibo.bls.highLevel.interfaces.IDevLed.LedColor;
 import it.unibo.bls.lowLevel.interfaces.ILed;
 import it.unibo.buttonLed.components.LedMock;
@@ -35,6 +37,12 @@ public class Qaledcustom extends AbstractQaledcustom {
 		memoLedState( led.isOn() );		
 //		println("AFTER ledSwitch=" + led.isOn() );
 	}
+  	
+  	public void  nodeLedSwitch() {
+//  		println("		nodeLedSwitch "  + nodeOutputStream  + " " + nodeInputStream) ;
+  		led.doSwitch();
+  		writeNodeOutput(""+led.isOn());
+  	}
  
  	public void memoLedState(boolean ledState){
 		String goal = "assign(ledState,"+ledState+")";
@@ -50,4 +58,7 @@ public class Qaledcustom extends AbstractQaledcustom {
     //@Override
 	protected void addCmdPanels(){ 	}
 
+ 
+ 
+	
 }

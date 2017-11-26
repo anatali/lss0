@@ -74,11 +74,8 @@ public abstract class AbstractQacontrolcustom extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
-	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(button,gui)" )) != null ){
 	    	parg = "createCustomButtonObject(\"gui\")"; 
-	    	parg = QActorUtils.substituteVars(guardVars,parg);
 	    	actorOpExecute(parg, false);	//OCT17		 
-	    	}
 	    	//switchTo waitForClick
 	        switchToPlanAsNextState(pr, myselfName, "qacontrolcustom_"+myselfName, 
 	              "waitForClick",false, false, null); 
@@ -135,7 +132,7 @@ public abstract class AbstractQacontrolcustom extends QActor {
 	          }
 	          },//new StateFun[]
 	          new String[]{"true","E","local_click", "true","E","usercmd" },
-	          100000, "handleToutBuiltIn" );//msgTransition
+	          6000000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_waitForClick){  
 	    	 println( getName() + " plan=waitForClick WARNING:" + e_waitForClick.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 

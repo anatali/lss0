@@ -1,0 +1,11 @@
+{
+    "Items": [
+        {
+            "filename": "ActorActions.json",
+            "jsonWrapper": "KeyboardActorSettings",
+            "jsonWrapperAssembly": "Assembly-CSharp",
+            "mapper": "WASDActorSettingsMapper",
+            "mapperAssembly": "Assembly-CSharp"
+        }
+    ]
+}

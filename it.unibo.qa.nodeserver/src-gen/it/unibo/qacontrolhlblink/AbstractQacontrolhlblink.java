@@ -75,8 +75,7 @@ public abstract class AbstractQacontrolhlblink extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
-	    	parg = "createButtonObject(\"gui\")"; 
-	    	actorOpExecute(parg, false);	//OCT17		 
+	    	it.unibo.custom.button.ButtonFactory.createButtonWithGui("click",this);;
 	    	//switchTo waitForClick
 	        switchToPlanAsNextState(pr, myselfName, "qacontrolhlblink_"+myselfName, 
 	              "waitForClick",false, false, null); 

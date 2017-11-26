@@ -1,0 +1,44 @@
+<html>
+<head>
+<script src="./Led.js"></script>
+<script src="./ButtonEmitterBro.js"></script> 
+</head>
+</html>
+
+<body>
+<h3>blsObjEmitter</h3>
+<!--  A LED  -->
+<div id="l1GuiId" style="height:20px; width:3%; position: absolute; background-color:#00FF33"></div>
+<!--  OUTPUT Area  
+<div id="outView" ></div>  
+ -->
+ <br/><br/>
+<!-- BUTTON : a click calls b1.press() -->
+<div>
+<button onclick="b1.press()">BUTTON</button>
+</div>
+  
+<script>
+var hc = 1;
+var n  = 1;
+var handler2 = function( evMsg ){
+	println("	handler2  " + evMsg  );
+}
+var control = function(msg){
+	println("control msg=" + msg +"  when led=" + l1.getState() + " n=" + n++);
+	l1.switchState();
+	l1.showGuiRep();
+}
+var configure = function (){
+	//configure the system
+	l1 = new Led( "l1","l1GuiId" );
+	b1 = new Button( 'b1'  );
+	l1.showGuiRep();
+ 	b1.setHandler( control );
+	b1.setHandler( handler2 );
+} 
+configure();
+</script> 
+ 
+</body>
+</htnl>

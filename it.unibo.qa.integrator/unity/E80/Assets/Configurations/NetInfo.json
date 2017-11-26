@@ -1,0 +1,11 @@
+{
+    "Items": [
+        {
+            "port": 6000,
+            "serverName": "UnityConnectorListener",
+            "address": "127.0.0.1",
+            "handlerType": "TcpReactiveActorClientHandler",
+            "handlerTypeAssembly": "Assembly-CSharp"
+        }
+    ]
+}

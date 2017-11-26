@@ -1,0 +1,52 @@
+{
+    "Items": [
+        {
+            "actorName": "rover",
+            "keybindings": [
+                "W",
+                "A",
+                "S",
+                "D",
+                "Space"
+            ],
+            "speedFactor": 1.0,
+            "rotationSpeed": 1.0
+        },
+        {
+            "actorName": "roverplanned",
+            "keybindings": [
+                "W",
+                "A",
+                "S",
+                "D",
+                "Space"
+            ],
+            "speedFactor": 1.0,
+            "rotationSpeed": 1.0
+        },
+       {
+            "actorName": "robotfacade",
+            "keybindings": [
+                "W",
+                "A",
+                "S",
+                "D",
+                "Space"
+            ],
+            "speedFactor": 1.0,
+            "rotationSpeed": 1.0
+        },
+	{
+            "actorName": "explorer",
+            "keybindings": [
+                "W",
+                "A",
+                "S",
+                "D",
+                "Space"
+            ],
+            "speedFactor": 0.50,
+            "rotationSpeed": 2.0
+        }
+    ]
+}

@@ -73,8 +73,7 @@ public abstract class AbstractQaserveractivator extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
-	    	parg = "runNodeJs(\"./node/NodeServerCrud.js localhost 8071\",\"true\")"; 
-	    	actorOpExecute(parg, false);	//OCT17		 
+	    	runNodeJs( "./node/NodeServerCrud.js localhost 8071", "true"); 
 	    	temporaryStr = "\"qaserveractivator STARTED\"";
 	    	println( temporaryStr );  
 	    	repeatPlanNoTransition(pr,myselfName,"qaserveractivator_"+myselfName,false,false);

@@ -1,0 +1,54 @@
+/*
+ * blsHlNode.qa
+ * -------------------------------------------------------------
+ * The led    is created by a it.unibo.custom.gui.CustomBlsGui
+ * The button is created by a it.unibo.custom.gui.CustomBlsGui
+ * The led can be activated also by using a browser (usercmd)
+ */  
+System blsHlNode
+Dispatch turn     : switch(N)     
+Event local_click : clicked(N)  //N : natural
+Event usercmd     : usercmd(N)
+ 
+Context ctxBlsHlNode ip [ host="localhost"  port=8029 ] -httpserver   
+EventHandler evh for local_click -print ;
+
+EventHandler evconvert for usercmd -print {
+	emit local_click fromContent usercmd(N) to clicked(N) 
+};
+  
+QActor qaledhlnode context ctxBlsHlNode  {
+Rules{
+	config( led,  nodePc ).  
+// 	config( led,  nodeRasp ).  
+
+	value("1").
+	value("2"). 
+	value(3). 
+}
+	Plan init normal  [          
+     	[ !? config( led, nodePc )]   nodeOp "node/blsOop/LedHlPc.js"	;
+     	[ !? config( led, nodeRasp )] nodeOp "node/blsOop/LedHlRasp.js"	
+    ]
+   	switchTo waitForCmd   
+   	      
+  	Plan waitForCmd [ println("qaledcustom WAITS") ]
+    transition stopAfter 3000000
+      	whenMsg turn : switch(N) do actorOp writeNodeOutput(N)  
+    finally repeatPlan	
+}
+ 
+QActor qacontrolhlnode context ctxBlsHlNode {
+  	Plan init normal [         
+    	javaOp "it.unibo.custom.button.ButtonFactory.createButtonWithGui(\"click\",this);" 
+    ]
+   	switchTo waitForClick       
+ 
+    Plan waitForClick[  ]  
+    transition stopAfter 6000000 
+     	whenEvent local_click : clicked(N) do forward qaledhlnode -m turn : switch(N), 
+     	whenEvent usercmd : usercmd(X) do forward qaledhlnode -m turn : switch(X)
+    finally repeatPlan	 
+}
+     
+ 

@@ -74,11 +74,8 @@ public abstract class AbstractQaledcustom extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
-	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,X)" )) != null ){
-	    	parg = "createCustomLedObject(X)"; 
-	    	parg = QActorUtils.substituteVars(guardVars,parg);
+	    	parg = "createCustomLedObject(gui)"; 
 	    	actorOpExecute(parg, false);	//OCT17		 
-	    	}
 	    	//switchTo waitForCmd
 	        switchToPlanAsNextState(pr, myselfName, "qaledcustom_"+myselfName, 
 	              "waitForCmd",false, false, null); 
@@ -93,7 +90,7 @@ public abstract class AbstractQaledcustom extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_waitForCmd",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "waitForCmd";  
-	    	temporaryStr = "\"LED WAITS\"";
+	    	temporaryStr = "\"qaledcustom WAITS\"";
 	    	println( temporaryStr );  
 	    	//bbb
 	     msgTransition( pr,myselfName,"qaledcustom_"+myselfName,false,
@@ -103,7 +100,7 @@ public abstract class AbstractQaledcustom extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@d5279f9
+	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@599c9d6a
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("switch"), 
 	            		                Term.createTerm("switch"), 

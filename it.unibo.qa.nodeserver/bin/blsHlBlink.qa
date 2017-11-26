@@ -11,26 +11,21 @@ Context ctxBlsHlBlimk ip [ host="localhost"  port=8029 ]  -httpserver
 EventHandler evconvert for usercmd -print {
 	emit local_click fromContent usercmd (N) to clicked(N) 
 };
-
-/*
+ 
+/* 
  * LED
  */
-QActor qaledhl context ctxBlsHlBlimk -g cyan {
-Rules{
-// 	config( led,  mock ).
-  	config( led,  gui ).
-//	config( led,  rasp ).  
-//	config( led,  arduino ).
-}
-	Plan init normal  [         
-		[ !? config( led, X )] println( X )  ;
-    	[ !? config( led, X )] actorOp createLedObject( X )  
+QActor qaledhl context ctxBlsHlBlimk  {
+ 
+ 	Plan init normal  [         
+     	javaOp "it.unibo.custom.led.LedFactory.createLedWithGui(\"l1\", this)"
     ]
    	switchTo waitForCmd   
    	  
   	Plan waitForCmd [ actorOp noOp 	]
     transition stopAfter 3000000
-    	whenMsg turn : switch do actorOp ledSwitch
+    	whenMsg turn : switch do 
+    		javaOp "it.unibo.custom.led.LedFactory.ledSwitch(\"l1\")"
     finally repeatPlan	
 }
 /*
@@ -38,7 +33,7 @@ Rules{
  */
 QActor qacontrolhlblink context ctxBlsHlBlimk {
 	Plan init normal [         
-   		actorOp createButtonObject("gui") //must emit local_click
+    		javaOp "it.unibo.custom.button.ButtonFactory.createButtonWithGui(\"click\",this);"
    	]
    	switchTo waitForClick       
   

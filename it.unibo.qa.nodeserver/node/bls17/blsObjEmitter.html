@@ -1,0 +1,96 @@
+<html>
+<head>
+<script type="text/javascript" src="./blsUtils.js"></script>
+<script src="./Led.js"></script>
+<script src="./ButtonEmitterBro.js"></script> 
+</head>
+</html>
+
+<body>
+<h3>blsObjEmitter</h3>
+<!-- 
+	A LED  
+ -->
+<div id="l1GuiId" style="height:20px; width:3%; position: absolute; background-color:#00FF33"></div>
+<!-- 
+	OUTPUT Area
+ -->
+<div id="outView" ></div>  
+ 
+<!-- 
+	BUTTON : a click calls b1.press()
+ -->
+<div>
+<button onclick="cleanOut(); b1.press()">BUTTON</button>
+ calls <tt>b1.press()</tt> See : 
+ <button onclick="cleanOut();showLocalCode(configure)">configuration</button>, 
+</div>
+<br/> <br/>
+<button onclick="cleanOut()">clean code area</button> 
+<div id="code">
+<hr/><hr/>
+</div>
+
+<p>Count numbers: <output id="result"></output></p>
+<button onclick="startWorker()">Start Worker</button> 
+<button onclick="stopWorker()">Stop Worker</button>
+
+<!-- 
+	CONFIGURATION
+	create a button that, when pressed, updates a led with the given gui
+ -->
+<script>
+var hc = 1;
+var n  = 1;
+var handler2 = function( evMsg ){
+	println("	handler2  " + evMsg  );
+	waitFor(1000);
+}
+var handler3 = function( evMsg ){
+	println("handler3 : wait for 1500 msec ... "  );
+	setTimeout( function(){ println("	handler3  " + evMsg + " " + hc++ ) }, 1500 );
+}
+var control = function(msg){
+	println("control msg=" + msg +"  when led=" + l1.getState() + " n=" + n++);
+	l1.switchState();
+	l1.showGuiRep();
+}
+var configure = function (){
+	//configure the system
+	l1 = new Led( "l1","l1GuiId" );
+	b1 = new Button( 'b1'  );
+	l1.showGuiRep();
+ 	b1.setHandler( control );
+	//b1.setHandler( handler2 );
+ 	b1.setHandler( handler3 );
+}
+cleanOut();
+configure();
+</script> 
+<script>
+
+//WEBWORKER
+
+var w;
+
+function startWorker() {
+  if(typeof(Worker) !== "undefined") {
+      if(typeof(w) == "undefined") {
+          w = new Worker("countWorker.js");
+      }
+      w.onmessage = function(event) {
+           document.getElementById("result").innerHTML = event.data;
+      };
+  } else {
+      document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
+  }
+}
+
+function stopWorker() { 
+  w.terminate();
+  w = undefined;
+}
+</script> 
+
+</body>
+</htnl>

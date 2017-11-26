@@ -6,9 +6,9 @@ public class DeviceLedMock extends DeviceLedImpl{
 	public DeviceLedMock( String name, IOutputEnvView outEnvView, LedColor color) throws Exception{
 		super(name,outEnvView,color);
 	}
-	public DeviceLedMock(String defaltRep) throws Exception {
-		super(defaltRep);
- 	}
+//	public DeviceLedMock(String defaltRep) throws Exception {
+//		super(defaltRep);
+// 	}
 	protected void show(){	
 		this.println( this.getDefaultRep() );
 	}

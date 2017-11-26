@@ -80,10 +80,9 @@ public abstract class AbstractRover extends QActor {
 	    	String myselfName = "init";  
 	    	temporaryStr = "\"rover START\"";
 	    	println( temporaryStr );  
-	    	parg = "workWithUnity(\"localhost\")"; 
-	    	actorOpExecute(parg, false);	//OCT17		 
-	    	parg = "createSimulatedActor(\"rover\",\"Prefabs/CustomActor\")"; 
-	    	actorOpExecute(parg, false);	//OCT17		 
+	    	initUnityConnection("localhost");
+	    	createSimulatedActor("rover", "Prefabs/CustomActor");
+	    	execUnity("rover","backward",800, 70,0); //rover: default namefor virtual robot		
 	    	execUnity("rover","right",1000, 50,0); //rover: default namefor virtual robot		
 	    	//switchTo moveVitualRobot
 	        switchToPlanAsNextState(pr, myselfName, "rover_"+myselfName, 
@@ -99,8 +98,6 @@ public abstract class AbstractRover extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_moveVitualRobot",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "moveVitualRobot";  
-	    	temporaryStr = "\"moveVitualRobot\"";
-	    	println( temporaryStr );  
 	    	Callable<String> body;
 	    int ractionTimeOut=0;
 	    ractionTimeOut = 30000;
@@ -129,8 +126,7 @@ public abstract class AbstractRover extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handleSonar",-1);
 	    	String myselfName = "handleSonar";  
-	    	execUnity("rover","forward",300, 50,0); //rover: default namefor virtual robot		
-	    	execUnity("rover","stop",1000, 50,0); //rover: default namefor virtual robot		
+	    	execUnity("rover","stop",500, 0,0); //rover: default namefor virtual robot		
 	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
 	    }catch(Exception e_handleSonar){  
 	    	 println( getName() + " plan=handleSonar WARNING:" + e_handleSonar.getMessage() );
@@ -142,7 +138,7 @@ public abstract class AbstractRover extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handleObstacle",-1);
 	    	String myselfName = "handleObstacle";  
-	    	execUnity("rover","backward",3500, 50,0); //rover: default namefor virtual robot		
+	    	execUnity("rover","backward",2500, 50,0); //rover: default namefor virtual robot		
 	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
 	    }catch(Exception e_handleObstacle){  
 	    	 println( getName() + " plan=handleObstacle WARNING:" + e_handleObstacle.getMessage() );

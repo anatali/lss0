@@ -8,6 +8,7 @@ qactor( qaledcustom_ctrl , ctxblscustom, "it.unibo.qaledcustom.Qaledcustom"   ).
 qactor( qacontrolcustom , ctxblscustom, "it.unibo.qacontrolcustom.MsgHandle_Qacontrolcustom"   ). %%store msgs 
 qactor( qacontrolcustom_ctrl , ctxblscustom, "it.unibo.qacontrolcustom.Qacontrolcustom"   ). %%control-driven 
 %%% -------------------------------------------
+eventhandler(evh,ctxblscustom,"it.unibo.ctxBlsCustom.Evh","local_click").  
 eventhandler(evconvert,ctxblscustom,"it.unibo.ctxBlsCustom.Evconvert","usercmd").  
 %%% -------------------------------------------
 

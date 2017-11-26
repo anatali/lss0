@@ -1,5 +1,4 @@
 package it.unibo.buttonLed.components;
-
 import it.unibo.bls.highLevel.interfaces.IDevLed.LedColor;
 import it.unibo.bls.lowLevel.interfaces.ILed;
 

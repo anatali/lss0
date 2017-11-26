@@ -1,2 +1,0 @@
-plan(1,init, sentence( config( led,X),move(actorOp(createCustomLedObject( X))),'','' ))
-plan(1,waitForCmd, sentence(true,move(print("LED WAITS")),'','' ))

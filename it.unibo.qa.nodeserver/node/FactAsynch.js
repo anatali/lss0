@@ -16,7 +16,7 @@ factIterAsynch = function( n, n0, v, callback ){
  }
 
 console.log("START");
-console.log("CALL= ", factAsynch(4, console.log) );
+console.log("CALL= " + factAsynch(4, console.log) );
 factAsynch(6,console.log);
 console.log("END");
 

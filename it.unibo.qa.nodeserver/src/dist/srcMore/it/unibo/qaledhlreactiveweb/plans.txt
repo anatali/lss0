@@ -1,8 +1,0 @@
-plan(1,init, sentence( config( led,X),move(actorOp(createLedObject( X))),'','' ))
-plan(1,waitForCmd, sentence(true,move(print("qaledhlreactiveweb WAITS")),'','' ))
-plan(1,doLedBlink, sentence(true,move(print("qaledhlreactiveweb doLedBlink")),'','' ))
-plan(2,doLedBlink, sentence(true,move(actorOp(setupLedBlink)),'','' ))
-plan(1,stopBlink, sentence(true,move(print("qaledhlreactiveweb stopBlink")),'','' ))
-plan(2,stopBlink, sentence(true,move(actorOp(ledblinkstop)),'','' ))
-plan(1,endWork, sentence(true,move(print("qaledhlreactive ends")),'','' ))
-plan(2,endWork, sentence(true,delay( 3000) ,'','' ))

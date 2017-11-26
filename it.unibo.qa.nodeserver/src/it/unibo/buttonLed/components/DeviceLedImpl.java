@@ -14,15 +14,14 @@ protected LedColor color;
 		this.color=color;
 		configure();
  	}
-	public DeviceLedImpl( String defaltRep ) throws Exception{
-		throw new Exception("Not yet implemented");
-	}
+//	public DeviceLedImpl( String defaltRep ) throws Exception{
+//		throw new Exception("Not yet implemented");
+//	}
 	protected void configure() throws Exception{
 		if( color == LedColor.RED || color == LedColor.GREEN){
 			turnOff();
 		}else throw new Exception("a led can be only RED or GREEN");			
-//		System.out.println("DeviceLedImpl configure done"  );
-	}
+ 	}
 	@Override
 	public void doSwitch() {
 		 if( on ) turnOff();

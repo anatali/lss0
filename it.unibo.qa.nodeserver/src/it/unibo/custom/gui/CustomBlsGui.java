@@ -91,7 +91,7 @@ private static CustomBlsGui curBlsGui = null;
         btnGui.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("actionPerformed " + e.getActionCommand());
+                System.out.println("CustomBlsGui actionPerformed " + e.getActionCommand() + " myActor=" + myActor);
                 if(myActor!=null) myActor.emit("local_click", "clicked("+btnName+")");
             }
         });    	  	

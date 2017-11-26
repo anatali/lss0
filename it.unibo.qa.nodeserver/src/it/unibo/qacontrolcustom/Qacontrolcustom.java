@@ -16,14 +16,12 @@ public class Qacontrolcustom extends AbstractQacontrolcustom {
  * ADDED BY THE APPLICATION DESIGNER	
  */
 	public void  createCustomButtonObject(String devType){
-		if(  devType.equals("gui")) createButtonObjecGui();
- 		if( env != null) {	//env is null if we use mock
-			((EnvFrame) env).setSize(350, 300);
-			((EnvFrame) env).setLocation(50, 150);
-		}
+		if(  devType.equals("gui")) CustomBlsGui.createCustomButtonGui(this);
+// 		if( env != null) {	//env is null if we use mock
+//			((EnvFrame) env).setSize(350, 300);
+//			((EnvFrame) env).setLocation(50, 150);
+//		}
  	}
-	protected void createButtonObjecGui(){
- 		CustomBlsGui.createCustomButtonGui(this);
-	}
+ 
 
 }

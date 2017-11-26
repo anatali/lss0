@@ -1,0 +1,44 @@
+<html>
+<head>
+<script type="text/javascript" src="../blsUtils.js"></script>
+<script src="Led.js"></script>
+<script src="blsLedObj.js"></script>
+</head>
+</html>
+
+<body>
+<h3>blsLedObj</h3>
+<!-- 
+	A LED named ledGuiId
+ -->
+<div id="ledGuiId" style="height:20px; width:3%; position: absolute; background-color:#00FF33"></div>
+<!-- 
+	OUTPUT Area
+ -->
+<div id="outView" ></div>  
+ 
+<!-- 
+	BUTTON : a click calls buttonPress('ledGuiId') where ledGuiId is the name of the led
+ -->
+<div>
+<button onclick="cleanOut();buttonPress(l1);">BUTTON</button>
+ calls <tt>buttonPress('ledGuiId')</tt> defined in 
+ <button onclick="cleanOut();loadWithMsg('','blsLedObj.js')">blsLedObj.js</button>
+</div>
+<br/> <br/>
+<button onclick="cleanOut()">clean code area</button> 
+<div id="code">
+<hr/><hr/>
+</div>
+ 
+<!-- 
+	CONFIGURATION
+	create a led object with the given gui
+ -->
+<script>
+	cleanOut();
+	var l1= new Led('l1', 'ledGuiId');
+</script> 
+
+</body>
+</htnl>

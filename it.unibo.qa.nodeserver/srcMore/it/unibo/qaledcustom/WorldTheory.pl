@@ -142,7 +142,6 @@ actorPrintln( X ):- actorobj(A), text_term(XS,X), A  <- println( XS ).
 %-------------------------------------------------
 %  User static rules about qaledcustom
 %------------------------------------------------- 
-config( led,gui).
 /*
 ------------------------------------------------------------------------
 testex :- actorPrintln( testex ),

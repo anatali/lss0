@@ -1,0 +1,39 @@
+<html>
+<head>
+<script type="text/javascript" src="blsUtils.js"></script>
+<script src="bls0.js"></script>
+</head>
+</html>
+
+<body>
+<h4>bls0.html: The ButtonLed system in Javascript and HTML5</h4>
+<!-- 
+	A LED named ledId
+ -->
+<div id="ledId" style="height:20px; width:3%; position: absolute; background-color:#00FF33"></div>
+<!-- 
+	OUTPUT Area
+ -->
+<div id="outView" ></div>  
+ 
+<!-- 
+	BUTTON : a click calls buttonPress('ledId') where ledId is the name of the led
+ -->
+<div>
+<button onclick="cleanOut();buttonPress('ledId');">BUTTON</button>
+ calls <tt>buttonPress('ledId')</tt> defined in 
+ <button onclick="cleanOut();loadWithMsg('','bls0.js')">bls0.js</button>
+</div>
+
+<br/> <br/>
+<button onclick="cleanOut()">clean code area</button> 
+<div id="code">
+<hr/><hr/>
+</div>
+<!-- 
+STARTUP
+ -->
+<script>cleanOut();buttonPress('ledId');</script> 
+
+</body>
+</htnl>

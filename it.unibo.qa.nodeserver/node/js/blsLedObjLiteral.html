@@ -1,0 +1,35 @@
+<html>
+<head>
+<script type="text/javascript" src="LedLiteral.js"></script>
+</head>
+</html>
+
+<body>
+<!-- 
+	OUTPUT Area
+ -->
+ 
+<h3>blsLedObj</h3>
+<!--  A LED named ledGuiId -->
+<div id="ledGuiId" style="height:20px; width:3%; position: absolute; background-color:#00FF33"></div>
+ <br/> <br/> 
+<!--  OUTPUT Area -->
+<div id="outView" ></div>  
+ 
+ <br/> <br/> 
+<!-- BUTTON : a click calls buttonPress('ledGuiId') where ledGuiId is the name of the led -->
+<div>
+<button onclick="buttonPress();">BUTTON</button>
+</div>
+
+<div id="outView" ></div>  
+
+ <script>
+var buttonPress = function(){
+	led.switchState();
+	led.showGuiRep();
+}
+ </script> 
+
+</body>
+</htnl>

@@ -48,7 +48,6 @@ Rules{
  
     Plan waitForClick[
     	println("BUTTON WAITS")
-//     	actorOp noOP   
     ]  
     transition stopAfter 100000 
      	whenEvent local_click : clicked(N) do forward qaledhl -m turn : switch,

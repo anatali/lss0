@@ -1,6 +1,5 @@
 /*
- * This is A MODEL, result of problem analysis 
- * written in the CUSTOM meta-model/language qa
+ * blsHlBlinkReactive.qa
  */  
 System blsHlBlinkReactive 
 Dispatch turn     		: turn(X)   
@@ -13,15 +12,9 @@ Context ctxBlsHlBlimkreactive ip [ host="localhost"  port=8029 ]  -httpserver
 //	emit local_click fromContent usercmd (N) to clicked(N) 
 //};
 
-QActor qaledhlreactive context ctxBlsHlBlimkreactive -g cyan {
-Rules{
-// 	config( led,  mock ).
-  	config( led,  gui ).
-//	config( led,  rasp ).  
-}
+QActor qaledhlreactive context ctxBlsHlBlimkreactive  {
 	Plan init normal  [         
-		[ !? config( led, X )] println( X )  ;
-    	[ !? config( led, X )] actorOp createLedObject( X )  
+ 		javaOp "it.unibo.custom.led.LedFactory.createLedWithGui(\"l1\", this)"
     ]
    	switchTo waitForCmd   
    	  
@@ -36,17 +29,15 @@ Rules{
     	onMsg turn : turn(blink)  -> switchTo doLedBlink
     ]
     
-    Plan doLedBlink[
-    	actorOp setupLedBlink
-    ]
-    reactive actorOp ledBlink
+    Plan doLedBlink[ ]
+    reactive javaOp "it.unibo.custom.led.LedFactory.ledBlink(\"l1\" )"
    		whenEnd               -> endWork
    		whenTout 30000        -> endWork    		
    		whenEvent usercmd     -> stopBlink 
    	
    	Plan stopBlink[
-    	actorOp ledblinkstop ;
-    	emit local_ledstate : ledstate(ready)
+     	actorOp suspendCurrentAction;
+    	emit local_ledstate : ledstate(ready)  //to review the button
     ]
     switchTo waitForCmd
    	
@@ -56,11 +47,11 @@ Rules{
 /*
  * CONTROL
  * Converts a click of the button into a message for the led to blink
- * WARNING: each message is STORED !!!
+ * WARNING: each message is STORED => we hide the button from the view!!!
  */  
 QActor qacontrolhlblinkreactive context ctxBlsHlBlimkreactive {
 	Plan init normal [         
-   		actorOp createButtonObject("gui", "start") //must emit local_click
+   		actorOp createButtonObject("gui", "start") 		//must emit local_click
    	]
    	switchTo waitForClick       
  
@@ -78,6 +69,5 @@ QActor qacontrolhlblinkreactive context ctxBlsHlBlimkreactive {
     ]
     transition stopAfter 3000000
      	whenEvent local_ledstate : ledstate(ready) do switchTo waitForClick
-//    finally repeatPlan	
  }
      

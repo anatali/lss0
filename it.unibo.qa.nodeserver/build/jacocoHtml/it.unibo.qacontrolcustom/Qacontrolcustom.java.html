@@ -16,15 +16,13 @@ public class Qacontrolcustom extends AbstractQacontrolcustom {
  * ADDED BY THE APPLICATION DESIGNER	
  */
 	public void  createCustomButtonObject(String devType){
-<span class="pc bpc" id="L19" title="1 of 2 branches missed.">		if(  devType.equals(&quot;gui&quot;)) createButtonObjecGui();</span>
-<span class="pc bpc" id="L20" title="1 of 2 branches missed."> 		if( env != null) {	//env is null if we use mock</span>
-<span class="nc" id="L21">			((EnvFrame) env).setSize(350, 300);</span>
-<span class="nc" id="L22">			((EnvFrame) env).setLocation(50, 150);</span>
-		}
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">		if(  devType.equals(&quot;gui&quot;)) CustomBlsGui.createCustomButtonGui(this);</span>
+// 		if( env != null) {	//env is null if we use mock
+//			((EnvFrame) env).setSize(350, 300);
+//			((EnvFrame) env).setLocation(50, 150);
+//		}
 <span class="fc" id="L24"> 	}</span>
-	protected void createButtonObjecGui(){
-<span class="fc" id="L26"> 		CustomBlsGui.createCustomButtonGui(this);</span>
-<span class="fc" id="L27">	}</span>
+ 
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

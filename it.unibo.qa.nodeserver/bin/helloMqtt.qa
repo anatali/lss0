@@ -1,0 +1,27 @@
+/*
+ * helloMqtt.qa
+ */
+System helloMqtt
+Dispatch info : info( V  )  // V=query( actorName ) | answer( actorName(NAME) )
+
+pubSubServer  "tcp://m2m.eclipse.org:1883"  
+
+
+Context ctxHelloMqtt ip [ host="localhost"  port=8079 ]   
+            
+QActor qamqttsender context ctxHelloMqtt {     
+ 	Plan init normal [         
+    	println("qamqttsender STARTS"  )  ;
+//    	connectAsPublisher  "unibo/mqtt/data";
+//    	publish "unibo/mqtt/data" for qamqttreceivet -m info : 	info( a  );
+   		println("qamqttsender ENDS"  )  
+   	]  
+} 
+QActor qamqttreceivet context ctxHelloMqtt {     
+	Plan init normal [  
+    	println("qamqttreceivet STARTS"  )  ;
+ 		connectAsSubscriber "unibo/mqtt/data"  ;
+ 		delay 5000;
+  		println("qamqttreceivet ENDS"  )  
+	]
+}       

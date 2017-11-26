@@ -10,14 +10,15 @@ EventHandler evh for alarm -print;
 QActor qajaactoivator context ctxJsToQa {
 	Plan init normal [
 		println("qajaactoivator START") ;
-	   	actorOp runNodeJs("./nodejsCode/TcpClientToQaNode.js localhost 8031", "true") ;
+		nodeOp "./nodejsCode/TcpClientToQaNode.js localhost 8031" -o ;
+//	   	actorOp runNodeJs("./nodejsCode/TcpClientToQaNode.js localhost 8031", "true") ;
     	//[?? actorOpDone(OP,R)] println( rrr(R) );
  		println("qajaactoivator END") 
 	]  		  
 }       
 
 /*
- * This actor handles message ent by the NodeJs process by distinguishing between
+ * This actor handles message sent by the NodeJs process by distinguishing between
  * messages (dispatch info : info(X))  and events (alarm   : alarm(X)).
  */
 QActor qareceiver context ctxJsToQa {

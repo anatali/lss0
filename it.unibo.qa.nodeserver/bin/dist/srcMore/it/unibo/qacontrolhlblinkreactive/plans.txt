@@ -1,6 +1,0 @@
-plan(1,init, sentence(true,move(actorOp(createButtonObject( "gui","start"))),'','' ))
-plan(1,waitForClick, sentence(true,move(print("qacontrolhlblink waitForClick")),'','' ))
-plan(2,waitForClick, sentence(true,move(actorOp(showTheButton)),'','' ))
-plan(1,activateTheLed, sentence(true,move(actorOp(hideTheButton)),'','' ))
-plan(2,activateTheLed, sentence(true,forward(qaledhlreactive, turn,turn( blink)),'','' ))
-plan(3,activateTheLed, sentence(true,move(resumeplan),'','' ))

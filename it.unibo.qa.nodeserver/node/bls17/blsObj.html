@@ -1,0 +1,52 @@
+<html>
+<head>
+<script type="text/javascript" src="../blsUtils.js"></script>
+<script src="Led.js"></script>
+<script src="Button.js"></script>
+<script src="blsObj.js"></script>
+</head>
+</html>
+
+<body>
+<h3>blsObj</h3>
+<!-- 
+	A LED named led1
+ -->
+<div id="l1GuiId" style="height:20px; width:3%; position: absolute; background-color:#00FF33"></div>
+<!-- 
+	OUTPUT Area
+ -->
+<div id="outView" ></div>  
+ 
+<!-- 
+	BUTTON : a click calls b1.press()
+ -->
+<div>
+<button onclick="cleanOut(); b1.press()">BUTTON</button>
+ calls <tt>b1.press()</tt> See : 
+ <button onclick="cleanOut();showLocalCode(configure)">configure</button>, 
+ <button onclick="cleanOut();showLocalCode(Led)">Led</button>, 
+ <button onclick="cleanOut();showLocalCode(Button)">Button</button>
+</div>
+<br/> <br/>
+<button onclick="cleanOut()">clean code area</button> 
+<div id="code">
+<hr/><hr/>
+</div>
+ 
+<!-- 
+	CONFIGURATION
+	create a button that, when pressed, updates a led with the given gui
+ -->
+<script>
+var configure = function (){
+	//configure the system
+	l1 = new Led( "l1", 'l1GuiId');
+	b1 = new Button( 'b1', l1 );
+}
+cleanOut();
+configure();
+</script> 
+
+</body>
+</htnl>

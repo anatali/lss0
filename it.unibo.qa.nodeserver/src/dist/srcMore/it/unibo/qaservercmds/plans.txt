@@ -1,5 +1,0 @@
-plan(1,init, sentence(true,move(actorOp(noOp)),'','' ))
-plan(1,handleServerCmd, sentence(true,printCurrentMessage(''),'','' ))
-plan(2,handleServerCmd, sentence(true,msgswitch(serverCmd, usercmd( X) , move(print(data( X)))),'','' ))
-plan(3,handleServerCmd, sentence(true,msgswitch(serverCmd, usercmd( X) , move(actorOp(sendAnswer( X)))),'','' ))
-plan(4,handleServerCmd, sentence(true,move(resumeplan),'','' ))

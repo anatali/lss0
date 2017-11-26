@@ -8,14 +8,17 @@ EventHandler evh for  sonarDetect , sonar -print ;
 QActor rover context ctxRover { 
 	Plan init normal [    
 	    	println("rover START");	    	
-	    	actorOp workWithUnity("localhost") ;  
-	   		actorOp createSimulatedActor("rover","Prefabs/CustomActor")  ;	    	
+	    	connectUnity "localhost";
+	    	createUnityObject "rover" ofclass "Prefabs/CustomActor" ;
+// 	    	actorOp workWithUnity("localhost") ;  
+// 	   		actorOp createSimulatedActor("rover","Prefabs/CustomActor")  ;	
+ 			backwards 70 time ( 800 ) ;    	
    	    	right 50 time ( 1000 )   //position
   	    ] 
-	    switchTo moveVitualRobot
+	    switchTo moveVitualRobot   
 		
 	Plan moveVitualRobot [
-		println("moveVitualRobot")
+//		println("moveVitualRobot")
 	]
 	reactive onward 40 time ( 5000 )      
 	    	whenEnd -> endOfMove
@@ -25,10 +28,10 @@ QActor rover context ctxRover {
 	finally repeatPlan
 	 
 	Plan handleSonar resumeLastPlan [
-   	    onward 50 time ( 300 ) ;   //out of sonar range
-   	    stop 50 time ( 1000 )      //stop for a while ...
+//   	    onward 40 time ( 200 ) ;   //out of sonar range
+   	    stop  0 time ( 500 )      //stop for a while ...
 	]	
-	Plan handleObstacle resumeLastPlan [ backwards 50 time ( 3500 ) ]
+	Plan handleObstacle resumeLastPlan [ backwards 50 time ( 2500 ) ]
 	Plan endOfMove resumeLastPlan [ println("endOfMove") ]
 	Plan handleTout   [ println("handleTout") ]
 		

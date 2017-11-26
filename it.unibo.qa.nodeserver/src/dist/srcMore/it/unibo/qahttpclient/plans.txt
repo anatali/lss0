@@ -1,4 +1,0 @@
-plan(1,init, sentence(true,move(actorOp(noOp)),'','' ))
-plan(1,interactWithAServer, sentence(-  data( X) ,move(actorOp(sendPut( X,"http://localhost:8080"))),'','' ))
-plan(2,interactWithAServer, sentence(true,delay( 500) ,'','' ))
-plan(3,interactWithAServer, sentence(true,move(actorOp(sendGet( "http://localhost:8080"))),'','' ))

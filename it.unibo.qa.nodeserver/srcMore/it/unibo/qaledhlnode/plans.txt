@@ -1,0 +1,3 @@
+plan(1,init, sentence( config( led,nodePc),not here StateMoveNormal,'','' ))
+plan(2,init, sentence( config( led,nodeRasp),not here StateMoveNormal,'','' ))
+plan(1,waitForCmd, sentence(true,move(print("qaledcustom WAITS")),'','' ))

@@ -19,24 +19,30 @@ EventHandler evconvert for usercmd -print {
   
 QActor qaledhlnode context ctxBlsHlNode  {
 Rules{
-	config( led,  nodePc ).  
+//	config( led,  pcgui ).  
+ 	config( led,  nodePc ).  
 // 	config( led,  nodeRasp ).  
 
 	value("1").
-	value("2"). 
+	value("2").   
 	value(3). 
-}
-	Plan init normal  [          
-     	[ !? config( led, nodePc )]   nodeOp "node/blsOop/LedHlPc.js"	;
+}  
+	Plan init normal  [       
+		[ !? config( led, pcgui )]    javaOp "it.unibo.custom.led.LedFactory.createLedWithGui(\"l1\", this)"   ;
+     	[ !? config( led, nodePc )]   nodeOp "C:/repoGitHub/it.unibo.qa.nodeserver/node/blsOop/LedHlPc.js" 	;  //DO NOT set -o
      	[ !? config( led, nodeRasp )] nodeOp "node/blsOop/LedHlRasp.js"	
     ]
    	switchTo waitForCmd   
    	      
   	Plan waitForCmd [ println("qaledcustom WAITS") ]
     transition stopAfter 3000000
-      	whenMsg turn : switch(N) do actorOp writeNodeOutput(N)  
-    finally repeatPlan	
+      	whenMsg [ !? config( led, pcgui ) ] turn : switch(N) do javaOp "it.unibo.custom.led.LedFactory.ledSwitch(\"l1\")"  ,
+//       	whenMsg [ !? config( led, nodePc )] turn : switch(N) do println( writeNodeOutput(N)  ),
+       	whenMsg [ !? config( led, nodePc )] turn : switch(N) do actorOp writeNodeOutput(N) 
+    finally repeatPlan	 
 }
+
+
  
 QActor qacontrolhlnode context ctxBlsHlNode {
   	Plan init normal [         
@@ -47,7 +53,7 @@ QActor qacontrolhlnode context ctxBlsHlNode {
     Plan waitForClick[  ]  
     transition stopAfter 6000000 
      	whenEvent local_click : clicked(N) do forward qaledhlnode -m turn : switch(N), 
-     	whenEvent usercmd : usercmd(X) do forward qaledhlnode -m turn : switch(X)
+     	whenEvent usercmd : usercmd(X)     do forward qaledhlnode -m turn : switch(X)
     finally repeatPlan	 
 }
      

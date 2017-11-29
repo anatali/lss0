@@ -10,10 +10,10 @@ QActor radarguibase context ctxRadarBase -g cyan {
         actorOp activateGui        
     ]
 switchTo waitSonarInfo    
-Plan waitSonarInfo [ actorOp noOp] 
+Plan waitSonarInfo [  ] 
        transition stopAfter 10000 
-        whenEvent polar   -> handleSonarInfo ,
-        whenMsg  polarMsg -> handleSonarInfo 
+         whenEvent polar   -> handleSonarInfo ,
+         whenMsg  polarMsg -> handleSonarInfo 
        finally repeatPlan  
 Plan handleSonarInfo resumeLastPlan [
 	onMsg  polarMsg : p(D,A) -> actorOp sendDataToGui( D,A )  ;

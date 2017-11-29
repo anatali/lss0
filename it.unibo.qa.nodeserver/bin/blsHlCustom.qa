@@ -4,26 +4,24 @@
  */  
 System blshlCustom  
 Dispatch turn     : switch     
-Event local_click : clicked(N)  //N : natural
-Event usercmd     : usercmd(N)
+Event local_click : clicked(N)  //N : natural 
+Event usercmd     : usercmd(N)    
 
-Context ctxBlsHlCustom ip [ host="localhost"  port=8029 ]  //-httpserver   
+Context ctxBlsHlCustom ip [ host="localhost"  port=8029 ] //-httpserver       
 EventHandler evconvert for usercmd -print {
 	emit local_click fromContent usercmd (N) to clicked(N) 
 };
-
-QActor qaledhlcustom context ctxBlsHlCustom  {
+QActor qaledhlcustom context ctxBlsHlCustom  {  
 	Plan init normal  [         
      	javaOp "it.unibo.custom.led.LedFactory.createLedWithGui(\"l1\", this)" 
     ]
    	switchTo waitForCmd   
-   	  
+   	    
   	Plan waitForCmd [  ]
     transition stopAfter 3000000
     	whenMsg turn : switch do javaOp "it.unibo.custom.led.LedFactory.ledSwitch(\"l1\")"
     finally repeatPlan	
 }
- 
 QActor qacontrolhlcustom context ctxBlsHlCustom {
  	Plan init normal [         
    		javaOp "it.unibo.custom.button.ButtonFactory.createButtonWithGui(\"click\",this);" 

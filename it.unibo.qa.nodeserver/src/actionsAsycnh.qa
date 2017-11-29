@@ -1,0 +1,31 @@
+/*
+ * actionsAsycnh.qa
+ */  
+System qaActionsAsycnh
+Dispatch endAction  : endAction(A,R)
+Dispatch endActorOp : endActorOp(A,R)
+
+/*
+*/  
+Context ctxReactiveAsycnhActions  ip[ host="localhost" port=8078 ]  //-g cyan
+
+ QActor musicreactiveasycnh context ctxReactiveAsycnhActions{   
+ 	Plan init normal[  
+  		actorOp fibonacciActorTest( "actionFibo", 20 )   ;  	//-asynch vin QActor
+    	sound time(3000) file("./audio/illogical_most2.wav")     ;
+    	sound time(15000) file("./audio/music_interlude20.wav") -asynch   ;
+    	sound time(3000) file("./audio/computer_complex3.wav")     ;
+  		println("musicreactive init END")		    
+ 	]  
+    switchTo handleActionEnd	    
+   	 
+    	 
+   	 
+  	Plan handleActionEnd [  ] 
+  	transition stopAfter 7000 
+   		whenMsg endAction   : endAction(A,R)  do println( endActionMsg(A,R) ),
+   		whenMsg endActorOp  : endActorOp(actionFibo,R) do  println( endActorMsg( R) )
+   		finally repeatPlan    
+  }
+  
+

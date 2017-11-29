@@ -81,9 +81,9 @@ public abstract class AbstractRover extends QActor {
 	    	temporaryStr = "\"rover START\"";
 	    	println( temporaryStr );  
 	    	initUnityConnection("localhost");
-	    	createSimulatedActor("rover", "Prefabs/CustomActor");
+	    	createSimulatedActor("rover", "Prefabs/CustomActor"); 
 	    	execUnity("rover","backward",800, 70,0); //rover: default namefor virtual robot		
-	    	execUnity("rover","right",1000, 50,0); //rover: default namefor virtual robot		
+	    	execUnity("rover","right",1000, 60,0); //rover: default namefor virtual robot		
 	    	//switchTo moveVitualRobot
 	        switchToPlanAsNextState(pr, myselfName, "rover_"+myselfName, 
 	              "moveVitualRobot",false, false, null); 

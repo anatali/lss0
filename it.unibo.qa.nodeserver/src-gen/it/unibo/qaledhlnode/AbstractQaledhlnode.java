@@ -74,8 +74,11 @@ public abstract class AbstractQaledhlnode extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
+	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,pcgui)" )) != null ){
+	    	it.unibo.custom.led.LedFactory.createLedWithGui("l1", this);
+	    	}
 	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,nodePc)" )) != null ){
-	    	runNodeJs( "node/blsOop/LedHlPc.js", "false"); 
+	    	runNodeJs( "C:/repoGitHub/it.unibo.qa.nodeserver/node/blsOop/LedHlPc.js", "false"); 
 	    	}
 	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,nodeRasp)" )) != null ){
 	    	runNodeJs( "node/blsOop/LedHlRasp.js", "false"); 
@@ -104,12 +107,27 @@ public abstract class AbstractQaledhlnode extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	String parg = "writeNodeOutput(N)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@74dc5915
+	            	//println("WARNING: variable substitution not yet implmented " ); 
+	            	it.unibo.custom.led.LedFactory.ledSwitch("l1");
+	             }
+	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
+	          }catch(Exception e ){  
+	             println( getName() + " plan=waitForCmd WARNING:" + e.getMessage() );
+	             //QActorContext.terminateQActorSystem(this); 
+	          }
+	          },
+	           
+	          () -> {	//AD HOC state to execute an action and resumeLastPlan
+	          try{
+	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
+	            //ActionSwitch for a message or event
+	             if( currentMessage.msgContent().startsWith("switch") ){
+	            	String parg = "writeNodeOutput(N)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@29d7a4ad
+	            	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,nodePc)" )) != null )
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("switch(N)"), 
 	            		                Term.createTerm("switch(N)"), 
 	            		                Term.createTerm(currentMessage.msgContent()), parg);
-	            	println("uuuuuuuuuuuuuuuuuu " + parg);
 	            	if(parg != null) actorOpExecute(parg, false); //JUNE2017 OCT17
 	            	}
 	             }
@@ -120,7 +138,7 @@ public abstract class AbstractQaledhlnode extends QActor {
 	          }
 	          }
 	          },//new StateFun[]
-	          new String[]{"true","M","turn" },
+	          new String[]{" !?config(led,pcgui)" ,"M","turn", " !?config(led,nodePc)" ,"M","turn" },
 	          3000000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_waitForCmd){  
 	    	 println( getName() + " plan=waitForCmd WARNING:" + e_waitForCmd.getMessage() );

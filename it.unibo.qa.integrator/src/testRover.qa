@@ -4,7 +4,7 @@ Event sonar          : sonar(SONAR, TARGET, DISTANCE) //From (virtual) sonar
 
 Context  ctxRover  ip [ host="localhost"  port=8070 ]         
 EventHandler evh for  sonarDetect , sonar -print ;   
-
+ 
 QActor rover context ctxRover { 
 	Plan init normal [    
 	    	println("rover START");	    	
@@ -13,7 +13,7 @@ QActor rover context ctxRover {
 // 	    	actorOp workWithUnity("localhost") ;  
 // 	   		actorOp createSimulatedActor("rover","Prefabs/CustomActor")  ;	
  			backwards 70 time ( 800 ) ;    	
-   	    	right 50 time ( 1000 )   //position
+   	    	right 60 time ( 1000 )   //position
   	    ] 
 	    switchTo moveVitualRobot   
 		

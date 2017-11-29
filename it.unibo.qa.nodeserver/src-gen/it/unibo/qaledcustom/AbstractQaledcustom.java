@@ -100,7 +100,7 @@ public abstract class AbstractQaledcustom extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@599c9d6a
+	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@670911c2
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("switch"), 
 	            		                Term.createTerm("switch"), 

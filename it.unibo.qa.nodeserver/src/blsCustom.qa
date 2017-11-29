@@ -12,11 +12,9 @@ Event usercmd     : usercmd(N)
  
 Context ctxBlsCustom ip [ host="localhost"  port=8029 ] -httpserver   
 EventHandler evh for local_click -print ;
-
 EventHandler evconvert for usercmd -print {
 	emit local_click fromContent usercmd(N) to clicked(N) 
 };
-  
 QActor qaledcustom context ctxBlsCustom  {
  	Plan init normal  [          
       	  actorOp createCustomLedObject( gui )  
@@ -28,7 +26,6 @@ QActor qaledcustom context ctxBlsCustom  {
     	whenMsg turn : switch do  actorOp ledSwitch
     finally repeatPlan	
 }
- 
 QActor qacontrolcustom context ctxBlsCustom {
 	Plan init normal [         
    		actorOp createCustomButtonObject("gui") //must emit local_click

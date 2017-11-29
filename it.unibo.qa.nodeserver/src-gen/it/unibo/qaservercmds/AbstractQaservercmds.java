@@ -75,6 +75,8 @@ public abstract class AbstractQaservercmds extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_init",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "init";  
+	    	temporaryStr = "\"qaservercmds STARTED\"";
+	    	println( temporaryStr );  
 	    	//bbb
 	     msgTransition( pr,myselfName,"qaservercmds_"+myselfName,false,
 	          new StateFun[]{stateTab.get("handleServerCmd") },//new StateFun[]
@@ -102,7 +104,7 @@ public abstract class AbstractQaservercmds extends QActor {
 	    	}
 	    	//onMsg
 	    	if( currentMessage != null && currentMessage.msgId().equals("serverCmd") ){
-	    		String parg = "sendAnswer(X)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@39c8f8c2
+	    		String parg = "sendAnswer(X)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@7c8cb432
 	    		{/* ActorOp */
 	    		parg =  updateVars( Term.createTerm("usercmd(X)"), 
 	    			                Term.createTerm("usercmd(X)"), 

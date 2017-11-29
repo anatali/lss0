@@ -111,8 +111,6 @@ public abstract class AbstractRadarguibase extends QActor implements IActivity{
 	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_waitSonarInfo",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "waitSonarInfo";  
-	    	parg = "noOp"; 
-	    	actorOpExecute(parg, false);	//OCT17		 
 	    	//bbb
 	     msgTransition( pr,myselfName,"radarguibase_"+myselfName,false,
 	          new StateFun[]{stateTab.get("handleSonarInfo"), stateTab.get("handleSonarInfo") },//new StateFun[]
@@ -130,7 +128,7 @@ public abstract class AbstractRadarguibase extends QActor implements IActivity{
 	    	String myselfName = "handleSonarInfo";  
 	    	//onMsg
 	    	if( currentMessage != null && currentMessage.msgId().equals("polarMsg") ){
-	    		String parg = "sendDataToGui(D,A)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@336094ee
+	    		String parg = "sendDataToGui(D,A)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@377483f1
 	    		{/* ActorOp */
 	    		parg =  updateVars( Term.createTerm("p(Distance,Angle)"), 
 	    			                Term.createTerm("p(D,A)"), 
@@ -140,7 +138,7 @@ public abstract class AbstractRadarguibase extends QActor implements IActivity{
 	    	}
 	    	//onEvent
 	    	if( currentEvent != null && currentEvent.getEventId().equals("polar") ){
-	    	 		String parg = "sendDataToGui(D,A)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@336094ee
+	    	 		String parg = "sendDataToGui(D,A)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@377483f1
 	    	 		{/* ActorOp */
 	    	 		parg =  updateVars( Term.createTerm("p(Distance,Angle)"), 
 	    	 			                Term.createTerm("p(D,A)"), 

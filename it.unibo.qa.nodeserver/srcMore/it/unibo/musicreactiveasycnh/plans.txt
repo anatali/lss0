@@ -1,0 +1,5 @@
+plan(1,init, sentence(true,move(actorOp(fibonacciActorTest( "actionFibo",20))),'','' ))
+plan(2,init, sentence(true,move(playsound('./audio/illogical_most2.wav',3000)),'','' ))
+plan(3,init, sentence(true,move(playsound('./audio/music_interlude20.wav',15000)),'','' ))
+plan(4,init, sentence(true,move(playsound('./audio/computer_complex3.wav',3000)),'','' ))
+plan(5,init, sentence(true,move(print("musicreactive init END")),'','' ))

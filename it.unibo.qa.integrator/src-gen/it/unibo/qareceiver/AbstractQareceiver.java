@@ -96,7 +96,7 @@ public abstract class AbstractQareceiver extends QActor {
 	          }
 	          },//new StateFun[]
 	          new String[]{"true","E","alarm", "true","M","info" },
-	          10000, "handleToutBuiltIn" );//msgTransition
+	          60000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_init){  
 	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 

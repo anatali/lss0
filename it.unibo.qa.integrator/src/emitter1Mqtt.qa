@@ -6,15 +6,17 @@
 System emitter1Mqtt   
 Dispatch polarMsg	: p( Distance, Angle  )  
 
-pubSubServer  "tcp://localhost:1883"	//"tcp://m2m.eclipse.org:1883"   
+pubSubServer  "tcp://m2m.eclipse.org:1883" 	//"tcp://m2m.eclipse.org:1883"   "tcp://localhost:1883"
 
 Context  ctxEmitter1Mqtt  ip [ host="localhost"   port=5073 ]   -g yellow //localhost     192.168.1.3     
- 
+   
 QActor sensorsonar context ctxEmitter1Mqtt  { 
 Rules{
 	p(10,30).	p(20,30).	p(30,30).	p(40,30).	p(50,30).	  
 	p(60,30).   p(70,30).	p(80,30).	p(10,30).   p(20,30).	
 	dataToPublish( radarguimqtt, D,A ) :- retract( p(D,A) ), actorPrintln( piblishing(D,A) ).
+	
+	nameqa( radarguimqtt ).
 } 
  	Plan init normal  [      
  		 connectAsPublisher "unibo/mqtt/radar"
@@ -22,8 +24,11 @@ Rules{
   	switchTo dopublish   	
  	Plan dopublish  [		
  		delay  1500 ; 
+// 		[ !? dataToPublish(Q,D,A) ] println( dataToPublish(Q,D,A) );
  		[ !? dataToPublish(Q,D,A) ] publish "unibo/mqtt/radar" for Q -m polarMsg : p( D, A  ) else endPlan "sensorsonar ends"
- 	]
+
+//		[ !? nameqa( Q ) ] publish "unibo/mqtt/radar" for Q -m polarMsg : p( enrico, 0  ) 
+   	]
  	finally repeatPlan
 }
 

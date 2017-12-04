@@ -61,12 +61,12 @@ BASIC SUPPORT (test, akka)
 /*
 UNIBO SUPPORTS
 */		
-	  compile fileTree(dir: '../it.unibo.iss.libs/libs/unibo', include: 'uniboInterfaces.jar')
-	  compile fileTree(dir: '../it.unibo.iss.libs/libs/unibo', include: 'unibonoawtsupports.jar')
-	  compile fileTree(dir: '../it.unibo.iss.libs/libs/unibo', include: 'uniboEnvBaseAwt.jar')
-	  compile fileTree(dir: '../it.unibo.iss.libs/libs/unibo', include: '2p301.jar')
-	  compile fileTree(dir: '../it.unibo.iss.libs/libs/unibo', include: 'qa18Akka.jar')
-	  compile fileTree(dir: '../it.unibo.iss.libs/libs/http',  include: 'nanoHTTPD.jar')
+	  compile fileTree(dir: './libs/unibo', include: 'uniboInterfaces.jar')
+	  compile fileTree(dir: './libs/unibo', include: 'unibonoawtsupports.jar')
+	  compile fileTree(dir: './libs/unibo', include: 'uniboEnvBaseAwt.jar')
+	  compile fileTree(dir: './libs/unibo', include: '2p301.jar')
+	  compile fileTree(dir: './libs/unibo', include: 'qa18Akka.jar')
+	  compile fileTree(dir: './libs/http',  include: 'nanoHTTPD.jar')
 /*
 JSON
 */
@@ -83,8 +83,8 @@ MQTT
 /*
 TO BE ADDED by the application designer: BLUETOOTH
 */
-	  //compile fileTree(dir: '../it.unibo.iss.libs/libs/bth', include: 'bluecove-2.1.1-SNAPSHOT.jar')
-	  //compile fileTree(dir: '../it.unibo.iss.libs/libs/bth', include: 'bluecove-gpl-2.1.1-SNAPSHOT.jar')
+	  //compile fileTree(dir: './libs/bth', include: 'bluecove-2.1.1-SNAPSHOT.jar')
+	  //compile fileTree(dir: './libs/bth', include: 'bluecove-gpl-2.1.1-SNAPSHOT.jar')
 
 /*
 TO BE ADDED by the application designer: Raspberry GPIO support
@@ -94,9 +94,9 @@ TO BE ADDED by the application designer: Raspberry GPIO support
 /*
 TO BE ADDED by the application designer for ButtonLed  
 */	
-//compile fileTree(dir: '../it.unibo.iss.libs/libs/unibo', include: 'blsHL.jar')
-//compile fileTree(dir: '../it.unibo.iss.libs/libs/unibo', include: 'blsGUI.jar')
-//compile fileTree(dir: '../it.unibo.iss.libs/libs/unibo', include: 'blsRasp.jar')
+//compile fileTree(dir: './libs/unibo', include: 'blsHL.jar')
+//compile fileTree(dir: './libs/unibo', include: 'blsGUI.jar')
+//compile fileTree(dir: './libs/unibo', include: 'blsRasp.jar')
 
 /*
 TO BE ADDED by the application designer for: RXJAVA

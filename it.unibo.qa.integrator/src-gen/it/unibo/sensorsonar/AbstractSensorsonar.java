@@ -75,7 +75,7 @@ public abstract class AbstractSensorsonar extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
 	    	//ConnectToPublish
-	    	connectToSend( this.getName(), "tcp://localhost:1883", "unibo/mqtt/radar");
+	    	connectToSend( this.getName(), "tcp://m2m.eclipse.org:1883", "unibo/mqtt/radar");
 	    	//switchTo dopublish
 	        switchToPlanAsNextState(pr, myselfName, "sensorsonar_"+myselfName, 
 	              "dopublish",false, false, null); 

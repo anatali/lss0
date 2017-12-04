@@ -153,6 +153,7 @@ p( 80,30).
 p( 10,30).
 p( 20,30).
 dataToPublish( radarguimqtt,D,A):-retract( p( D,A)),actorPrintln( piblishing( D,A)).
+nameqa( radarguimqtt).
 /*
 ------------------------------------------------------------------------
 testex :- actorPrintln( testex ),

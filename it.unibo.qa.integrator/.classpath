@@ -23,10 +23,4 @@
 	<classpathentry path="C:/Users/anatali/.gradle/caches/modules-2/files-2.1/com.typesafe/ssl-config-core_2.11/0.2.1/3d2e6a36a7427d6f9d3921c91d6ac1f57dc47b57/ssl-config-core_2.11-0.2.1.jar" kind="lib" sourcepath="C:/Users/anatali/.gradle/caches/modules-2/files-2.1/com.typesafe/ssl-config-core_2.11/0.2.1/c5a33d3df03bc43c46282b75328e7578df6fdf17/ssl-config-core_2.11-0.2.1-sources.jar"/>
 	<classpathentry path="C:/Users/anatali/.gradle/caches/modules-2/files-2.1/org.agrona/agrona/0.9.5/ffca27e0107b464f7f7054d915d9e87428b23055/agrona-0.9.5.jar" kind="lib" sourcepath="C:/Users/anatali/.gradle/caches/modules-2/files-2.1/org.agrona/agrona/0.9.5/13375881c0b8767327d8b43cf8e58971bc8e9184/agrona-0.9.5-sources.jar"/>
 	<classpathentry path="C:/Users/anatali/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.4/7369d653bcfa95d321994660477a4d7e81d7f490/scala-parser-combinators_2.11-1.0.4.jar" kind="lib" sourcepath="C:/Users/anatali/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.4/2c66955d5543265eb450de4e9ec7ac467d94be54/scala-parser-combinators_2.11-1.0.4-sources.jar"/>
-	<classpathentry path="C:/repoGitHub/it.unibo.qa.integrator/libs/unibo/uniboInterfaces.jar" kind="lib"/>
-	<classpathentry path="C:/repoGitHub/it.unibo.qa.integrator/libs/unibo/unibonoawtsupports.jar" kind="lib"/>
-	<classpathentry path="C:/repoGitHub/it.unibo.qa.integrator/libs/unibo/uniboEnvBaseAwt.jar" kind="lib"/>
-	<classpathentry path="C:/repoGitHub/it.unibo.qa.integrator/libs/unibo/2p301.jar" kind="lib"/>
-	<classpathentry path="C:/repoGitHub/it.unibo.qa.integrator/libs/unibo/qa18Akka.jar" kind="lib"/>
-	<classpathentry path="C:/repoGitHub/it.unibo.qa.integrator/libs/http/nanoHTTPD.jar" kind="lib"/>
 </classpath>

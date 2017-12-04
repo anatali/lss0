@@ -3,12 +3,9 @@
 This code is generated only ONCE
 */
 package it.unibo.qaservercmds;
-import it.unibo.contactEvent.interfaces.IEventItem;
 import it.unibo.is.interfaces.IOutputEnvView;
-import it.unibo.is.interfaces.protocols.IConnInteraction;
 import it.unibo.qactors.QActorContext;
-import it.unibo.qactors.QActorMessage;
-import it.unibo.qactors.akka.ReceiverAgent;
+
 
 public class Qaservercmds extends AbstractQaservercmds { 
 	public Qaservercmds(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
@@ -17,16 +14,17 @@ public class Qaservercmds extends AbstractQaservercmds {
 /*
  * ADDED BY THE APPLICATION DESIGNER	
  */
-	public void sendAnswer( String msg ) {
-		try {
-//			String answer= this.getName(), "answer", "nodeserver", "dispatch", "answer("+msg+")");
-			IEventItem qamsg = this.currentEvent;  
-			IConnInteraction conn = ReceiverAgent.externalEventConns.get(  "nodeserver" );
-//			println("sendAnswer conn= " + conn);
-			if( conn != null ) conn.sendALine("answer("+msg+")");
-		} catch (Exception e) {
-// 			e.printStackTrace();
-			println("sendAnswer ERROR " + e.getMessage() );
-		}
+	public void sendAnswer( String serverName, String msg ) {
+		sendAnswerToServer(serverName,msg);
+//		try {
+////			String answer= this.getName(), "answer", "nodeserver", "dispatch", "answer("+msg+")");
+////			IEventItem qamsg = this.currentEvent;  
+//			IConnInteraction conn = ReceiverAgent.externalEventConns.get( serverName  );
+////			println("sendAnswer conn= " + conn);
+//			if( conn != null ) conn.sendALine("answer("+msg+")");
+//		} catch (Exception e) {
+//// 			e.printStackTrace();
+//			println("sendAnswer ERROR " + e.getMessage() );
+//		}
 	}
 }

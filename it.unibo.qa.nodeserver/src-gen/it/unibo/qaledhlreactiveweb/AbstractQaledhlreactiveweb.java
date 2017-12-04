@@ -77,10 +77,8 @@ public abstract class AbstractQaledhlreactiveweb extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
-	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,X)" )) != null ){
-	    	parg = "createLedObject(X)"; 
-	    	parg = QActorUtils.substituteVars(guardVars,parg);
-	    	actorOpExecute(parg, false);	//OCT17		 
+	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,gui)" )) != null ){
+	    	it.unibo.custom.led.LedFactory.createLedWithGui("l1", this);
 	    	}
 	    	//switchTo waitForCmd
 	        switchToPlanAsNextState(pr, myselfName, "qaledhlreactiveweb_"+myselfName, 
@@ -137,17 +135,12 @@ public abstract class AbstractQaledhlreactiveweb extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("doLedBlink",-1);
 	    	String myselfName = "doLedBlink";  
-	    	temporaryStr = "\"qaledhlreactiveweb doLedBlink\"";
-	    	println( temporaryStr );  
-	    	parg = "setupLedBlink"; 
-	    	actorOpExecute(parg, false);	//OCT17		 
 	    	Callable<String> body;
 	    int ractionTimeOut=0;
 	    ractionTimeOut = 30000;
 	    body= new Callable<String>(){
 	    	public String call() throws Exception {
-	      				parg = "ledBlink"; 
-	      				actorOpExecute(parg, false);	//OCT17		 
+	      				it.unibo.custom.led.LedFactory.ledBlink("l1" );
 	    			return currentActionResult;
 	    		}		
 	    		}; 
@@ -172,7 +165,7 @@ public abstract class AbstractQaledhlreactiveweb extends QActor {
 	    	String myselfName = "stopBlink";  
 	    	temporaryStr = "\"qaledhlreactiveweb stopBlink\"";
 	    	println( temporaryStr );  
-	    	parg = "ledblinkstop"; 
+	    	parg = "suspendCurrentAction"; 
 	    	actorOpExecute(parg, false);	//OCT17		 
 	    	//switchTo waitForCmd
 	        switchToPlanAsNextState(pr, myselfName, "qaledhlreactiveweb_"+myselfName, 

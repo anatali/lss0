@@ -154,7 +154,7 @@ public abstract class AbstractQahttpclient extends QActor {
 	    	if( (guardVars = QActorUtils.evalTheGuard(this, " not !?data(X)" )) != null )
 	    	{
 	    	println( "qahttpclient ends" ); 
-	    	pr.terminate(); 
+	    	pr.terminate(); return;
 	    	}
 	    	//switchTo putData
 	        switchToPlanAsNextState(pr, myselfName, "qahttpclient_"+myselfName, 
@@ -180,7 +180,7 @@ public abstract class AbstractQahttpclient extends QActor {
 	    	actorOpExecute(parg, false);	//OCT17		 
 	    	}
 	    	else{ println( "no more data" ); 
-	    	pr.terminate(); 
+	    	pr.terminate(); return;
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"qahttpclient_"+myselfName,true,true);
 	    }catch(Exception e_putData){  

@@ -49,7 +49,7 @@ var qaanswer = "";
  		qaanswer = qaanswer + data;
   		if( qaanswer === "" ) return;
 		if( data.includes("\n") ){
-			console.log(  "uu "+qaanswer );
+			console.log(  "NodeServerCrud: "+qaanswer );
 			qaanswer = "";
 		}
 	});  
@@ -98,7 +98,6 @@ http.createServer(function(request, response) {
 		request.on('data', function(chunk) { //a chunck is a byte array
  		    item = item + chunk; 	
  		    console.log('method=' + method + " data=" + item);
-//			emitQaEvent( item );
 		 });
 		request.on('end', function() {
 				//dataStore = Buffer.concat(dataStore).toString();
@@ -132,9 +131,9 @@ console.log('Server running on 8080');
 
 function emitQaEvent( payload ) {
  	try{
- 		var msg = "msg(usercmd,event,nodeserver,none,usercmd('" +  payload +"')," + msgNum++ +")";
+ 		var msg = "msg(usercmd,event,nodeserver,none,usercmd(nodeserver,'" +  payload +"')," + msgNum++ +")";
   		if(socketToQaCtx !== null ){
-  	  		console.log('emitQaEvent mmsg=' + msg    );
+  	  		console.log('emitQaEvent mmsg=' + msg    ); 
   			socketToQaCtx.write(msg+"\n");
   			//TDOO: wait an qaanswer from the qa before responding to the HTTP user
   		}

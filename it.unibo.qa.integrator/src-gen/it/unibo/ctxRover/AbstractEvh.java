@@ -21,6 +21,30 @@ protected IEventItem event;
 //showMsg( "---------------------------------------------------------------------" );	
 showMsg( event.getPrologRep()  );				 
 //showMsg( "---------------------------------------------------------------------" );	
+		//RaiseOtherEvent
+		{String newcontent = "p(DISTANCE,60)";
+		newcontent =  updateVars( Term.createTerm("sonar(sonar1,TARGET,DISTANCE)"), 
+			                Term.createTerm("sonar(sonar1,TARGET,DISTANCE)"), 
+			                Term.createTerm( event.getMsg() ), newcontent);
+		//println("newcontent="+newcontent);
+		if( newcontent != null ){ emit( "polar", newcontent ); }
+		}
+		//RaiseOtherEvent
+		{String newcontent = "p(DISTANCE,120)";
+		newcontent =  updateVars( Term.createTerm("sonar(sonar2,TARGET,DISTANCE)"), 
+			                Term.createTerm("sonar(sonar2,TARGET,DISTANCE)"), 
+			                Term.createTerm( event.getMsg() ), newcontent);
+		//println("newcontent="+newcontent);
+		if( newcontent != null ){ emit( "polar", newcontent ); }
+		}
+		//RaiseOtherEvent
+		{String newcontent = "p(50,90)";
+		newcontent =  updateVars( Term.createTerm("sonarDetect(X)"), 
+			                Term.createTerm("sonarDetect(X)"), 
+			                Term.createTerm( event.getMsg() ), newcontent);
+		//println("newcontent="+newcontent);
+		if( newcontent != null ){ emit( "polar", newcontent ); }
+		}
 	}//handleCurrentEvent
 	
 	@Override

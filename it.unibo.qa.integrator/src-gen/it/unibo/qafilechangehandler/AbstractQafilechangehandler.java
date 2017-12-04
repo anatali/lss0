@@ -84,8 +84,8 @@ public abstract class AbstractQafilechangehandler extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentEvent.getMsg().startsWith("fileChanged") ){
-	            	//println("WARNING: variable substitution not yet implmented " ); 
-	            	printCurrentEvent(false);
+	            	//println("WARNING: variable substitution not yet fully implemented " ); 
+	            		printCurrentEvent(false);
 	             }
 	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
 	          }catch(Exception e ){  

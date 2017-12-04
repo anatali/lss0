@@ -1,0 +1,27 @@
+/*
+*
+* A GraphViz DOT FSM description 
+* Please use a GraphViz visualizer (like http://www.webgraphviz.com)
+*  
+*/
+
+digraph finite_state_machine {
+	rankdir=LR
+	size="8,5"
+	
+	init [ color = red ][ fontcolor = red ][ penwidth = 3 ]
+	handleStore [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	storeInACell [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	storeBusy [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	handleRemove [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	removeFromCell [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	handleWh [ color = blue ][ fontcolor = blue ][ penwidth = 3 ]
+	
+	storeInACell -> init [ label = "switch" ][ color = black ][ fontcolor = black ]
+	init -> handleWh [ label = "wh" ][ color = black ][ fontcolor = black ]
+	handleStore -> storeBusy [ label = "switch" ][ color = black ][ fontcolor = black ]
+	storeBusy -> init [ label = "switch" ][ color = black ][ fontcolor = black ]
+	init -> handleToutBuiltIn [ label = "timeout(6000000)" ][ color = green ][ fontcolor = green ]
+	removeFromCell -> init [ label = "switch" ][ color = black ][ fontcolor = black ]
+	handleRemove -> removeFromCell [ label = "switch" ][ color = black ][ fontcolor = black ]
+}

@@ -110,8 +110,11 @@ public abstract class AbstractQaledhlreactive extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("doLedCmd",-1);
 	    	String myselfName = "doLedCmd";  
-	    	//onMsg
-	    	if( currentMessage != null && currentMessage.msgId().equals("turn") ){
+	    	//onMsg 
+	    	curT = Term.createTerm("turn(blink)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("turn") && 
+	    		pengine.unify(curT, Term.createTerm("turn(X)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
 	    		/* SwitchTransition */
 	    		String parg = "doLedBlink";
 	    		parg =  updateVars( Term.createTerm("turn(X)"), 

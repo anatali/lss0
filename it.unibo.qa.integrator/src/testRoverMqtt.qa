@@ -1,0 +1,78 @@
+System testRoverMqtt 
+Event sonarDetect    : sonarDetect(X) //From (virtual robot) sonar
+Event sonar          : sonar(SONAR, TARGET, DISTANCE) //From (virtual) sonar  
+Event polar          : p( Distance, Angle  ) 
+Event alarm          : alarm( obstacle, p( Distance, Angle  ) )	//emitted by radar
+
+Dispatch polarMsg	: p( Distance, Angle  )
+
+pubSubServer  "tcp://localhost:1883"	//"tcp://m2m.eclipse.org:1883" 
+
+//Context  ctxRadarBase   ip [ host="localhost"   port=8080 ]  -standalone  //192.168.43.229
+Context  ctxRoverMqtt     ip [ host="localhost"   port=8070 ]         
+EventHandler evh for  alarm, sonarDetect , sonar -print {
+	//memoCurrentEvent for rover ;
+ 	emit polar fromContent sonar(sonar1, TARGET, DISTANCE) to p( DISTANCE, 60  ) ;
+ 	emit polar fromContent sonar(sonar2, TARGET, DISTANCE) to p( DISTANCE, 120  ) ;
+ 	emit polar fromContent sonarDetect(X) to p( 50, 90  )  
+};   
+  
+QActor rover context ctxRoverMqtt { 
+Rules{
+	radarActorName(radarguimqtt).
+	mapAngle( sonar1, 60).
+	mapAngle( sonar2, 120).
+	dataToPublish( Q, D, A ) :- 
+		radarActorName(Q),
+		output( dataToPublish( Q, D, A ) ),
+ 		retract( input(SOURCE,D) ),
+		output( dataToPublish( Q, SOURCE, D, A ) ),
+		mapAngle(SOURCE,A),!,
+		output( dataToPublish( Q, D, A ) ).
+	dataToPublish( Q, 80, 90 ):- radarActorName(Q).
+}
+	Plan init normal [    
+	    	println("rover START");	    	
+	    	connectUnity "localhost";
+	    	createUnityObject "rover" ofclass "Prefabs/CustomActor" ;
+	    	
+	    	connectAsPublisher "unibo/mqtt/radar" ;
+	    	
+ 			backwards 70 time ( 800 ) ;    	
+   	    	right 70 time ( 1000 )   //position
+  	    ] 
+	    switchTo moveVitualRobot   
+		
+	Plan moveVitualRobot [	]
+	reactive onward 40 time ( 5000 )      
+	    	whenEnd -> endOfMove
+	    	whenTout 30000 -> handleTout
+	    	whenEvent sonarDetect -> handleObstacle 
+	    	or whenEvent sonar    -> handleSonar
+	finally repeatPlan
+	 
+	Plan handleSonar resumeLastPlan [  
+		println("handleSonar");  
+		stop 0 time (500) ;
+		onEvent sonar : sonar(SOURCE, TARGET, DISTANCE) -> addRule input(SOURCE,DISTANCE) ;
+		[ !? dataToPublish(Q,D,A) ] publish "unibo/mqtt/radar" for Q -m polarMsg : p( D,A  ) ;
+   	    onEvent sonar : sonar(sonar1, TARGET, DISTANCE) -> switchTo moveFar ; //else left 70 time ( 500 );
+    	onEvent sonar : sonar(sonar2, TARGET, DISTANCE) -> switchTo moveNear //else right 70 time ( 500 )  
+	]	
+	
+	Plan moveFar resumeLastPlan[
+		right 70 time ( 500 ) ;
+		onward 60 time ( 1000 ) ;
+		left 70 time ( 500 )
+	]
+	Plan moveNear resumeLastPlan[
+		left 70 time ( 500 ) ;
+		onward 60 time ( 1000 ) ;
+		right 70 time ( 500 ) 
+	]
+	
+	Plan handleObstacle resumeLastPlan [ backwards 80 time ( 2800 ) ]
+	Plan endOfMove resumeLastPlan [ println("endOfMove") ]
+	Plan handleTout   [ println("handleTout") ]
+		
+ }

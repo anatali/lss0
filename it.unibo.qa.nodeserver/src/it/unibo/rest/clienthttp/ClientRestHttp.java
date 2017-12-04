@@ -2,6 +2,7 @@ package it.unibo.rest.clienthttp;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -9,8 +10,10 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+
 import it.unibo.qactors.QActorContext;
 import it.unibo.qactors.QActorUtils;
+import it.unibo.qactors.akka.QActor;
 
 public class ClientRestHttp {
 
@@ -29,7 +32,8 @@ private CloseableHttpClient httpclient;
 		this.ctx  = ctx;
  		httpclient = HttpClients.createDefault();
 	}
-
+	public  static void test( QActor qa, String str ) {
+ 	}	
 	public  void sendGet(  ) {
 		String url = "http://"+host+":"+port;
 		sendGet(url);		

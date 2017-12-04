@@ -1,4 +1,0 @@
-plan(1,init, sentence(true,move(print("ledgpio STARTS")),'','' ))
-plan(1,blink, sentence(true,move(print("ledSwitch")),'','' ))
-plan(1,handleTout, sentence(true,move(actorOp(noOp)),'','' ))
-plan(2,handleTout, sentence(true,move(resumeplan),'','' ))

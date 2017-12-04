@@ -1,0 +1,7 @@
+plan(1,init, sentence(true,delay( 4000) ,'','' ))
+plan(2,init, sentence(true,move(print(" ---- ORDER for m1")),'','' ))
+plan(3,init, sentence(true,raise( remove , cmd( remove,m1) )'),'','' ))
+plan(4,init, sentence(true,delay( 4000) ,'','' ))
+plan(5,init, sentence(true,move(print(" ---- ORDER for m1")),'','' ))
+plan(6,init, sentence(true,raise( remove , cmd( remove,m2) )'),'','' ))
+plan(7,init, sentence(true,delay( 20000) ,'','' ))

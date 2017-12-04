@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/mainNat.unity
+- path: Assets/Scenes/BertinDintinoZanella_vuoto.unity
   isLoaded: 1
   isActive: 1

@@ -1,21 +1,26 @@
 /*
  * blsHlBlinkReactiveWeb.qa
+ * --------------------------------------------------------------
+ * The system provides a button that generates the event cmd : cmd(X)
+ * When it perceives the event, the system starts blinking a led
+ * The blinking action must be 'interrupted' when an alarm event is raised 
  */  
 System blsHlBlinkReactiveWeb 
 Event cmd     : cmd(V)			//V : start/stop
 Event alarm   : alarm(V)		//V : fire 
-
-Context ctxBlsHlBlimkreactiveWeb ip [ host="localhost"  port=8029 ]  -httpserver   
+ 
+Context ctxBlsHlBlimkreactiveWeb ip [ host="localhost"  port=8029 ] // -httpserver   
  
 QActor qaledhlreactiveweb context ctxBlsHlBlimkreactiveWeb   {
 Rules{
-//  	config( led,  gui ). 
-   		config( led,  rasp ). 
+   	config( led,  gui ). 
+//  config( led,  rasp ). 
 }
 	Plan init normal  [         
-    	[ !? config( led, X )] actorOp createLedObject( X )  
+    	[ !? config( led, gui )] 
+    		javaOp "it.unibo.custom.led.LedFactory.createLedWithGui(\"l1\", this)"
     ]
-   	switchTo waitForCmd   
+   	switchTo waitForCmd    
    	  
   	Plan waitForCmd [  
   		println("qaledhlreactiveweb WAITS")
@@ -24,18 +29,15 @@ Rules{
      	whenEvent cmd : cmd(start) do switchTo doLedBlink
     finally repeatPlan	
      
-    Plan doLedBlink[
-   		println("qaledhlreactiveweb doLedBlink") ;
-    	actorOp setupLedBlink
-    ]
-    reactive actorOp ledBlink
-   		whenEnd           -> endWork
-   		whenTout 30000    -> endWork    		
-   		whenEvent alarm   -> stopBlink 
+    Plan doLedBlink[ ]
+    reactive javaOp "it.unibo.custom.led.LedFactory.ledBlink(\"l1\" )"
+   		whenEnd               -> endWork
+   		whenTout 30000        -> endWork    		
+   		whenEvent alarm       -> stopBlink 
    	    
     Plan stopBlink[
     	println("qaledhlreactiveweb stopBlink") ;
-      	actorOp ledblinkstop 
+      	actorOp suspendCurrentAction
     ]   
     switchTo waitForCmd
    	

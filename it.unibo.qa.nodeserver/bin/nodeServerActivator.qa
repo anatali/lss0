@@ -14,8 +14,8 @@
  * To GET the data we can use a normal browser
  */
 System nodeServerActivator
-Event   usercmd    : usercmd(X)
-Dispatch serverCmd : usercmd(X)
+Event    usercmd   : usercmd(X)
+Dispatch serverCmd : usercmd(SENDER, DATA)
 Dispatch answer    : answer(X)
 
 Context ctxNodeServerActivator  ip[ host="localhost" port=8071]  
@@ -23,15 +23,13 @@ Context ctxNodeServerActivator  ip[ host="localhost" port=8071]
 EventHandler evh for usercmd -print {	
  	forwardEvent qaservercmds -m serverCmd 	//to avoid event loss
 };
-  
 QActor qaserveractivator context ctxNodeServerActivator  {
 	Plan init normal [
 		//actorOp runNodeJs("./node/NodeServerCrud.js localhost 8071" , "true");
-//		nodeOp "./node/NodeServerCrud.js localhost 8071" -o;
+ 		nodeOp "./node/NodeServerCrud.js localhost 8071" -o;
 		println("qaserveractivator STARTED")
 	]
-}  
-
+}    
 QActor qaservercmds context ctxNodeServerActivator  {
 	Plan init normal [ println("qaservercmds STARTED") ] 
    	transition stopAfter 3600000 //1hour  
@@ -40,7 +38,7 @@ QActor qaservercmds context ctxNodeServerActivator  {
    		
    	Plan handleServerCmd resumeLastPlan[
    		printCurrentMessage ;
-   		onMsg serverCmd : usercmd(X) -> println( data(X) ) ;
-    	onMsg serverCmd : usercmd(X) -> actorOp sendAnswer(X)
-   	]
+   		onMsg serverCmd : usercmd(S,X) -> println( server(S,X) ) ;
+    	onMsg serverCmd : usercmd(S,X) -> sendToExternalServer S -m X //actorOp sendAnswer(S,X)
+   	] 
 }

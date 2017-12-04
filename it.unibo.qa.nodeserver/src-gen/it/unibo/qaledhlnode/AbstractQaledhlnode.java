@@ -107,8 +107,8 @@ public abstract class AbstractQaledhlnode extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	//println("WARNING: variable substitution not yet implmented " ); 
-	            	it.unibo.custom.led.LedFactory.ledSwitch("l1");
+	            	//println("WARNING: variable substitution not yet fully implemented " ); 
+	            		it.unibo.custom.led.LedFactory.ledSwitch("l1");
 	             }
 	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
 	          }catch(Exception e ){  
@@ -122,7 +122,7 @@ public abstract class AbstractQaledhlnode extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	String parg = "writeNodeOutput(N)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@29d7a4ad
+	            	String parg = "writeNodeOutput(N)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@4b441df1
 	            	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,nodePc)" )) != null )
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("switch(N)"), 

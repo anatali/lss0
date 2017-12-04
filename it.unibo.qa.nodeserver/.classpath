@@ -32,6 +32,6 @@
 	<classpathentry kind="lib" path="C:/repoGitHub/it.unibo.qa.nodeserver/libs/unibo/uniboEnvBaseAwt.jar"/>
 	<classpathentry kind="lib" path="C:/repoGitHub/it.unibo.qa.nodeserver/libs/unibo/2p301.jar"/>
 	<classpathentry kind="lib" path="C:/repoGitHub/it.unibo.qa.nodeserver/libs/http/nanoHTTPD.jar"/>
-	<classpathentry kind="lib" path="libs/unibo/qa18Akka.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/it.unibo.qactors"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

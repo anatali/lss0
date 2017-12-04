@@ -75,7 +75,8 @@ public abstract class AbstractQajaactoivator extends QActor {
 	    	String myselfName = "init";  
 	    	temporaryStr = "\"qajaactoivator START\"";
 	    	println( temporaryStr );  
-	    	runNodeJs( "./nodejsCode/TcpClientToQaNode.js localhost 8031", "true"); 
+	    	parg = "runNodeJs(\"./nodejsCode/TcpClientToQaNode.js localhost 8031\",\"true\")"; 
+	    	actorOpExecute(parg, false);	//OCT17		 
 	    	temporaryStr = "\"qajaactoivator END\"";
 	    	println( temporaryStr );  
 	    	repeatPlanNoTransition(pr,myselfName,"qajaactoivator_"+myselfName,false,false);

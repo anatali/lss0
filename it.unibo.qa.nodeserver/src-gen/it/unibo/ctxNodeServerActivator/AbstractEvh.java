@@ -23,7 +23,7 @@ showMsg( event.getPrologRep()  );
 //showMsg( "---------------------------------------------------------------------" );	
 		{
 		Term msgt       = Term.createTerm(event.getMsg());
-		Term msgPattern = Term.createTerm("usercmd(X)");
+		Term msgPattern = Term.createTerm("usercmd(SENDER,DATA)");
 				boolean b = this.pengine.unify(msgt, msgPattern);
 				if( b ) {
 			  		sendMsg("serverCmd","qaservercmds", QActorContext.dispatch, msgt.toString() ); 

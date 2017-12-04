@@ -5,40 +5,45 @@ This code is generated only ONCE
 package it.unibo.qahttpclient;
 import it.unibo.is.interfaces.IOutputEnvView;
 import it.unibo.qactors.QActorContext;
-import it.unibo.rest.clienthttp.ClientRestHttp;
+import it.unibo.qactors.web.ClientRestHttp;
+ 
 
 public class Qahttpclient extends AbstractQahttpclient { 
-	protected ClientRestHttp client  ;
+	protected ClientRestHttp clientRest  ;
 
 	public Qahttpclient(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 		super(actorId, myCtx, outEnvView);
-		client = new ClientRestHttp( this.getQActorContext() );
+//		client = new ClientRestHttp( this.getQActorContext() );
 	}
 /*
  * ADDED BY THE APPLICATION DESIGNER	
  */
  	
-	public void setConnection( String host, int port ){
-		client = new ClientRestHttp(this.getQActorContext(),host, port);
- 	}
+//	public void setConnection( String host, int port ){
+//		client = new ClientRestHttp(this.getQActorContext(),host, port);
+// 	}
 	
-	public void sendPut(String msg) {
-		client.sendPut( msg );
-	}
-	public void sendGet() {
-		client.sendGet();
-	}
+//	public void sendPut(String msg) {
+////		if( clientRest == null ) clientRest = new ClientRestHttp( this.getQActorContext() );
+////		clientRest.sendPut( msg );
+//		this.sendRestPut(msg);
+//	}
+//	public void sendGet() {
+////		if( clientRest == null ) clientRest = new ClientRestHttp( this.getQActorContext() );
+////		clientRest.sendGet();
+//		this.sendRestGet();
+//	}
 	
 	/*
 	 * Useful for wot
 	 */
 	public void sendPut(String msg, String url) {
 		msg = msg.replace("%", "\"");
-		if( client != null)
-		client.sendPut( msg,url );
+		if( clientRest != null)
+		clientRest.sendPut( msg,url );
 	}
 	public void sendGet(String url ) {
-		client.sendGet( url );
+		clientRest.sendGet( url );
 	}
 	
 	

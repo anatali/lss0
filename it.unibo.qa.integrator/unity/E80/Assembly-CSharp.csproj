@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{C80A0C52-9A33-25C4-30E0-78E5707647D7}</ProjectGuid>
+    <ProjectGuid>{E6B2AD21-F842-E5A2-B9EF-72AF52DF1DBD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -75,9 +75,6 @@
      <None Include="Assets\Plugins\UniRx\ReadMe.txt" />
      <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />
      <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularDisplacement.shader" />
- <Reference Include="Facebook.Unity.Settings">
- <HintPath>C:/Didattica/STUDENTI/RuggeriFederico/May2017/VirtualRobotJune/virtualRobot/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -100,15 +97,15 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
  <Reference Include="M2Mqtt.Net">
- <HintPath>C:/Didattica/STUDENTI/RuggeriFederico/May2017/VirtualRobotJune/virtualRobot/Assets/M2Mqtt.Net.dll</HintPath>
+ <HintPath>C:/repoGitHub/it.unibo.qa.integrator/unity/E80/Assets/M2Mqtt.Net.dll</HintPath>
  </Reference>
  <Reference Include="Prolog">
- <HintPath>C:/Didattica/STUDENTI/RuggeriFederico/May2017/VirtualRobotJune/virtualRobot/Assets/Prolog.dll</HintPath>
+ <HintPath>C:/repoGitHub/it.unibo.qa.integrator/unity/E80/Assets/Prolog.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{28E904B3-5F99-DF9F-1A79-F2381E15A352}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{812F288F-43FF-C9C4-5104-F65E5EFFDB44}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

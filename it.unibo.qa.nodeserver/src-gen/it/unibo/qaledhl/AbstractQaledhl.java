@@ -17,7 +17,11 @@ import java.util.concurrent.Callable;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import it.unibo.qactors.action.ActorTimedAction;
-public abstract class AbstractQaledhl extends QActor { 
+import it.unibo.baseEnv.basicFrame.EnvFrame;
+import alice.tuprolog.SolveInfo;
+import it.unibo.is.interfaces.IActivity;
+import it.unibo.is.interfaces.IIntent;
+public abstract class AbstractQaledhl extends QActor implements IActivity{ 
 	protected AsynchActionResult aar = null;
 	protected boolean actionResult = true;
 	protected alice.tuprolog.SolveInfo sol;
@@ -29,14 +33,28 @@ public abstract class AbstractQaledhl extends QActor {
 	 
 	
 		protected static IOutputEnvView setTheEnv(IOutputEnvView outEnvView ){
-			return outEnvView;
+			EnvFrame env = new EnvFrame( "Env_qaledhl", java.awt.Color.cyan  , java.awt.Color.black );
+			env.init();
+			env.setSize(800,430); 
+			IOutputEnvView newOutEnvView = ((EnvFrame) env).getOutputEnvView();
+			return newOutEnvView;
 		}
 		public AbstractQaledhl(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qaledhl/WorldTheory.pl",
 			setTheEnv( outEnvView )  , "init");		
+			addInputPanel(80);
+			addCmdPanels();	
 			this.planFilePath = "./srcMore/it/unibo/qaledhl/plans.txt";
 	  	}
+	protected void addInputPanel(int size){
+		((EnvFrame) env).addInputPanel(size);			
+	}
+	protected void addCmdPanels(){
+		((EnvFrame) env).addCmdPanel("input", new String[]{"INPUT"}, this);
+		((EnvFrame) env).addCmdPanel("alarm", new String[]{"FIRE"}, this);
+		((EnvFrame) env).addCmdPanel("help",  new String[]{"HELP"}, this);				
+	}
 		@Override
 		protected void doJob() throws Exception {
 			String name  = getName().replace("_ctrl", "");
@@ -74,7 +92,11 @@ public abstract class AbstractQaledhl extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
-	    	it.unibo.custom.led.LedFactory.createLedWithGui("l1", this);
+	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,X)" )) != null ){
+	    	parg = "createLedObject(X)"; 
+	    	parg = QActorUtils.substituteVars(guardVars,parg);
+	    	actorOpExecute(parg, false);	//OCT17		 
+	    	}
 	    	//switchTo waitForCmd
 	        switchToPlanAsNextState(pr, myselfName, "qaledhl_"+myselfName, 
 	              "waitForCmd",false, false, null); 
@@ -89,8 +111,8 @@ public abstract class AbstractQaledhl extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_waitForCmd",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "waitForCmd";  
-	    	parg = "noOp"; 
-	    	actorOpExecute(parg, false);	//OCT17		 
+	    	temporaryStr = "\"LED WAITS\"";
+	    	println( temporaryStr );  
 	    	//bbb
 	     msgTransition( pr,myselfName,"qaledhl_"+myselfName,false,
 	          new StateFun[]{
@@ -99,8 +121,13 @@ public abstract class AbstractQaledhl extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	//println("WARNING: variable substitution not yet implmented " ); 
-	            	it.unibo.custom.led.LedFactory.ledSwitch("l1");
+	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@32a9f13e
+	            	{/* ActorOp */
+	            	parg =  updateVars( Term.createTerm("switch"), 
+	            		                Term.createTerm("switch"), 
+	            		                Term.createTerm(currentMessage.msgContent()), parg);
+	            	if(parg != null) actorOpExecute(parg, false); //JUNE2017 OCT17
+	            	}
 	             }
 	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
 	          }catch(Exception e ){  
@@ -121,4 +148,57 @@ public abstract class AbstractQaledhl extends QActor {
 	    	//doing nothing in a QActor
 	    }
 	
+		/* 
+		* ------------------------------------------------------------
+		* IACTIVITY (aactor with GUI)
+		* ------------------------------------------------------------
+		*/
+		private String[] actions = new String[]{
+		    	"println( STRING | TERM )", 
+		    	"play('./audio/music_interlude20.wav'),20000,'alarm,obstacle', 'handleAlarm,handleObstacle'",
+		"emit(EVID,EVCONTENT)  ",
+		"move(MOVE,DURATION,ANGLE)  with MOVE=mf|mb|ml|mr|ms",
+		"forward( DEST, MSGID, MSGCONTENTTERM)"
+		    };
+		    protected void doHelp(){
+				println("  GOAL ");
+				println("[ GUARD ], ACTION  ");
+				println("[ GUARD ], ACTION, DURATION ");
+				println("[ GUARD ], ACTION, DURATION, ENDEVENT");
+				println("[ GUARD ], ACTION, DURATION, EVENTS, PLANS");
+				println("Actions:");
+				for( int i=0; i<actions.length; i++){
+					println(" " + actions[i] );
+				}
+		    }
+		@Override
+		public void execAction(String cmd) {
+			if( cmd.equals("HELP") ){
+				doHelp();
+				return;
+			}
+			if( cmd.equals("FIRE") ){
+				emit("alarm", "alarm(fire)");
+				return;
+			}
+			String input = env.readln();
+			//input = "\""+input+"\"";
+			input = it.unibo.qactors.web.GuiUiKb.buildCorrectPrologString(input);
+			//println("input=" + input);
+			try {
+				Term.createTerm(input);
+	 			String eventMsg=it.unibo.qactors.web.QActorHttpServer.inputToEventMsg(input);
+				//println("QActor eventMsg " + eventMsg);
+				emit("local_"+it.unibo.qactors.web.GuiUiKb.inputCmd, eventMsg);
+	  		} catch (Exception e) {
+		 		println("QActor input error " + e.getMessage());
+			}
+		}
+	 	
+		@Override
+		public void execAction() {}
+		@Override
+		public void execAction(IIntent input) {}
+		@Override
+		public String execActionWithAnswer(String cmd) {return null;}
 	}

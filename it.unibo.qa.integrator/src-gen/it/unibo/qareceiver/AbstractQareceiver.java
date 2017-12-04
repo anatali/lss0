@@ -85,8 +85,8 @@ public abstract class AbstractQareceiver extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("info") ){
-	            	//println("WARNING: variable substitution not yet implmented " ); 
-	            	printCurrentMessage(false);
+	            	//println("WARNING: variable substitution not yet fully implemented " ); 
+	            		printCurrentMessage(false);
 	             }
 	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
 	          }catch(Exception e ){  
@@ -96,7 +96,7 @@ public abstract class AbstractQareceiver extends QActor {
 	          }
 	          },//new StateFun[]
 	          new String[]{"true","E","alarm", "true","M","info" },
-	          60000, "handleToutBuiltIn" );//msgTransition
+	          10000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_init){  
 	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 
@@ -107,14 +107,17 @@ public abstract class AbstractQareceiver extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("endOfwork",-1);
 	    	String myselfName = "endOfwork";  
-	    	//onEvent
-	    	if( currentEvent != null && currentEvent.getEventId().equals("alarm") ){
-	    	 		String parg = "endOfwork(X)";
-	    	 		/* Print */
-	    	 		parg =  updateVars( Term.createTerm("alarm(X)"), 
-	    	 		                    Term.createTerm("alarm(X)"), 
-	    	 			    		  	Term.createTerm(currentEvent.getMsg()), parg);
-	    	 		if( parg != null ) println( parg );
+	    	//onEvent  
+	    	curT = Term.createTerm("alarm(X)");
+	    	if( currentEvent != null && currentEvent.getEventId().equals("alarm") && 
+	    		pengine.unify(curT, Term.createTerm("alarm(X)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentEvent.getMsg() ) )){ 
+	    			String parg = "endOfwork(X)";
+	    			/* Print */
+	    			parg =  updateVars( Term.createTerm("alarm(X)"), 
+	    			                    Term.createTerm("alarm(X)"), 
+	    				    		  	Term.createTerm(currentEvent.getMsg()), parg);
+	    			if( parg != null ) println( parg );
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"qareceiver_"+myselfName,false,false);
 	    }catch(Exception e_endOfwork){  

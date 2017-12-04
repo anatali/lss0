@@ -8,7 +8,7 @@ public class MainCtxBlsHlBlimkreactiveWeb  {
 //MAIN
 public static QActorContext initTheContext() throws Exception{
 	IOutputEnvView outEnvView = SituatedSysKb.standardOutEnvView;
-	String webDir = "./srcMore/it/unibo/ctxBlsHlBlimkreactiveWeb";
+	String webDir = null;
 	return QActorContext.initQActorSystem(
 		"ctxblshlblimkreactiveweb", "./srcMore/it/unibo/ctxBlsHlBlimkreactiveWeb/blshlblinkreactiveweb.pl", 
 		"./srcMore/it/unibo/ctxBlsHlBlimkreactiveWeb/sysRules.pl", outEnvView,webDir,false);

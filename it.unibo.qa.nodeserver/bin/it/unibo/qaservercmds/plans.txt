@@ -1,5 +1,5 @@
 plan(1,init, sentence(true,move(print("qaservercmds STARTED")),'','' ))
 plan(1,handleServerCmd, sentence(true,printCurrentMessage(''),'','' ))
-plan(2,handleServerCmd, sentence(true,msgswitch(serverCmd, usercmd( X) , move(print(data( X)))),'','' ))
-plan(3,handleServerCmd, sentence(true,msgswitch(serverCmd, usercmd( X) , move(actorOp(sendAnswer( X)))),'','' ))
+plan(2,handleServerCmd, sentence(true,msgswitch(serverCmd, usercmd( S,X) , move(print(server( S,X)))),'','' ))
+plan(3,handleServerCmd, sentence(true,msgswitch(serverCmd, usercmd( S,X) , not here StateMoveNormal),'','' ))
 plan(4,handleServerCmd, sentence(true,move(resumeplan),'','' ))

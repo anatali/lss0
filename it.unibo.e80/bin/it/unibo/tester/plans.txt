@@ -1,0 +1,8 @@
+plan(1,dowork, sentence(true,delay( 500) ,'','' ))
+plan(2,dowork, sentence( material( M),move(print("		tester SENDS")),'','' ))
+plan(3,dowork, sentence(-  material( M) ,raise( store , cmd( store,M) )'),'','' ))
+plan(1,handleAnswer, sentence(true,printCurrentEvent(false),'','' ))
+plan(2,handleAnswer, sentence(true,eventswitch(storeResult, »cmd( storeResult,booked), not here StateMoveNormal ),'','' ))
+plan(3,handleAnswer, sentence(true,eventswitch(storeResult, »cmd( storeResult,busy), not here StateMoveNormal ),'','' ))
+plan(4,handleAnswer, sentence(true,eventswitch(storeResult, »cmd( storeResult,space), not here StateMoveNormal ),'','' ))
+plan(1,storageBusy, sentence(true,move(print("			tester waits for storeResult(space) ...")),'','' ))

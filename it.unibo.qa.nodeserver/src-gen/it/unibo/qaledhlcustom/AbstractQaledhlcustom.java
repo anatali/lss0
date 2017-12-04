@@ -97,8 +97,8 @@ public abstract class AbstractQaledhlcustom extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	//println("WARNING: variable substitution not yet implmented " ); 
-	            	it.unibo.custom.led.LedFactory.ledSwitch("l1");
+	            	//println("WARNING: variable substitution not yet fully implemented " ); 
+	            		it.unibo.custom.led.LedFactory.ledSwitch("l1");
 	             }
 	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
 	          }catch(Exception e ){  

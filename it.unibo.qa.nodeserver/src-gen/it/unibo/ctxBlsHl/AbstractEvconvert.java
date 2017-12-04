@@ -22,14 +22,13 @@ protected IEventItem event;
 showMsg( event.getPrologRep()  );				 
 //showMsg( "---------------------------------------------------------------------" );	
 		//RaiseOtherEvent
-		String newcontent = "clicked(N)";
+		{String newcontent = "clicked(N)";
 		newcontent =  updateVars( Term.createTerm("usercmd(N)"), 
 			                Term.createTerm("usercmd(N)"), 
 			                Term.createTerm( event.getMsg() ), newcontent);
-		println("newcontent="+newcontent);
+		//println("newcontent="+newcontent);
 		if( newcontent != null ){ emit( "local_click", newcontent ); }
-		//temporaryStr = QActorUtils.unifyMsgContent(pengine, "clicked(N)","usercmd(N)", guardVars ).toString();
-		//emit( "local_click", temporaryStr );
+		}
 	}//handleCurrentEvent
 	
 	@Override

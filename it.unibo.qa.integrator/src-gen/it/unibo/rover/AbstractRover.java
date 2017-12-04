@@ -58,6 +58,8 @@ public abstract class AbstractRover extends QActor {
 	    	stateTab.put("init",init);
 	    	stateTab.put("moveVitualRobot",moveVitualRobot);
 	    	stateTab.put("handleSonar",handleSonar);
+	    	stateTab.put("moveFar",moveFar);
+	    	stateTab.put("moveNear",moveNear);
 	    	stateTab.put("handleObstacle",handleObstacle);
 	    	stateTab.put("endOfMove",endOfMove);
 	    	stateTab.put("handleTout",handleTout);
@@ -83,7 +85,7 @@ public abstract class AbstractRover extends QActor {
 	    	initUnityConnection("localhost");
 	    	createSimulatedActor("rover", "Prefabs/CustomActor"); 
 	    	execUnity("rover","backward",800, 70,0); //rover: default namefor virtual robot		
-	    	execUnity("rover","right",1000, 60,0); //rover: default namefor virtual robot		
+	    	execUnity("rover","right",1000, 70,0); //rover: default namefor virtual robot		
 	    	//switchTo moveVitualRobot
 	        switchToPlanAsNextState(pr, myselfName, "rover_"+myselfName, 
 	              "moveVitualRobot",false, false, null); 
@@ -126,7 +128,40 @@ public abstract class AbstractRover extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handleSonar",-1);
 	    	String myselfName = "handleSonar";  
-	    	execUnity("rover","stop",500, 0,0); //rover: default namefor virtual robot		
+	    	//onEvent  
+	    	curT = Term.createTerm("sonar(sonar1,TARGET,DISTANCE)");
+	    	if( currentEvent != null && currentEvent.getEventId().equals("sonar") && 
+	    		pengine.unify(curT, Term.createTerm("sonar(SONAR,TARGET,DISTANCE)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentEvent.getMsg() ) )){ 
+	    			/* SwitchTransition */
+	    			String parg = "moveFar";
+	    			parg =  updateVars( Term.createTerm("sonar(SONAR,TARGET,DISTANCE)"), 
+	    				                Term.createTerm("sonar(sonar1,TARGET,DISTANCE)"), 
+	    				                Term.createTerm(currentEvent.getMsg()), parg);
+	    			if(parg != null){ 
+	    				switchToPlanAsNextState(pr, myselfName, "console_"+myselfName, 
+	    			    	 		    		parg,false, true, null); 
+	    			    return;	
+	    			    //the control is given to the caller state
+	    			}
+	    	}
+	    	//onEvent  
+	    	curT = Term.createTerm("sonar(sonar2,TARGET,DISTANCE)");
+	    	if( currentEvent != null && currentEvent.getEventId().equals("sonar") && 
+	    		pengine.unify(curT, Term.createTerm("sonar(SONAR,TARGET,DISTANCE)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentEvent.getMsg() ) )){ 
+	    			/* SwitchTransition */
+	    			String parg = "moveNear";
+	    			parg =  updateVars( Term.createTerm("sonar(SONAR,TARGET,DISTANCE)"), 
+	    				                Term.createTerm("sonar(sonar2,TARGET,DISTANCE)"), 
+	    				                Term.createTerm(currentEvent.getMsg()), parg);
+	    			if(parg != null){ 
+	    				switchToPlanAsNextState(pr, myselfName, "console_"+myselfName, 
+	    			    	 		    		parg,false, true, null); 
+	    			    return;	
+	    			    //the control is given to the caller state
+	    			}
+	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
 	    }catch(Exception e_handleSonar){  
 	    	 println( getName() + " plan=handleSonar WARNING:" + e_handleSonar.getMessage() );
@@ -134,11 +169,39 @@ public abstract class AbstractRover extends QActor {
 	    }
 	    };//handleSonar
 	    
+	    StateFun moveFar = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp("moveFar",-1);
+	    	String myselfName = "moveFar";  
+	    	execUnity("rover","right",500, 70,0); //rover: default namefor virtual robot		
+	    	execUnity("rover","forward",1000, 60,0); //rover: default namefor virtual robot		
+	    	execUnity("rover","left",500, 70,0); //rover: default namefor virtual robot		
+	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
+	    }catch(Exception e_moveFar){  
+	    	 println( getName() + " plan=moveFar WARNING:" + e_moveFar.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//moveFar
+	    
+	    StateFun moveNear = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp("moveNear",-1);
+	    	String myselfName = "moveNear";  
+	    	execUnity("rover","left",500, 70,0); //rover: default namefor virtual robot		
+	    	execUnity("rover","forward",1000, 60,0); //rover: default namefor virtual robot		
+	    	execUnity("rover","right",500, 70,0); //rover: default namefor virtual robot		
+	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
+	    }catch(Exception e_moveNear){  
+	    	 println( getName() + " plan=moveNear WARNING:" + e_moveNear.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//moveNear
+	    
 	    StateFun handleObstacle = () -> {	
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handleObstacle",-1);
 	    	String myselfName = "handleObstacle";  
-	    	execUnity("rover","backward",2500, 50,0); //rover: default namefor virtual robot		
+	    	execUnity("rover","backward",2800, 80,0); //rover: default namefor virtual robot		
 	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
 	    }catch(Exception e_handleObstacle){  
 	    	 println( getName() + " plan=handleObstacle WARNING:" + e_handleObstacle.getMessage() );

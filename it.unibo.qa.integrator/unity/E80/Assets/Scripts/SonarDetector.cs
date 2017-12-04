@@ -27,12 +27,12 @@ public class SonarDetector : MonoBehaviour
 		SonarData.Sample (TimeSpan.FromMilliseconds (samplingDelayAmount)) // reduces the amount of sensed data
         .Where (obj => obj != null)
         .Subscribe (obj => {
-			//Debug.Log("found: " + this.name   + " target=" +  obj.name.ToLower() + " tag=" + obj.tag );
+				Debug.Log(" [SonarDetector] found: " + this.name   + " target=" +  obj.name.ToLower() + " tag=" + obj.tag );
 			float distance = 0;
 			//Debug.Log("[Sonar detector] obj: " + obj + " | " + obj.GetComponent(typeof(TargetProps) ) );
 			distance = (obj.GetComponent (typeof(TargetProps)) as TargetProps).distance;
 				int	d =  (int) distance ;
-			//Debug.Log (" [SonarDetector]  " + name + " DETECTED distance" + d + " actorName=" + obj.name);
+			Debug.Log (" [SonarDetector]  " + name + " DETECTED distance" + d + " actorName=" + obj.name);
 			var connector = TcpConnectorListener.Instance;
 			var handler = connector.GetHandlerFromID (obj.name);
 			//Debug.Log ("[SonarDetector] connector: " + connector + " handler" + handler);

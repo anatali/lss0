@@ -142,7 +142,7 @@ actorPrintln( X ):- actorobj(A), text_term(XS,X), A  <- println( XS ).
 %-------------------------------------------------
 %  User static rules about qaledhlreactiveweb
 %------------------------------------------------- 
-config( led,rasp).
+config( led,gui).
 /*
 ------------------------------------------------------------------------
 testex :- actorPrintln( testex ),

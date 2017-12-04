@@ -1,0 +1,136 @@
+/* 
+ * ==============================================================
+ * emitter1Mqtt.qa
+ * ==============================================================
+ */  
+ 
+System e80
+
+Event store       : cmd( store,M )			//M material to store
+Event remove      : cmd( remove,M )			//M material to remove
+Event robot       : cmd( robot, D )			//D = reoved(M,C)
+Event storeResult : cmd( storeResult, R )	//R booked, busy
+
+
+Dispatch wh : cmd( TYPE, CMD )
+
+/*
+ * Events should be converted into messages, so to avoid event loss
+ */
+
+Context  ctxE80  ip [ host="localhost"   port=8073 ]   //  -g yellow     
+EventHandler evh for store , remove  {	
+ 	forwardEvent wharehouse -m wh 		
+};
+//EventHandler evhremove for remove   {	
+// 	forwardEvent wharehouse -m wh 		
+//}; 
+QActor wharehouse context ctxE80  { 
+Rules{
+	cell( c1, free ). 
+	cell( c2, free ).
+} 
+	Plan init normal  [ 
+		println("	wharehouse WAITING")
+	]  
+		transition stopAfter 6000000  
+//		whenEvent store  -> handleStore   ,	
+//		whenEvent remove -> handleRemove  	//could be lost
+//		whenMsg wh : cmd(store, M)  do  switchTo handleStore ,
+//		whenMsg wh : cmd(remove, M) do  switchTo handleRemove
+		whenMsg wh -> handleWh
+//	finally repeatPlan 
+	
+	Plan handleWh[  
+		printCurrentMessage;
+		onMsg wh : cmd(store, M) -> switchTo handleStore;
+		onMsg wh : cmd(remove, M) -> switchTo handleRemove
+	]
+	
+	
+	// -------- Store ----------------
+	Plan handleStore [  
+		[ !? cell( C,free ) ] onMsg wh : cmd(store,M) ->  switchTo storeInACell	
+			//else switchTo storeBusy
+	]
+	switchTo storeBusy
+	  
+	Plan storeInACell [
+		println("storeInACell") ;
+		[ ?? cell( C,free ) ] addRule cell( C,booked ) ;
+		emit storeResult : cmd( storeResult, booked )
+	]
+	switchTo init	
+	       
+	Plan storeBusy [
+		println("storeBusy 1") ;
+ 		emit storeResult : cmd( storeResult, busy )  ;
+		println("storeBusy 2") 
+ 	]
+	switchTo init
+	
+	// -------- Remove ----------------
+	Plan handleRemove [ 
+		[ !? cell( C,M ) ] onMsg wh : cmd( remove, M ) -> addRule cell( C,toremove )
+	]	
+	switchTo removeFromCell 
+	
+	Plan removeFromCell[
+		println("		todo: activate a robot that should emit a robot event  ");
+		[ !? cell( C,toremove ) ]  addRule cell( C,free );	//
+		[ ?? cell( C,toremove ) ]  emit storeResult : cmd( storeResult, space ) 
+	] 
+	switchTo init
+}
+  
+/*
+ * ORDER to remove
+ */   
+QActor order context ctxE80   {
+	Plan init normal  [ 
+ 		delay 4000 ;
+ 		println(" ---- ORDER for m1") ;
+ 		emit remove : cmd(remove, m1) ;
+		delay 4000;
+ 		println(" ---- ORDER for m1") ;
+		emit remove : cmd(remove, m2) ;   
+		delay 20000	//to avoid terination
+	] 
+} 
+
+/*
+ *  TESTER (material sender)
+ */
+QActor tester context ctxE80   {
+Rules {
+	material( m1 ).
+	material( m2 ).
+	material( m3 ).
+}
+	Plan init normal  [ 
+	]
+	switchTo dowork
+	
+	Plan dowork [
+		delay 500; 
+		[ !? material(M)] println( "		tester SENDS" ) else println( "		tester NO MORE TO SEND" );
+		[ ?? material(M)] emit store : cmd( store, M ) 		 
+	]
+	transition stopAfter 600000
+		whenEvent storeResult -> handleAnswer   
+//	finally repeatPlan
+	 
+	Plan handleAnswer [
+		printCurrentEvent ;
+		onEvent storeResult : cmd( storeResult, booked )  -> switchTo dowork ;
+		onEvent storeResult : cmd( storeResult, busy )    -> switchTo storageBusy ;
+		onEvent storeResult : cmd( storeResult, space )   -> switchTo dowork
+	] 
+	  
+	Plan storageBusy[
+		println( "			tester waits for storeResult(space) ..." )  
+	]
+	transition stopAfter 600000
+		whenEvent storeResult : cmd(storeResult, space) do switchTo dowork 
+ 
+}

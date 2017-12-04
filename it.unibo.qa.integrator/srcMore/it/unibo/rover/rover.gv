@@ -13,7 +13,9 @@ digraph finite_state_machine {
 	handleSonar [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	endOfMove [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	handleObstacle [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	moveFar [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	moveVitualRobot [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	moveNear [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	"reactive(moveVitualRobot)" [ style = dashed ][ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	handleTout [ color = blue ][ fontcolor = blue ][ penwidth = 3 ]
 	

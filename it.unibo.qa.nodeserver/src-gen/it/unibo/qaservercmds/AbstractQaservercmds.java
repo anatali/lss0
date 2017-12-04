@@ -93,24 +93,25 @@ public abstract class AbstractQaservercmds extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("handleServerCmd",-1);
 	    	String myselfName = "handleServerCmd";  
 	    	printCurrentMessage(false);
-	    	//onMsg
-	    	if( currentMessage != null && currentMessage.msgId().equals("serverCmd") ){
-	    		String parg = "data(X)";
+	    	//onMsg 
+	    	curT = Term.createTerm("usercmd(S,X)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("serverCmd") && 
+	    		pengine.unify(curT, Term.createTerm("usercmd(SENDER,DATA)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
+	    		String parg = "server(S,X)";
 	    		/* Print */
-	    		parg =  updateVars( Term.createTerm("usercmd(X)"), 
-	    		                    Term.createTerm("usercmd(X)"), 
+	    		parg =  updateVars( Term.createTerm("usercmd(SENDER,DATA)"), 
+	    		                    Term.createTerm("usercmd(S,X)"), 
 	    			    		  	Term.createTerm(currentMessage.msgContent()), parg);
 	    		if( parg != null ) println( parg );
 	    	}
-	    	//onMsg
-	    	if( currentMessage != null && currentMessage.msgId().equals("serverCmd") ){
-	    		String parg = "sendAnswer(X)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@7c8cb432
-	    		{/* ActorOp */
-	    		parg =  updateVars( Term.createTerm("usercmd(X)"), 
-	    			                Term.createTerm("usercmd(X)"), 
-	    			                Term.createTerm(currentMessage.msgContent()), parg);
-	    		if(parg != null) actorOpExecute(parg, false); //JUNE2017 OCT17
-	    		}
+	    	//onMsg 
+	    	curT = Term.createTerm("usercmd(S,X)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("serverCmd") && 
+	    		pengine.unify(curT, Term.createTerm("usercmd(SENDER,DATA)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
+	    		//println("WARNING: variable substitution not yet fully implemented " ); 
+	    			sendAnswerToServer( guardVars.get("S"), guardVars.get("X") );
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"qaservercmds_"+myselfName,false,true);
 	    }catch(Exception e_handleServerCmd){  

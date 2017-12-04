@@ -1,24 +1,24 @@
 /*
  * actions.qa
  */  
-System qaActions
+System qaActions   
 Event alarm         : alarm(X)
 Dispatch endAction  : endAction(A,R)
 Dispatch endActorOp : endActorOp(A,R)
 
 /*
-*/
+*/ 
 Context ctxReactiveActions  ip[ host="localhost" port=8078 ]  //-g cyan
-
+ 
  QActor musicreactive context ctxReactiveActions{   
- 	Plan init normal[  
+ 	Plan init normal[     
   		actorOp fibonacciActorTest( "actionFibo", 20 )   ;  	//in QActor
-    	sound time(5000) file("./audio/computer_process_info4.wav") -asynch   ;
+      	sound time(5000) file("./audio/computer_process_info4.wav") -asynch   ;
   		println("musicreactive init END")		    
- 	]  
+ 	]    
    	reactive sound time(20000) file("./audio/music_interlude20.wav") 
    		whenEnd         -> handleActionEnd
-   		whenTout 30000  -> handleTout   
+   		whenTout 30000  -> handleTout     
    		whenEvent alarm -> handleAlarm 
    	 
   	Plan handleTout[ 

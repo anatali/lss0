@@ -1,0 +1,3 @@
+plan(1,init, sentence(true,not here StateMoveNormal,'','' ))
+plan(1,dopublish, sentence(true,delay( 1500) ,'','' ))
+plan(2,dopublish, sentence( dataToPublish( Q,D,A),not here StateMoveNormal,'','' ))

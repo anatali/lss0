@@ -1,25 +1,28 @@
 System testRover 
 Event sonarDetect    : sonarDetect(X) //From (virtual robot) sonar
 Event sonar          : sonar(SONAR, TARGET, DISTANCE) //From (virtual) sonar  
+Event polar          : p( Distance, Angle  ) 
+Event alarm          : alarm( obstacle, p( Distance, Angle  ) )	//emitted by radar
 
-Context  ctxRover  ip [ host="localhost"  port=8070 ]         
-EventHandler evh for  sonarDetect , sonar -print ;   
- 
+Context  ctxRadarBase   ip [ host="localhost"   port=8080 ]  -standalone  //192.168.43.229
+Context  ctxRover       ip [ host="localhost"   port=8070 ]         
+EventHandler evh for  alarm, sonarDetect , sonar -print {
+ 	emit polar fromContent sonar(sonar1, TARGET, DISTANCE) to p( DISTANCE, 60  ) ;
+ 	emit polar fromContent sonar(sonar2, TARGET, DISTANCE) to p( DISTANCE, 120  ) ;
+ 	emit polar fromContent sonarDetect(X) to p( 50, 90  )  
+};   
+  
 QActor rover context ctxRover { 
 	Plan init normal [    
 	    	println("rover START");	    	
 	    	connectUnity "localhost";
 	    	createUnityObject "rover" ofclass "Prefabs/CustomActor" ;
-// 	    	actorOp workWithUnity("localhost") ;  
-// 	   		actorOp createSimulatedActor("rover","Prefabs/CustomActor")  ;	
  			backwards 70 time ( 800 ) ;    	
-   	    	right 60 time ( 1000 )   //position
+   	    	right 70 time ( 1000 )   //position
   	    ] 
 	    switchTo moveVitualRobot   
 		
-	Plan moveVitualRobot [
-//		println("moveVitualRobot")
-	]
+	Plan moveVitualRobot [	]
 	reactive onward 40 time ( 5000 )      
 	    	whenEnd -> endOfMove
 	    	whenTout 30000 -> handleTout
@@ -28,10 +31,22 @@ QActor rover context ctxRover {
 	finally repeatPlan
 	 
 	Plan handleSonar resumeLastPlan [
-//   	    onward 40 time ( 200 ) ;   //out of sonar range
-   	    stop  0 time ( 500 )      //stop for a while ...
+   	    onEvent sonar : sonar(sonar1, TARGET, DISTANCE) -> switchTo moveFar ; //else left 70 time ( 500 );
+    	onEvent sonar : sonar(sonar2, TARGET, DISTANCE) -> switchTo moveNear //else right 70 time ( 500 )  
 	]	
-	Plan handleObstacle resumeLastPlan [ backwards 50 time ( 2500 ) ]
+	
+	Plan moveFar resumeLastPlan[
+		right 70 time ( 500 ) ;
+		onward 60 time ( 1000 ) ;
+		left 70 time ( 500 )
+	]
+	Plan moveNear resumeLastPlan[
+		left 70 time ( 500 ) ;
+		onward 60 time ( 1000 ) ;
+		right 70 time ( 500 ) 
+	]
+	
+	Plan handleObstacle resumeLastPlan [ backwards 80 time ( 2800 ) ]
 	Plan endOfMove resumeLastPlan [ println("endOfMove") ]
 	Plan handleTout   [ println("handleTout") ]
 		

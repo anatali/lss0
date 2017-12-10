@@ -95,7 +95,7 @@ public abstract class AbstractSensorsonar extends QActor {
 	    	if( aar.getInterrupted() ) curPlanInExec   = "dopublish";
 	    	if( ! aar.getGoon() ) return ;
 	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?dataToPublish(Q,D,A)" )) != null ){
-	    	//PublishMove
+	    	//PublishMsgMove
 	    	parg = "p(D,A)";
 	    	parg = QActorUtils.substituteVars(guardVars,parg);
 	    	sendMsgMqtt(  "unibo/mqtt/radar", "polarMsg", guardVars.get("Q"), parg );

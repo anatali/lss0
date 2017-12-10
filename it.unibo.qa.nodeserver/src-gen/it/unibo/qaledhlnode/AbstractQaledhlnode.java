@@ -122,7 +122,7 @@ public abstract class AbstractQaledhlnode extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	String parg = "writeNodeOutput(N)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@4b441df1
+	            	String parg = "writeNodeOutput(N)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@711d1301
 	            	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,nodePc)" )) != null )
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("switch(N)"), 

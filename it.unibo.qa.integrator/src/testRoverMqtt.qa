@@ -55,7 +55,7 @@ Rules{
 		println("handleSonar");  
 		stop 0 time (500) ;
 		onEvent sonar : sonar(SOURCE, TARGET, DISTANCE) -> addRule input(SOURCE,DISTANCE) ;
-		[ !? dataToPublish(Q,D,A) ] publish "unibo/mqtt/radar" for Q -m polarMsg : p( D,A  ) ;
+//		[ !? dataToPublish(Q,D,A) ] publishMsg "unibo/mqtt/radar" for Q -m polarMsg : p( D,A  ) ;
    	    onEvent sonar : sonar(sonar1, TARGET, DISTANCE) -> switchTo moveFar ; //else left 70 time ( 500 );
     	onEvent sonar : sonar(sonar2, TARGET, DISTANCE) -> switchTo moveNear //else right 70 time ( 500 )  
 	]	

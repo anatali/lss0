@@ -84,6 +84,8 @@ public abstract class AbstractRover extends QActor {
 	    	println( temporaryStr );  
 	    	initUnityConnection("localhost");
 	    	createSimulatedActor("rover", "Prefabs/CustomActor"); 
+	    	//ConnectToPublish
+	    	connectToSend( this.getName(), "tcp://localhost:1883", "unibo/mqtt/radar");
 	    	execUnity("rover","backward",800, 70,0); //rover: default namefor virtual robot		
 	    	execUnity("rover","right",1000, 70,0); //rover: default namefor virtual robot		
 	    	//switchTo moveVitualRobot
@@ -128,6 +130,20 @@ public abstract class AbstractRover extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handleSonar",-1);
 	    	String myselfName = "handleSonar";  
+	    	temporaryStr = "\"handleSonar\"";
+	    	println( temporaryStr );  
+	    	execUnity("rover","stop",500, 0,0); //rover: default namefor virtual robot		
+	    	//onEvent  
+	    	curT = Term.createTerm("sonar(SOURCE,TARGET,DISTANCE)");
+	    	if( currentEvent != null && currentEvent.getEventId().equals("sonar") && 
+	    		pengine.unify(curT, Term.createTerm("sonar(SONAR,TARGET,DISTANCE)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentEvent.getMsg() ) )){ 
+	    			String parg="input(SOURCE,DISTANCE)";
+	    			/* AddRule */
+	    			parg = updateVars(Term.createTerm("sonar(SONAR,TARGET,DISTANCE)"),  Term.createTerm("sonar(SOURCE,TARGET,DISTANCE)"), 
+	    				    		  					Term.createTerm(currentEvent.getMsg()), parg);
+	    			if( parg != null ) addRule(parg);	    		  					
+	    	}
 	    	//onEvent  
 	    	curT = Term.createTerm("sonar(sonar1,TARGET,DISTANCE)");
 	    	if( currentEvent != null && currentEvent.getEventId().equals("sonar") && 

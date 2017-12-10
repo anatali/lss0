@@ -1,0 +1,6 @@
+plan(1,init, sentence(true,move(print("lgvtester query")),'','' ))
+plan(2,init, sentence(true,forward(lgv0, lgvReady,lgvReady( s1,lgv0,query)),'','' ))
+plan(1,simulatesmarttm, sentence(true,move(print("lgvtester lgvMoveLoad")),'','' ))
+plan(2,simulatesmarttm, sentence(true,forward(lgv0, lgvMoveLoad,lgvMoveLoad( lgv0,s1)),'','' ))
+plan(1,simulateaftersdm, sentence(true,move(print("lgvtester lgvMoveWhareh")),'','' ))
+plan(2,simulateaftersdm, sentence(true,forward(lgv0, lgvMoveWhareh,lgvMoveWhareh( lgv0,s1,cell1)),'','' ))

@@ -1,0 +1,5 @@
+plan(1,init, sentence(true,move(print("plant STARTS")),'','' ))
+plan(1,doWork, sentence(true,delay( 100) ,'','' ))
+plan(2,doWork, sentence(true,raise( sourceEngaged , sourceEngaged( s1) )'),'','' ))
+plan(3,doWork, sentence(true,delay( 1000) ,'','' ))
+plan(4,doWork, sentence(true,raise( sourceEngaged , sourceEngaged( s2) )'),'','' ))

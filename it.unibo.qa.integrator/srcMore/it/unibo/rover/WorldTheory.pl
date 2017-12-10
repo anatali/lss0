@@ -142,6 +142,11 @@ actorPrintln( X ):- actorobj(A), text_term(XS,X), A  <- println( XS ).
 %-------------------------------------------------
 %  User static rules about rover
 %------------------------------------------------- 
+radarActorName( radarguimqtt).
+mapAngle( sonar1,60).
+mapAngle( sonar2,120).
+dataToPublish( Q,D,A):-radarActorName( Q),output( dataToPublish( Q,D,A)),retract( input( SOURCE,D)),output( dataToPublish( Q,SOURCE,D,A)),mapAngle( SOURCE,A), ! ,output( dataToPublish( Q,D,A)).
+dataToPublish( Q,80,90):-radarActorName( Q).
 /*
 ------------------------------------------------------------------------
 testex :- actorPrintln( testex ),

@@ -10,7 +10,7 @@ EventHandler evh for  alarm, sonarDetect , sonar -print {
  	emit polar fromContent sonar(sonar1, TARGET, DISTANCE) to p( DISTANCE, 60  ) ;
  	emit polar fromContent sonar(sonar2, TARGET, DISTANCE) to p( DISTANCE, 120  ) ;
  	emit polar fromContent sonarDetect(X) to p( 50, 90  )  
-};   
+};     
   
 QActor rover context ctxRover { 
 	Plan init normal [    
@@ -44,7 +44,7 @@ QActor rover context ctxRover {
 		left 70 time ( 500 ) ;
 		onward 60 time ( 1000 ) ;
 		right 70 time ( 500 ) 
-	]
+	] 
 	
 	Plan handleObstacle resumeLastPlan [ backwards 80 time ( 2800 ) ]
 	Plan endOfMove resumeLastPlan [ println("endOfMove") ]

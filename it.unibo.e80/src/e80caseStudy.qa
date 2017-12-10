@@ -1,0 +1,353 @@
+System e80CaseStudy
+
+/*
+ * lgv     = LASER GUIDED VEHICLE 
+ * lgvman  = lgv MANAGER
+ * smarttm = SMART TRAFFIC MANAGER
+ * sdm     = SMART DECSION MAKER
+ * 
+ * lgvtaker = lgv che trasporta materiale da una sorgente al magazzino
+
+================================================================================
+  	 * lgvman:
+	 * quando vi è materiale sulla piattaforma (pxSource)
+	 * invia a smarttm un msg (qLoad ??):
+	 * smarttm :
+	 * 		quando riceve qLoad, trova un LGV disponibile (lgvtaker)
+	 * 		attende un avviso di ok (lgvtakerReady) da parte di lgvtaker 
+ 	 * 		invia a lgvman il msg s200LgvReady
+	 * lgvman:	
+	 * 		quando riceve s200LgvReady, 
+	 * 		invia a smarttm un msg (m200LoadConfirmed)
+	 * smarttm :
+ 	 * 		pilota lgvtaker verso  pxSource (calcola path , analizza traffico)
+	 * 		attende che lgvtaker arrivi e sia caricato 
+	 * 		invia a lgvman il msg di carico preso in consegna (s300LgvLoaded)	
+	 * lgvman:
+	 * 		quando arriva s300LgvLoaded invia a sdm pkup
+	 * sdm:
+	 * 		quando riceve pkup, crea missione  trovando dest-wharehouse
+	 * 		invia a lgvman il messaggio di missione nmis (da source a dest-wharehouse)
+	 * lgvman:
+	 * 		quando riceve nmis invia a smarttm il msg m100Mission
+	 * smarttm:
+	 * 		quando riceve m100Mission
+	 * 		calcola path , analizza traffico
+	 * 		sposta lgvtaker verso la destinazione dest-wharehouse
+	 * 		....
+ 	 *    
+*/
+
+Event sourceEngaged        : sourceEngaged( SOURCE )	//SOURCE = s1, s2
+
+Dispatch endAction         : endAction(A,R)
+
+Dispatch materialAvailable : sourceEngaged( SOURCE )	//SOURCE = s1, s2
+Dispatch qLoad    		   : qLoad( SOURCE )
+Dispatch lgvReady 		   : lgvReady(SOURCE,LGV,V) 		//V=query/true/false 
+Dispatch s200LgvReady	   : s200LgvReady( SOURCE, LGV )
+Dispatch m200LoadConfirmed : m200LoadConfirmed( SOURCE, LGV )
+Dispatch s300LgvLoaded     : s300LgvLoaded( MATERIAL, SOURCE, LGV )
+Dispatch pkup              : pkup(MATERIAL,SOURCE,LGV)
+Dispatch nmis              : mission(ORDREF,DEST)		//ORDREF=order(MATERIAL,SOURCE,LGV)
+Dispatch m100Mission       : m100Mission( MISSION )		//MISSION=mission(ORDREF,DEST)
+Dispatch lgvMoveLoad       : lgvMoveLoad(LGV,SOURCE)	//SOURCE=s1|s2| 
+Dispatch lgvMoveWhareh     : lgvMoveWhareh(LGV,SOURCE,DEST)	//SOURCE=s1|s2  DEST=  cell
+Dispatch lgvLoaded         : lgvLoaded( LGV,SOURCE,MATERIAL )
+Dispatch lgvStore          : lgvStore( LGV,SOURCE,MATERIAL,RESULT )
+Dispatch lgvMission        : lgvMission( LGV,SOURCE,MATERIAL,RESULT )
+
+Context  ctxE80CaseStudy  ip [ host="localhost"   port=8023 ] 
+EventHandler evh for sourceEngaged {
+	forwardEvent lgvman -m materialAvailable 
+};
+
+QActor lgvman context ctxE80CaseStudy  { 
+	Plan init normal [ 
+		javaRun it.e80.customGui.createCustomGui("400", "10", "20", "white")
+	]
+	switchTo doWork
+	 
+	Plan doWork[
+//		println("lgvman WAITS") 
+	] 
+	transition stopAfter 600000
+		whenMsg    materialAvailable -> handlematerialAvailable,  
+		whenMsg    s200LgvReady      -> handles200LgvReady,
+		whenMsg    s300LgvLoaded     -> handles300LgvLoaded,
+		whenMsg    nmis              -> handlenmis
+	finally repeatPlan 
+	 
+	Plan handlematerialAvailable resumeLastPlan[
+// 		printCurrentEvent ;
+ 		println("A new source is engaged. Now I send qLaod to smarttm by expecting s200LgvReady");
+		onMsg  materialAvailable : sourceEngaged(S) -> forward smarttm -m qLoad : qLoad(S)
+		//WARNING: we should receive an answer from smarttm and not only s200LgvReady
+	]	
+		
+	Plan handles200LgvReady resumeLastPlan[
+ 		printCurrentMessage ;
+ 		println("A lgv is ready. Now I send m200LoadConfirmed to smarttm");
+ 		onMsg s200LgvReady : s200LgvReady(SOURCE, LGV) ->  
+				forward smarttm -m m200LoadConfirmed : m200LoadConfirmed(SOURCE, LGV)
+	]
+	
+	Plan handles300LgvLoaded resumeLastPlan[
+		printCurrentMessage;
+		println("The lgv is loaded. Now I send pkup to sdm");
+		onMsg s300LgvLoaded : s300LgvLoaded(MATERIAL, SOURCE, LGV) -> forward sdm -m pkup : pkup(MATERIAL, SOURCE, LGV) 
+	]
+	
+	Plan handlenmis resumeLastPlan[
+		printCurrentMessage ;
+		println("A new mission must start. Now I send m100Mission to smarttm");
+		onMsg nmis : mission(ORDREF,DEST) -> forward smarttm -m m100Mission : m100Mission( mission(ORDREF,DEST) )
+	]
+	
+}
+
+
+/*
+ * ---------------------------------------------------
+ * SMART TRAFFIC MANAGER
+ * ---------------------------------------------------
+ */
+QActor smarttm context ctxE80CaseStudy {
+Rules{
+	lgvStatus( lgv, free ).
+//	We could send a lgvReady query to each LGV of a list. But we prefer to handle our kb
+	
+	engageLgv( SOURCE, LGV ) :-  
+		lgvStatus( LGV, free ),
+		replaceRule( lgvStatus( LGV, free ),  lgvStatus( LGV, engaged ) ), 
+		//actorPrintln( lgvtaker( SOURCE, LGV ) ),
+		assert( lgvtaker( SOURCE, LGV ) ).
+}	 
+   
+	Plan init normal [  
+		javaRun it.e80.customGui.createCustomGui("400", "10", "200", "yellow")
+	]
+	switchTo doWork    
+	
+	Plan doWork[ 
+		//println("smarttm doWork")
+	]
+	transition stopAfter 600000
+		whenMsg  qLoad             -> handleNewLoad ,
+		whenMsg  lgvReady          -> handleLgvReady,
+ 		whenMsg  m200LoadConfirmed -> driveLgv,
+ 		whenMsg  lgvLoaded         -> handlelgvLoaded,
+ 		whenMsg  m100Mission       -> handlem100Mission,
+		whenMsg  lgvStore          -> handleStored		
+	finally repeatPlan 
+	
+	Plan handleNewLoad resumeLastPlan[
+		//printCurrentMessage ;
+ 		println("A new load is requested. Now I check if some LGV is available");
+		 onMsg qLoad : qLoad(S) -> demo engageLgv(S,LGV) ; //println("smarttm handleNewLoad") ;
+		 //trova un LGV disponibile (lgvtaker) e chiede se è ready
+		 //[!? goalResult( R ) ] println( R );
+		 [!? goalResult( failure ) ] println("		NO MORE LGV READY");
+		 [!? goalResult( engageLgv(S,LGV) ) ]     
+		 		//javaRun it.e80.lgvSupport.askReady(SOURCE,LGV)	//IMPORTANT: SOURCE send the answer lgvReady
+		 		forward LGV -m lgvReady : lgvReady(S,LGV,query)
+ 	]
+  		
+ 	Plan handleLgvReady resumeLastPlan[
+ 		printCurrentMessage;
+		println("A new LGV is ready. Now I send s200LgvReady to lgvman, expecting a m200LoadConfirmed");		
+  		onMsg lgvReady : lgvReady(SOURCE,LGV,true) -> 
+ 				forward lgvman -m  s200LgvReady : s200LgvReady(SOURCE, LGV)
+ 	] 
+ 	  	
+  	Plan driveLgv resumeLastPlan[
+  		printCurrentMessage ; 		
+  		println("Now I drive LGV, expecting  lgvLoaded form LGV ") ;
+  		onMsg m200LoadConfirmed : m200LoadConfirmed(SOURCE,LGV) -> 
+  				forward LGV -m lgvMoveLoad : lgvMoveLoad(LGV,SOURCE)
+  		 
+  	]
+//  	transition stopAfter 10000
+//  		whenMsg lgvLoaded : lgvLoaded(LGV,SOURCE,MATERIAL) do 
+//  						forward  lgvman -m s300LgvLoaded : s300LgvLoaded(MATERIAL,SOURCE,LGV)
+  	
+ 	Plan handlelgvLoaded resumeLastPlan [
+		printCurrentMessage ;
+		println("Now I tell lgvaman that the LGV is loaded (s300LgvLoaded), by expecting m100Mission from lgvman");
+ 		onMsg lgvLoaded : lgvLoaded( LGV,SOURCE,MATERIAL ) ->
+ 				forward  lgvman -m s300LgvLoaded : s300LgvLoaded(MATERIAL,SOURCE,LGV)
+ 	]
+
+ 	Plan handlem100Mission resumeLastPlan [
+ 		printCurrentMessage ;
+ 		println("Now I have to manage a mission by sending lgvMoveWhareh to the LGV and expecting lgvStore");
+ 		onMsg m100Mission : m100Mission( mission(order(MATERIAL,SOURCE,LGV),DEST) ) ->  
+ 		 								forward  LGV -m  lgvMoveWhareh : lgvMoveWhareh(LGV,SOURCE,DEST)
+ 	]
+  	
+ 	Plan handleStored resumeLastPlan [
+ 		printCurrentMessage ;
+ 		onMsg lgvStore : lgvStore( LGV,SOURCE,MATERIAL,RESULT ) -> println( lgvStore( LGV,SOURCE,MATERIAL,RESULT ) )
+ 	]
+ }
+
+
+/*
+ * ---------------------------------------------------
+ * SMART DECSION MAKER
+ * ---------------------------------------------------
+ */ 
+
+QActor sdm context ctxE80CaseStudy   {
+Rules{
+	cell( c1, free ). 
+	cell( c2, free ).
+	
+	createMission( MATERIAL,SOURCE,LGV, mission( order(MATERIAL,SOURCE,LGV), DEST) ) :- 
+		//actorPrintln( createMission( MATERIAL,LGV ) ),
+		findDestInWharehouse( MATERIAL,DEST ),
+		//actorPrintln( mission( order(MATERIAL,LGV), DEST) ),
+		assert( mission( order(MATERIAL,SOURCE,LGV), DEST) ).  
+		
+	findDestInWharehouse(MATERIAL,CELL):-
+		retract( cell( CELL,free ) ),
+		assert( cell( CELL,bookedfor(MATERIAL) ) ).    
+}
+
+	Plan init normal [  
+		javaRun it.e80.customGui.createCustomGui("400", "10", "400", "green") 
+	]  
+	switchTo doWork
+	
+	Plan doWork[   
+		//println("sdm doWork")
+	]  
+	transition stopAfter 600000    
+ 		whenMsg pkup -> handlepkup  
+ 	finally repeatPlan
+ 	
+ 	Plan handlepkup resumeLastPlan[
+ 		printCurrentMessage;
+ 		println("pkup received. Now I create a mission, send it to lgvman by expecting ..."); 
+ 		onMsg pkup : pkup(MATERIAL,SOURCE,LGV) -> demo createMission(MATERIAL,SOURCE,LGV, MISSION);
+ 		[ !? goalResult(createMission(MATERIAL,SOURCE,LGV, MISSION)) ] println( MISSION ) ;
+ 		[ !? goalResult(createMission(MATERIAL,SOURCE,LGV, MISSION)) ] forward lgvman -m nmis : MISSION
+ 	]
+	
+}
+
+/*
+ * ------------------------------------
+ * LASER GUIDED VEHICLE
+ * ------------------------------------
+ */  
+
+QActor lgv context ctxE80CaseStudy   {
+Rules{
+	lgvId( lgv ).
+}
+	Plan init normal [
+ 		javaRun it.e80.customGui.createCustomGui("400", "30", "500", "cyan")
+	]
+	switchTo lgvIdle
+	
+	Plan lgvIdle[
+ 		[ !? lgvId( LGV )] println( info( "STATE", LGV, "IDLE" ) )
+	]
+	transition stopAfter 100000 
+		whenMsg lgvReady-> handlelgvReadyQuery 
+		
+	Plan handlelgvReadyQuery [
+		printCurrentMessage;
+ 		[ !? lgvId( LGV )]  onMsg  lgvReady : lgvReady(SOURCE,LGV,query ) -> 
+								replyToCaller -m lgvReady : lgvReady(SOURCE,LGV,true ) ;
+		println("	LGV WAITING FOR THE COMMAND TO LOAD ")
+	]
+	transition stopAfter 100000
+		whenMsg lgvMoveLoad -> handlelgvloadcmd
+		
+	Plan handlelgvloadcmd[ 
+		println("LGV MUST MOVE FROM DEPOSIT TO SOURCE ");
+		memoCurrentMessage  ;
+		actorOp simulateActionAsynch("simulateMoveToSource",1000)
+	]
+	switchTo movingToSource
+	
+	Plan movingToSource[
+		println("	LGV IS MOVING FROM DEPOSIT TO SOURCE ")
+	]
+	transition stopAfter 100000    
+		whenMsg lgvReady : lgvReady(SOURCE,LGV,reset)  do switchTo lgvIdle ,
+		whenMsg lgvReady : lgvReady(SOURCE,LGV,query ) do replyToCaller -m lgvReady : lgvReady(SOURCE,LGV,false ),
+		whenMsg endAction  -> movingToLoadEnd
+    finally repeatPlan	//other msgs handled
+	  
+	Plan movingToLoadEnd[
+		println("LGV HAS REACHED THE  SOURCE. Now sends lgvLoaded ");
+		[ !? msg(A,B,SENDER,D,lgvMoveLoad(LGV,SOURCE),F) ] println( msg(A,B,SENDER,D,lgvMoveLoad(LGV,SOURCE),F) ) ;
+  		[ ?? msg(A,B,SENDER,D,lgvMoveLoad(LGV,SOURCE),F) ] forward SENDER -m lgvLoaded : lgvLoaded(LGV,SOURCE,material)
+	]
+	transition stopAfter 100000 
+		whenMsg lgvMoveWhareh -> handlelgvmovetodest
+ 	
+	Plan handlelgvmovetodest [
+		println("LGV MIUST MOVE TO THE WHAREHOUSE");
+		memoCurrentMessage ;
+		actorOp simulateActionAsynch("simulateMoveToDest",1000)
+ 	]
+ 	switchTo movingToDest
+ 	
+ 	Plan movingToDest[
+ 		println("	LGV IS MOVING TO THE WHAREHOUSE")
+ 	]
+	transition stopAfter 100000
+		//no reset is possible
+		whenMsg lgvReady : lgvReady(SOURCE,LGV,query ) do replyToCaller -m lgvReady : lgvReady(SOURCE,LGV,false ),
+		whenMsg endAction  -> movingToDestEnd 
+ 	finally repeatPlan	//other msgs handled 	
+ 		
+	Plan movingToDestEnd[  
+		println("LGV HAS REACHED THE WHAREHOUSE"); 
+		//[ !? msg(A,B,C,D,E,F)  ]  println( msg(A,B,C,D,E,F) );
+		[ ?? msg(lgvMoveWhareh,B,SENDER,D,lgvMoveWhareh(LGV,SOURCE,DEST),F)  ]  
+						forward SENDER -m lgvStore : lgvStore(LGV,SOURCE,DEST,done)
+	] 
+	switchTo gotoDeposit
+	   
+	Plan gotoDeposit[
+		println("LGV IS MOVING TO THE WAITING AREA ");
+		actorOp simulateActionAsynch("simulateMoveToDeposit",1000)
+	]
+	switchTo movingToDeposit
+	
+	Plan movingToDeposit[
+		println("	LGV IS MOVING TO ITS DEPOSIT ")
+	]
+	transition stopAfter 100000
+		whenMsg lgvReady : lgvReady(SOURCE,LGV,query ) do replyToCaller -m lgvReady : lgvReady(SOURCE,LGV,false ),
+		whenMsg endAction  -> lgvIdle
+ 		finally repeatPlan	//other msgs handled
+ }
+
+ 
+
+
+/*
+ * ------------------------------------
+ * SIMULATOR OF AN EXTERNAL ENVIRONMENT
+ * ------------------------------------
+*/  
+
+
+QActor plant context ctxE80CaseStudy{
+	Plan init normal [ println("plant STARTS") ]
+	switchTo doWork
+	
+	Plan doWork[
+		delay 100; 
+		emit sourceEngaged : sourceEngaged( s1 ) ;
+		delay 1000;
+		emit sourceEngaged : sourceEngaged( s2 ) 		
+	]
+	
+}

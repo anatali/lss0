@@ -7,9 +7,9 @@ import it.unibo.is.interfaces.IOutputEnvView;
 import it.unibo.qactors.QActorContext;
 import it.unibo.qactors.QActorUtils;
 
-public abstract class AbstractEvh extends EventHandlerComponent { 
+public abstract class AbstractEvh1 extends EventHandlerComponent { 
 protected IEventItem event;
-	public AbstractEvh(String name, QActorContext myCtx, IOutputEnvView outEnvView, String[] eventIds ) throws Exception {
+	public AbstractEvh1(String name, QActorContext myCtx, IOutputEnvView outEnvView, String[] eventIds ) throws Exception {
 		super(name, myCtx, eventIds, outEnvView);
   	}
 	@Override
@@ -18,6 +18,9 @@ protected IEventItem event;
 	public void handleCurrentEvent() throws Exception {
 		event = this.currentEvent; //AKKA getEventItem();
 		if( event == null ) return;
+//showMsg( "---------------------------------------------------------------------" );	
+showMsg( event.getPrologRep()  );				 
+//showMsg( "---------------------------------------------------------------------" );	
 		{
 		Term msgt       = Term.createTerm(event.getMsg());
 		Term msgPattern = Term.createTerm("sourceEngaged(SOURCE)");

@@ -1,0 +1,20 @@
+/*
+*
+* A GraphViz DOT FSM description 
+* Please use a GraphViz visualizer (like http://www.webgraphviz.com)
+*  
+*/
+
+digraph finite_state_machine {
+	rankdir=LR
+	size="8,5"
+	
+	init [ color = red ][ fontcolor = red ][ penwidth = 3 ]
+	lgvNotReady [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	handlematerialAvailable [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	
+	init -> handleToutBuiltIn [ label = "timeout(600000)" ][ color = green ][ fontcolor = green ]
+	handlematerialAvailable -> action [ label = "s200LgvReady" ][ color = red ][ fontcolor = red ][ dir = both ]
+	handlematerialAvailable -> lgvNotReady [ label = "timeout(2000)" ][ color = green ][ fontcolor = green ][ dir = both ]
+	init -> handlematerialAvailable [ label = "materialAvailable" ][ color = red ][ fontcolor = red ][ dir = both ]
+}

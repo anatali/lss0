@@ -3,6 +3,8 @@
 %====================================================================================
 context(ctxe80casestudy, "localhost",  "TCP", "8023" ).  		 
 %%% -------------------------------------------
+qactor( sourcehandler , ctxe80casestudy, "it.unibo.sourcehandler.MsgHandle_Sourcehandler"   ). %%store msgs 
+qactor( sourcehandler_ctrl , ctxe80casestudy, "it.unibo.sourcehandler.Sourcehandler"   ). %%control-driven 
 qactor( lgvman , ctxe80casestudy, "it.unibo.lgvman.MsgHandle_Lgvman"   ). %%store msgs 
 qactor( lgvman_ctrl , ctxe80casestudy, "it.unibo.lgvman.Lgvman"   ). %%control-driven 
 qactor( smarttm , ctxe80casestudy, "it.unibo.smarttm.MsgHandle_Smarttm"   ). %%store msgs 
@@ -15,5 +17,6 @@ qactor( plant , ctxe80casestudy, "it.unibo.plant.MsgHandle_Plant"   ). %%store m
 qactor( plant_ctrl , ctxe80casestudy, "it.unibo.plant.Plant"   ). %%control-driven 
 %%% -------------------------------------------
 eventhandler(evh,ctxe80casestudy,"it.unibo.ctxE80CaseStudy.Evh","sourceEngaged").  
+eventhandler(evh1,ctxe80casestudy,"it.unibo.ctxE80CaseStudy.Evh1","userCmd").  
 %%% -------------------------------------------
 

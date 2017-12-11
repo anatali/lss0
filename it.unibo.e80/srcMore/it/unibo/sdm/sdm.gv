@@ -13,7 +13,7 @@ digraph finite_state_machine {
 	doWork [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	handlepkup [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	
-	doWork -> handlepkup [ label = "pkup" ][ color = red ][ fontcolor = red ][ dir = both ]
+	doWork -> handlepkup [ label = "pkup_5" ][ color = red ][ fontcolor = red ][ dir = both ]
 	init -> doWork [ label = "switch" ][ color = black ][ fontcolor = black ]
 	doWork -> doWork [ label = "repeat "][ style = dashed ][ color = blue ][ fontcolor = blue ]
 	doWork -> handleToutBuiltIn [ label = "timeout(600000)" ][ color = green ][ fontcolor = green ]

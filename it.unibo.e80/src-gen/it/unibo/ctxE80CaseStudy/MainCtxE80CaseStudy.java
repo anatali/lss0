@@ -8,7 +8,7 @@ public class MainCtxE80CaseStudy  {
 //MAIN
 public static QActorContext initTheContext() throws Exception{
 	IOutputEnvView outEnvView = SituatedSysKb.standardOutEnvView;
-	String webDir = null;
+	String webDir = "./srcMore/it/unibo/ctxE80CaseStudy";
 	return QActorContext.initQActorSystem(
 		"ctxe80casestudy", "./srcMore/it/unibo/ctxE80CaseStudy/e80casestudy.pl", 
 		"./srcMore/it/unibo/ctxE80CaseStudy/sysRules.pl", outEnvView,webDir,false);

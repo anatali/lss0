@@ -57,10 +57,10 @@ public abstract class AbstractLgvman extends QActor {
 	    	stateTab.put("handleToutBuiltIn",handleToutBuiltIn);
 	    	stateTab.put("init",init);
 	    	stateTab.put("doWork",doWork);
-	    	stateTab.put("handlematerialAvailable",handlematerialAvailable);
 	    	stateTab.put("handles200LgvReady",handles200LgvReady);
 	    	stateTab.put("handles300LgvLoaded",handles300LgvLoaded);
 	    	stateTab.put("handlenmis",handlenmis);
+	    	stateTab.put("handlelgvStore_7a",handlelgvStore_7a);
 	    }
 	    StateFun handleToutBuiltIn = () -> {	
 	    	try{	
@@ -95,8 +95,8 @@ public abstract class AbstractLgvman extends QActor {
 	    	String myselfName = "doWork";  
 	    	//bbb
 	     msgTransition( pr,myselfName,"lgvman_"+myselfName,false,
-	          new StateFun[]{stateTab.get("handlematerialAvailable"), stateTab.get("handles200LgvReady"), stateTab.get("handles300LgvLoaded"), stateTab.get("handlenmis") },//new StateFun[]
-	          new String[]{"true","M","materialAvailable", "true","M","s200LgvReady", "true","M","s300LgvLoaded", "true","M","nmis" },
+	          new StateFun[]{stateTab.get("handles200LgvReady"), stateTab.get("handles300LgvLoaded"), stateTab.get("handlenmis"), stateTab.get("handlelgvStore_7a") },//new StateFun[]
+	          new String[]{"true","M","s200LgvReady", "true","M","s300LgvLoaded_4", "true","M","nmis_6", "true","M","lgvStore_7a" },
 	          600000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_doWork){  
 	    	 println( getName() + " plan=doWork WARNING:" + e_doWork.getMessage() );
@@ -104,47 +104,23 @@ public abstract class AbstractLgvman extends QActor {
 	    }
 	    };//doWork
 	    
-	    StateFun handlematerialAvailable = () -> {	
-	    try{	
-	     PlanRepeat pr = PlanRepeat.setUp("handlematerialAvailable",-1);
-	    	String myselfName = "handlematerialAvailable";  
-	    	temporaryStr = "\"A new source is engaged. Now I send qLaod to smarttm by expecting s200LgvReady\"";
-	    	println( temporaryStr );  
-	    	//onMsg 
-	    	curT = Term.createTerm("sourceEngaged(S)");
-	    	if( currentMessage != null && currentMessage.msgId().equals("materialAvailable") && 
-	    		pengine.unify(curT, Term.createTerm("sourceEngaged(SOURCE)")) && 
-	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
-	    		String parg="qLoad(S)";
-	    		/* SendDispatch */
-	    		parg = updateVars(Term.createTerm("sourceEngaged(SOURCE)"),  Term.createTerm("sourceEngaged(S)"), 
-	    			    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    		if( parg != null ) sendMsg("qLoad","smarttm", QActorContext.dispatch, parg ); 
-	    	}
-	    	repeatPlanNoTransition(pr,myselfName,"lgvman_"+myselfName,false,true);
-	    }catch(Exception e_handlematerialAvailable){  
-	    	 println( getName() + " plan=handlematerialAvailable WARNING:" + e_handlematerialAvailable.getMessage() );
-	    	 QActorContext.terminateQActorSystem(this); 
-	    }
-	    };//handlematerialAvailable
-	    
 	    StateFun handles200LgvReady = () -> {	
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handles200LgvReady",-1);
 	    	String myselfName = "handles200LgvReady";  
 	    	printCurrentMessage(false);
-	    	temporaryStr = "\"A lgv is ready. Now I send m200LoadConfirmed to smarttm\"";
+	    	temporaryStr = "\"A lgv is ready. Now I send m200LoadConfirmed_3 to smarttm, by excpecting s300LgvLoaded\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
 	    	curT = Term.createTerm("s200LgvReady(SOURCE,LGV)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("s200LgvReady") && 
 	    		pengine.unify(curT, Term.createTerm("s200LgvReady(SOURCE,LGV)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
-	    		String parg="m200LoadConfirmed(SOURCE,LGV)";
+	    		String parg="m200LoadConfirmed_3(SOURCE,LGV)";
 	    		/* SendDispatch */
 	    		parg = updateVars(Term.createTerm("s200LgvReady(SOURCE,LGV)"),  Term.createTerm("s200LgvReady(SOURCE,LGV)"), 
 	    			    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    		if( parg != null ) sendMsg("m200LoadConfirmed","smarttm", QActorContext.dispatch, parg ); 
+	    		if( parg != null ) sendMsg("m200LoadConfirmed_3","smarttm", QActorContext.dispatch, parg ); 
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"lgvman_"+myselfName,false,true);
 	    }catch(Exception e_handles200LgvReady){  
@@ -158,18 +134,18 @@ public abstract class AbstractLgvman extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("handles300LgvLoaded",-1);
 	    	String myselfName = "handles300LgvLoaded";  
 	    	printCurrentMessage(false);
-	    	temporaryStr = "\"The lgv is loaded. Now I send pkup to sdm\"";
+	    	temporaryStr = "\"The lgv is loaded. Now I send pkup_5 to sdm, by excpecting nmis\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
-	    	curT = Term.createTerm("s300LgvLoaded(MATERIAL,SOURCE,LGV)");
-	    	if( currentMessage != null && currentMessage.msgId().equals("s300LgvLoaded") && 
-	    		pengine.unify(curT, Term.createTerm("s300LgvLoaded(MATERIAL,SOURCE,LGV)")) && 
+	    	curT = Term.createTerm("s300LgvLoaded_4(MATERIAL,SOURCE,LGV)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("s300LgvLoaded_4") && 
+	    		pengine.unify(curT, Term.createTerm("s300LgvLoaded_4(MATERIAL,SOURCE,LGV)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
-	    		String parg="pkup(MATERIAL,SOURCE,LGV)";
+	    		String parg="pkup_5(MATERIAL,SOURCE,LGV)";
 	    		/* SendDispatch */
-	    		parg = updateVars(Term.createTerm("s300LgvLoaded(MATERIAL,SOURCE,LGV)"),  Term.createTerm("s300LgvLoaded(MATERIAL,SOURCE,LGV)"), 
+	    		parg = updateVars(Term.createTerm("s300LgvLoaded_4(MATERIAL,SOURCE,LGV)"),  Term.createTerm("s300LgvLoaded_4(MATERIAL,SOURCE,LGV)"), 
 	    			    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    		if( parg != null ) sendMsg("pkup","sdm", QActorContext.dispatch, parg ); 
+	    		if( parg != null ) sendMsg("pkup_5","sdm", QActorContext.dispatch, parg ); 
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"lgvman_"+myselfName,false,true);
 	    }catch(Exception e_handles300LgvLoaded){  
@@ -183,18 +159,18 @@ public abstract class AbstractLgvman extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("handlenmis",-1);
 	    	String myselfName = "handlenmis";  
 	    	printCurrentMessage(false);
-	    	temporaryStr = "\"A new mission must start. Now I send m100Mission to smarttm\"";
+	    	temporaryStr = "\"A new mission must start. Now I send m100Mission_7 to smarttm, by excpecting lgvStore_7a\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
 	    	curT = Term.createTerm("mission(ORDREF,DEST)");
-	    	if( currentMessage != null && currentMessage.msgId().equals("nmis") && 
+	    	if( currentMessage != null && currentMessage.msgId().equals("nmis_6") && 
 	    		pengine.unify(curT, Term.createTerm("mission(ORDREF,DEST)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
-	    		String parg="m100Mission(mission(ORDREF,DEST))";
+	    		String parg="m100Mission_7(mission(ORDREF,DEST))";
 	    		/* SendDispatch */
 	    		parg = updateVars(Term.createTerm("mission(ORDREF,DEST)"),  Term.createTerm("mission(ORDREF,DEST)"), 
 	    			    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    		if( parg != null ) sendMsg("m100Mission","smarttm", QActorContext.dispatch, parg ); 
+	    		if( parg != null ) sendMsg("m100Mission_7","smarttm", QActorContext.dispatch, parg ); 
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"lgvman_"+myselfName,false,true);
 	    }catch(Exception e_handlenmis){  
@@ -202,6 +178,20 @@ public abstract class AbstractLgvman extends QActor {
 	    	 QActorContext.terminateQActorSystem(this); 
 	    }
 	    };//handlenmis
+	    
+	    StateFun handlelgvStore_7a = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp("handlelgvStore_7a",-1);
+	    	String myselfName = "handlelgvStore_7a";  
+	    	printCurrentMessage(false);
+	    	temporaryStr = "\"MOVE DONE\"";
+	    	println( temporaryStr );  
+	    	repeatPlanNoTransition(pr,myselfName,"lgvman_"+myselfName,false,false);
+	    }catch(Exception e_handlelgvStore_7a){  
+	    	 println( getName() + " plan=handlelgvStore_7a WARNING:" + e_handlelgvStore_7a.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//handlelgvStore_7a
 	    
 	    protected void initSensorSystem(){
 	    	//doing nothing in a QActor

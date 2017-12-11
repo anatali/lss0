@@ -98,7 +98,7 @@ public abstract class AbstractSmarttm extends QActor {
 	    	//bbb
 	     msgTransition( pr,myselfName,"smarttm_"+myselfName,false,
 	          new StateFun[]{stateTab.get("handleNewLoad"), stateTab.get("handleLgvReady"), stateTab.get("driveLgv"), stateTab.get("handlelgvLoaded"), stateTab.get("handlem100Mission"), stateTab.get("handleStored") },//new StateFun[]
-	          new String[]{"true","M","qLoad", "true","M","lgvReady", "true","M","m200LoadConfirmed", "true","M","lgvLoaded", "true","M","m100Mission", "true","M","lgvStore" },
+	          new String[]{"true","M","qLoad_1", "true","M","lgvReady_2", "true","M","m200LoadConfirmed_3", "true","M","lgvLoaded_3a", "true","M","m100Mission_7", "true","M","lgvStore_7a" },
 	          600000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_doWork){  
 	    	 println( getName() + " plan=doWork WARNING:" + e_doWork.getMessage() );
@@ -113,14 +113,14 @@ public abstract class AbstractSmarttm extends QActor {
 	    	temporaryStr = "\"A new load is requested. Now I check if some LGV is available\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
-	    	curT = Term.createTerm("qLoad(S)");
-	    	if( currentMessage != null && currentMessage.msgId().equals("qLoad") && 
-	    		pengine.unify(curT, Term.createTerm("qLoad(SOURCE)")) && 
+	    	curT = Term.createTerm("qLoad_1(S)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("qLoad_1") && 
+	    		pengine.unify(curT, Term.createTerm("qLoad_1(SOURCE)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
 	    		String parg="engageLgv(S,LGV)";
 	    		/* PHead */
-	    		parg =  updateVars( Term.createTerm("qLoad(SOURCE)"), 
-	    		                    Term.createTerm("qLoad(S)"), 
+	    		parg =  updateVars( Term.createTerm("qLoad_1(SOURCE)"), 
+	    		                    Term.createTerm("qLoad_1(S)"), 
 	    			    		  	Term.createTerm(currentMessage.msgContent()), parg);
 	    			if( parg != null ) {
 	    			    aar = QActorUtils.solveGoal(this,myCtx,pengine,parg,"",outEnvView,86400000);
@@ -141,8 +141,8 @@ public abstract class AbstractSmarttm extends QActor {
 	    	println( temporaryStr );  
 	    	}
 	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?goalResult(engageLgv(S,LGV))" )) != null ){
-	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"lgvReady(SOURCE,LGV,V)","lgvReady(S,LGV,query)", guardVars ).toString();
-	    	sendMsg("lgvReady",guardVars.get("LGV"), QActorContext.dispatch, temporaryStr ); 
+	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"lgvReady_2(SOURCE,LGV,V)","lgvReady_2(S,LGV,query)", guardVars ).toString();
+	    	sendMsg("lgvReady_2",guardVars.get("LGV"), QActorContext.dispatch, temporaryStr ); 
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"smarttm_"+myselfName,false,true);
 	    }catch(Exception e_handleNewLoad){  
@@ -156,16 +156,16 @@ public abstract class AbstractSmarttm extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("handleLgvReady",-1);
 	    	String myselfName = "handleLgvReady";  
 	    	printCurrentMessage(false);
-	    	temporaryStr = "\"A new LGV is ready. Now I send s200LgvReady to lgvman, expecting a m200LoadConfirmed\"";
+	    	temporaryStr = "\"A new LGV is ready. Now I send s200LgvReady to lgvman, expecting a m200LoadConfirmed_3\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
-	    	curT = Term.createTerm("lgvReady(SOURCE,LGV,true)");
-	    	if( currentMessage != null && currentMessage.msgId().equals("lgvReady") && 
-	    		pengine.unify(curT, Term.createTerm("lgvReady(SOURCE,LGV,V)")) && 
+	    	curT = Term.createTerm("lgvReady_2(SOURCE,LGV,true)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("lgvReady_2") && 
+	    		pengine.unify(curT, Term.createTerm("lgvReady_2(SOURCE,LGV,V)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
 	    		String parg="s200LgvReady(SOURCE,LGV)";
 	    		/* SendDispatch */
-	    		parg = updateVars(Term.createTerm("lgvReady(SOURCE,LGV,V)"),  Term.createTerm("lgvReady(SOURCE,LGV,true)"), 
+	    		parg = updateVars(Term.createTerm("lgvReady_2(SOURCE,LGV,V)"),  Term.createTerm("lgvReady_2(SOURCE,LGV,true)"), 
 	    			    		  					Term.createTerm(currentMessage.msgContent()), parg);
 	    		if( parg != null ) sendMsg("s200LgvReady","lgvman", QActorContext.dispatch, parg ); 
 	    	}
@@ -181,18 +181,18 @@ public abstract class AbstractSmarttm extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("driveLgv",-1);
 	    	String myselfName = "driveLgv";  
 	    	printCurrentMessage(false);
-	    	temporaryStr = "\"Now I drive LGV, expecting  lgvLoaded form LGV \"";
+	    	temporaryStr = "\"Now I drive LGV, expecting  lgvLoaded_3a form LGV \"";
 	    	println( temporaryStr );  
 	    	//onMsg 
-	    	curT = Term.createTerm("m200LoadConfirmed(SOURCE,LGV)");
-	    	if( currentMessage != null && currentMessage.msgId().equals("m200LoadConfirmed") && 
-	    		pengine.unify(curT, Term.createTerm("m200LoadConfirmed(SOURCE,LGV)")) && 
+	    	curT = Term.createTerm("m200LoadConfirmed_3(SOURCE,LGV)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("m200LoadConfirmed_3") && 
+	    		pengine.unify(curT, Term.createTerm("m200LoadConfirmed_3(SOURCE,LGV)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
-	    		String parg="lgvMoveLoad(LGV,SOURCE)";
+	    		String parg="lgvMoveLoad_3cmd(LGV,SOURCE)";
 	    		/* SendDispatch */
-	    		parg = updateVars(Term.createTerm("m200LoadConfirmed(SOURCE,LGV)"),  Term.createTerm("m200LoadConfirmed(SOURCE,LGV)"), 
+	    		parg = updateVars(Term.createTerm("m200LoadConfirmed_3(SOURCE,LGV)"),  Term.createTerm("m200LoadConfirmed_3(SOURCE,LGV)"), 
 	    			    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    		if( parg != null ) sendMsg("lgvMoveLoad",guardVars.get("LGV"), QActorContext.dispatch, parg ); 
+	    		if( parg != null ) sendMsg("lgvMoveLoad_3cmd",guardVars.get("LGV"), QActorContext.dispatch, parg ); 
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"smarttm_"+myselfName,false,true);
 	    }catch(Exception e_driveLgv){  
@@ -206,18 +206,18 @@ public abstract class AbstractSmarttm extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("handlelgvLoaded",-1);
 	    	String myselfName = "handlelgvLoaded";  
 	    	printCurrentMessage(false);
-	    	temporaryStr = "\"Now I tell lgvaman that the LGV is loaded (s300LgvLoaded), by expecting m100Mission from lgvman\"";
+	    	temporaryStr = "\"Now I tell lgvaman that the LGV is loaded (s300LgvLoaded_4), by expecting m100Mission_7 from lgvman\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
-	    	curT = Term.createTerm("lgvLoaded(LGV,SOURCE,MATERIAL)");
-	    	if( currentMessage != null && currentMessage.msgId().equals("lgvLoaded") && 
-	    		pengine.unify(curT, Term.createTerm("lgvLoaded(LGV,SOURCE,MATERIAL)")) && 
+	    	curT = Term.createTerm("lgvLoaded_3a(LGV,SOURCE,MATERIAL)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("lgvLoaded_3a") && 
+	    		pengine.unify(curT, Term.createTerm("lgvLoaded_3a(LGV,SOURCE,MATERIAL)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
-	    		String parg="s300LgvLoaded(MATERIAL,SOURCE,LGV)";
+	    		String parg="s300LgvLoaded_4(MATERIAL,SOURCE,LGV)";
 	    		/* SendDispatch */
-	    		parg = updateVars(Term.createTerm("lgvLoaded(LGV,SOURCE,MATERIAL)"),  Term.createTerm("lgvLoaded(LGV,SOURCE,MATERIAL)"), 
+	    		parg = updateVars(Term.createTerm("lgvLoaded_3a(LGV,SOURCE,MATERIAL)"),  Term.createTerm("lgvLoaded_3a(LGV,SOURCE,MATERIAL)"), 
 	    			    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    		if( parg != null ) sendMsg("s300LgvLoaded","lgvman", QActorContext.dispatch, parg ); 
+	    		if( parg != null ) sendMsg("s300LgvLoaded_4","lgvman", QActorContext.dispatch, parg ); 
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"smarttm_"+myselfName,false,true);
 	    }catch(Exception e_handlelgvLoaded){  
@@ -231,18 +231,18 @@ public abstract class AbstractSmarttm extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("handlem100Mission",-1);
 	    	String myselfName = "handlem100Mission";  
 	    	printCurrentMessage(false);
-	    	temporaryStr = "\"Now I have to manage a mission by sending lgvMoveWhareh to the LGV and expecting lgvStore\"";
+	    	temporaryStr = "\"Now I have to manage a mission by sending lgvMoveWhareh_7cmd to the LGV and expecting lgvStore_7a\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
-	    	curT = Term.createTerm("m100Mission(mission(order(MATERIAL,SOURCE,LGV),DEST))");
-	    	if( currentMessage != null && currentMessage.msgId().equals("m100Mission") && 
-	    		pengine.unify(curT, Term.createTerm("m100Mission(MISSION)")) && 
+	    	curT = Term.createTerm("m100Mission_7(mission(order(MATERIAL,SOURCE,LGV),DEST))");
+	    	if( currentMessage != null && currentMessage.msgId().equals("m100Mission_7") && 
+	    		pengine.unify(curT, Term.createTerm("m100Mission_7(MISSION)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
-	    		String parg="lgvMoveWhareh(LGV,SOURCE,DEST)";
+	    		String parg="lgvMoveWhareh_7cmd(LGV,SOURCE,DEST)";
 	    		/* SendDispatch */
-	    		parg = updateVars(Term.createTerm("m100Mission(MISSION)"),  Term.createTerm("m100Mission(mission(order(MATERIAL,SOURCE,LGV),DEST))"), 
+	    		parg = updateVars(Term.createTerm("m100Mission_7(MISSION)"),  Term.createTerm("m100Mission_7(mission(order(MATERIAL,SOURCE,LGV),DEST))"), 
 	    			    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    		if( parg != null ) sendMsg("lgvMoveWhareh",guardVars.get("LGV"), QActorContext.dispatch, parg ); 
+	    		if( parg != null ) sendMsg("lgvMoveWhareh_7cmd",guardVars.get("LGV"), QActorContext.dispatch, parg ); 
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"smarttm_"+myselfName,false,true);
 	    }catch(Exception e_handlem100Mission){  
@@ -257,16 +257,27 @@ public abstract class AbstractSmarttm extends QActor {
 	    	String myselfName = "handleStored";  
 	    	printCurrentMessage(false);
 	    	//onMsg 
-	    	curT = Term.createTerm("lgvStore(LGV,SOURCE,MATERIAL,RESULT)");
-	    	if( currentMessage != null && currentMessage.msgId().equals("lgvStore") && 
-	    		pengine.unify(curT, Term.createTerm("lgvStore(LGV,SOURCE,MATERIAL,RESULT)")) && 
+	    	curT = Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("lgvStore_7a") && 
+	    		pengine.unify(curT, Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
-	    		String parg = "lgvStore(LGV,SOURCE,MATERIAL,RESULT)";
+	    		String parg = "lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)";
 	    		/* Print */
-	    		parg =  updateVars( Term.createTerm("lgvStore(LGV,SOURCE,MATERIAL,RESULT)"), 
-	    		                    Term.createTerm("lgvStore(LGV,SOURCE,MATERIAL,RESULT)"), 
+	    		parg =  updateVars( Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)"), 
+	    		                    Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)"), 
 	    			    		  	Term.createTerm(currentMessage.msgContent()), parg);
 	    		if( parg != null ) println( parg );
+	    	}
+	    	//onMsg 
+	    	curT = Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("lgvStore_7a") && 
+	    		pengine.unify(curT, Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
+	    		String parg="lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)";
+	    		/* SendDispatch */
+	    		parg = updateVars(Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)"),  Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)"), 
+	    			    		  					Term.createTerm(currentMessage.msgContent()), parg);
+	    		if( parg != null ) sendMsg("lgvStore_7a","lgvman", QActorContext.dispatch, parg ); 
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"smarttm_"+myselfName,false,true);
 	    }catch(Exception e_handleStored){  

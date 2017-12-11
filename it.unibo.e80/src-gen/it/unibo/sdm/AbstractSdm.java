@@ -93,7 +93,7 @@ public abstract class AbstractSdm extends QActor {
 	    	//bbb
 	     msgTransition( pr,myselfName,"sdm_"+myselfName,false,
 	          new StateFun[]{stateTab.get("handlepkup") },//new StateFun[]
-	          new String[]{"true","M","pkup" },
+	          new String[]{"true","M","pkup_5" },
 	          600000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_doWork){  
 	    	 println( getName() + " plan=doWork WARNING:" + e_doWork.getMessage() );
@@ -106,17 +106,17 @@ public abstract class AbstractSdm extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("handlepkup",-1);
 	    	String myselfName = "handlepkup";  
 	    	printCurrentMessage(false);
-	    	temporaryStr = "\"pkup received. Now I create a mission, send it to lgvman by expecting ...\"";
+	    	temporaryStr = "\"pkup_5 received. Now I create a mission, send it to lgvman by expecting ???\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
-	    	curT = Term.createTerm("pkup(MATERIAL,SOURCE,LGV)");
-	    	if( currentMessage != null && currentMessage.msgId().equals("pkup") && 
-	    		pengine.unify(curT, Term.createTerm("pkup(MATERIAL,SOURCE,LGV)")) && 
+	    	curT = Term.createTerm("pkup_5(MATERIAL,SOURCE,LGV)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("pkup_5") && 
+	    		pengine.unify(curT, Term.createTerm("pkup_5(MATERIAL,SOURCE,LGV)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
 	    		String parg="createMission(MATERIAL,SOURCE,LGV,MISSION)";
 	    		/* PHead */
-	    		parg =  updateVars( Term.createTerm("pkup(MATERIAL,SOURCE,LGV)"), 
-	    		                    Term.createTerm("pkup(MATERIAL,SOURCE,LGV)"), 
+	    		parg =  updateVars( Term.createTerm("pkup_5(MATERIAL,SOURCE,LGV)"), 
+	    		                    Term.createTerm("pkup_5(MATERIAL,SOURCE,LGV)"), 
 	    			    		  	Term.createTerm(currentMessage.msgContent()), parg);
 	    			if( parg != null ) {
 	    			    aar = QActorUtils.solveGoal(this,myCtx,pengine,parg,"",outEnvView,86400000);
@@ -138,7 +138,7 @@ public abstract class AbstractSdm extends QActor {
 	    	}
 	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?goalResult(createMission(MATERIAL,SOURCE,LGV,MISSION))" )) != null ){
 	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"mission(ORDREF,DEST)","MISSION", guardVars ).toString();
-	    	sendMsg("nmis","lgvman", QActorContext.dispatch, temporaryStr ); 
+	    	sendMsg("nmis_6","lgvman", QActorContext.dispatch, temporaryStr ); 
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"sdm_"+myselfName,false,true);
 	    }catch(Exception e_handlepkup){  

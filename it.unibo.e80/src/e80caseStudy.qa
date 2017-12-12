@@ -1,6 +1,6 @@
 System e80CaseStudy
 
-Event userCmd 			   : userCmd(CMD)				//emitted by the web gui
+Event usercmd 			   : usercmd(CMD)		 		//emitted by the web gui
 Event sourceEngaged        : sourceEngaged( SOURCE )	//SOURCE = s1, s2
 
 Dispatch endAction         : endAction(A,R)		//sent by asynchronous actions
@@ -21,11 +21,6 @@ Dispatch lgvStore_7a         : lgvStore_7a( LGV,SOURCE,MATERIAL,RESULT )
 
 Context  ctxE80CaseStudy  ip [ host="localhost"   port=8023 ] -httpserver
 EventHandler evh for sourceEngaged {
-	//forwardEvent lgvman -m materialAvailable 			//OLD
-	forwardEvent sourcehandler -m materialAvailable
-};
-EventHandler evh1 for userCmd -print {
-	//forwardEvent lgvman -m materialAvailable 			//OLD
 	forwardEvent sourcehandler -m materialAvailable
 };
 
@@ -34,12 +29,14 @@ EventHandler evh1 for userCmd -print {
  * HANDLER OF sourceEngaged EVENTS mapped into messages
  * ---------------------------------------------------
  */
-QActor sourcehandler context ctxE80CaseStudy  {
-	Plan init normal [
-		println("sourcehandler WORKING") 
+QActor sourcehandler context ctxE80CaseStudy    {
+	Plan init normal [  
+		javaRun it.e80.customGui.createCustomGui("400", "10", "20", "gray");
+		println("sourcehandler WORKING")   
 	]
 	transition stopAfter 600000
-		whenMsg   materialAvailable -> handlematerialAvailable
+		whenMsg materialAvailable -> handlematerialAvailable
+	finally repeatPlan
 	
 	Plan handlematerialAvailable resumeLastPlan[
 		printCurrentMessage ;
@@ -47,9 +44,6 @@ QActor sourcehandler context ctxE80CaseStudy  {
 		onMsg  materialAvailable : sourceEngaged(S) -> forward smarttm -m qLoad_1 : qLoad_1(S)
 		//WARNING:  s200LgvReady is the answer sent from smarttm
 	]	
-	transition whenTime 2000 -> lgvNotReady		//just to whow that the tout works. 
- 		whenMsg s200LgvReady : s200LgvReady(SOURCE, LGV) do forward lgvman -m s200LgvReady : s200LgvReady(SOURCE, LGV)
-		
 	Plan lgvNotReady resumeLastPlan[
 		println("No LGV is ready")
 	]
@@ -63,12 +57,12 @@ QActor sourcehandler context ctxE80CaseStudy  {
  */
 QActor lgvman context ctxE80CaseStudy  { 
 	Plan init normal [ 
-		javaRun it.e80.customGui.createCustomGui("400", "10", "20", "white")
+		javaRun it.e80.customGui.createCustomGui("400", "70", "90" , "white")
 	]
 	switchTo doWork
 	 
 	Plan doWork[
-//		println("lgvman WAITS") 
+// 		println("lgvman READY TO Work") 
 	] 
 	transition stopAfter 600000
 		//whenMsg    materialAvailable -> handlematerialAvailable,  
@@ -77,47 +71,28 @@ QActor lgvman context ctxE80CaseStudy  {
 		whenMsg    nmis_6            -> handlenmis,
 		whenMsg    lgvStore_7a		 -> handlelgvStore_7a
 	finally repeatPlan 
-/* 	
- smarttm does not send any answer is no LGV is ready. 
- Thus we must check this case with a timeout
- In order to avoid such a waiting phase, we delegate the job to handle qLoad_1 to the sourcehandler actor
- -------------------------------------------------------------------------------------------------------
  
-	Plan handlematerialAvailable resumeLastPlan[
-		printCurrentMessage ;
- 		println("A new source is engaged. Now I send qLaod to smarttm by expecting s200LgvReady");
-		onMsg  materialAvailable : sourceEngaged(S) -> forward smarttm -m qLoad_1 : qLoad_1(S)
-		//WARNING:  s200LgvReady is the answer sent from smarttm
-	]	
-	transition whenTime 2000 -> lgvNotReady		//just to whow that the tout works. 
-	//But it is better to introduce a further component that handles qLoad_1  
-		whenMsg s200LgvReady -> handles200LgvReady
-		
-	Plan lgvNotReady resumeLastPlan[
-		println("No LGV is ready")
-	]
-*/	
 	Plan handles200LgvReady resumeLastPlan[
- 		printCurrentMessage ;
- 		println("A lgv is ready. Now I send m200LoadConfirmed_3 to smarttm, by excpecting s300LgvLoaded");
+// 		printCurrentMessage ;
+ 		println("A lgv is ready. Now I send m200LoadConfirmed_3 to smarttm, by excpecting s300LgvLoaded_4 from smarttm");
  		onMsg s200LgvReady : s200LgvReady(SOURCE, LGV) ->  
 				forward smarttm -m m200LoadConfirmed_3 : m200LoadConfirmed_3(SOURCE, LGV)
-	]
-	
+	] 
+	 
 	Plan handles300LgvLoaded resumeLastPlan[
-		printCurrentMessage;
-		println("The lgv is loaded. Now I send pkup_5 to sdm, by excpecting nmis");
+//		printCurrentMessage;
+		println("The lgv is loaded. Now I send pkup_5 to sdm, by excpecting nmis_6 from sdm");
 		onMsg s300LgvLoaded_4 : s300LgvLoaded_4(MATERIAL, SOURCE, LGV) -> forward sdm -m pkup_5 : pkup_5(MATERIAL, SOURCE, LGV) 
 	]
 	
 	Plan handlenmis resumeLastPlan[
-		printCurrentMessage ;
-		println("A new mission must start. Now I send m100Mission_7 to smarttm, by excpecting lgvStore_7a");
+//		printCurrentMessage ;
+		println("A new mission must start. Now I send m100Mission_7 to smarttm, by excpecting lgvStore_7a from");
 		onMsg nmis_6 : mission(ORDREF,DEST) -> forward smarttm -m m100Mission_7 : m100Mission_7( mission(ORDREF,DEST) )
 	]
 	
-	Plan handlelgvStore_7a[
-		printCurrentMessage ;
+	Plan handlelgvStore_7a resumeLastPlan[
+//		printCurrentMessage ;
 		println("MOVE DONE")
 	] 
 }
@@ -138,6 +113,10 @@ Rules{
 		replaceRule( lgvStatus( LGV, free ),  lgvStatus( LGV, engaged ) ), 
 		//actorPrintln( lgvtaker( SOURCE, LGV ) ),
 		assert( lgvtaker( SOURCE, LGV ) ).
+		
+	disengageLgv( LGV ):-
+		actorPrintln( disengageLgv( LGV ) ),
+		replaceRule( lgvStatus( LGV, engaged ),  lgvStatus( LGV, free ) ).
 }	 
    
 	Plan init normal [  
@@ -146,21 +125,21 @@ Rules{
 	switchTo doWork    
 	
 	Plan doWork[ 
-		//println("smarttm doWork")
+//		println("smarttm READY TO Work")
 	]
 	transition stopAfter 600000
 		whenMsg  qLoad_1             -> handleNewLoad ,
 		whenMsg  lgvReady_2          -> handleLgvReady,
  		whenMsg  m200LoadConfirmed_3 -> driveLgv,
- 		whenMsg  lgvLoaded_3a         -> handlelgvLoaded,
+ 		whenMsg  lgvLoaded_3a        -> handlelgvLoaded,
  		whenMsg  m100Mission_7       -> handlem100Mission,
-		whenMsg  lgvStore_7a          -> handleStored		
+		whenMsg  lgvStore_7a         -> handleStored		
 	finally repeatPlan 
 	
 	Plan handleNewLoad resumeLastPlan[
 		//printCurrentMessage ;
  		println("A new load is requested. Now I check if some LGV is available");
-		 onMsg qLoad_1 : qLoad_1(S) -> demo engageLgv(S,LGV) ; //println("smarttm handleNewLoad") ;
+		onMsg qLoad_1 : qLoad_1(S) -> demo engageLgv(S,LGV) ; //println("smarttm handleNewLoad") ;
 		 //trova un LGV disponibile (lgvtaker) e chiede se è ready
 		 //[!? goalResult( R ) ] println( R );
 		 [!? goalResult( failure ) ] println("		NO MORE LGV READY");
@@ -170,14 +149,14 @@ Rules{
  	]
   		
  	Plan handleLgvReady resumeLastPlan[
- 		printCurrentMessage;
+// 		printCurrentMessage;
 		println("A new LGV is ready. Now I send s200LgvReady to lgvman, expecting a m200LoadConfirmed_3");		
   		onMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,true) -> 
  				forward lgvman -m  s200LgvReady : s200LgvReady(SOURCE, LGV)
  	] 
  	  	
   	Plan driveLgv resumeLastPlan[
-  		printCurrentMessage ; 		
+//  		printCurrentMessage ; 		
   		println("Now I drive LGV, expecting  lgvLoaded_3a form LGV ") ;
   		onMsg m200LoadConfirmed_3 : m200LoadConfirmed_3(SOURCE,LGV) -> 
   				forward LGV -m lgvMoveLoad_3cmd : lgvMoveLoad_3cmd(LGV,SOURCE)
@@ -188,22 +167,23 @@ Rules{
 //  						forward  lgvman -m s300LgvLoaded_4 : s300LgvLoaded_4(MATERIAL,SOURCE,LGV)
   	
  	Plan handlelgvLoaded resumeLastPlan [
-		printCurrentMessage ;
+//		printCurrentMessage ;
 		println("Now I tell lgvaman that the LGV is loaded (s300LgvLoaded_4), by expecting m100Mission_7 from lgvman");
  		onMsg lgvLoaded_3a : lgvLoaded_3a( LGV,SOURCE,MATERIAL ) ->
  				forward  lgvman -m s300LgvLoaded_4 : s300LgvLoaded_4(MATERIAL,SOURCE,LGV)
  	]
 
  	Plan handlem100Mission resumeLastPlan [
- 		printCurrentMessage ;
- 		println("Now I have to manage a mission by sending lgvMoveWhareh_7cmd to the LGV and expecting lgvStore_7a");
+// 		printCurrentMessage ;
+ 		println("Now I have to manage a mission by sending lgvMoveWhareh_7cmd to the LGV and expecting lgvStore_7a from lgv");
  		onMsg m100Mission_7 : m100Mission_7( mission(order(MATERIAL,SOURCE,LGV),DEST) ) ->  
  		 								forward  LGV -m  lgvMoveWhareh_7cmd : lgvMoveWhareh_7cmd(LGV,SOURCE,DEST)
  	]
   	
  	Plan handleStored resumeLastPlan [
- 		printCurrentMessage ;
+// 		printCurrentMessage ;
  		onMsg lgvStore_7a : lgvStore_7a( LGV,SOURCE,MATERIAL,RESULT ) -> println( lgvStore_7a( LGV,SOURCE,MATERIAL,RESULT ) ) ;
+  		onMsg lgvStore_7a : lgvStore_7a( LGV,SOURCE,MATERIAL,RESULT ) -> demo disengageLgv(LGV);
  		onMsg lgvStore_7a : lgvStore_7a( LGV,SOURCE,MATERIAL,RESULT ) -> forward lgvman -m lgvStore_7a : lgvStore_7a( LGV,SOURCE,MATERIAL,RESULT )
  	]
  }
@@ -260,9 +240,19 @@ Rules{
  */  
 
 QActor lgv context ctxE80CaseStudy   {
+ 
 Rules{
 	lgvId( lgv ).
 }
+
+	//Utility plan to handle  lgvReady_2 messages when not ready
+	Plan checkLgvReady resumeLastPlan[
+		println("LGV checkLgvReady while busy");
+		printCurrentMessage;
+ 		onMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,reset) -> switchTo lgvIdle ;
+		onMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,query) -> replyToCaller -m lgvReady_2 : lgvReady_2(SOURCE,LGV,false )
+	] 
+
 	Plan init normal [
  		javaRun it.e80.customGui.createCustomGui("400", "30", "500", "cyan")
 	]
@@ -270,58 +260,69 @@ Rules{
 	
 	Plan lgvIdle[
  		[ !? lgvId( LGV )] println( info( "STATE", LGV, "IDLE" ) )
-	]
+ 		//[ ?? again ]  println(  "GOING ON"  ) else endPlan "no more iterations"
+	] 
 	transition stopAfter 100000 
-		whenMsg lgvReady_2-> handlelgvReadyQuery 
-		
-	Plan handlelgvReadyQuery [
-		printCurrentMessage;
+ 		whenMsg  lgvReady_2  -> handlelgvReadyQuery 
+ 		          
+	Plan handlelgvReadyQuery [            
+		printCurrentMessage;  
  		[ !? lgvId( LGV )]  onMsg  lgvReady_2 : lgvReady_2(SOURCE,LGV,query ) -> 
-								replyToCaller -m lgvReady_2 : lgvReady_2(SOURCE,LGV,true ) ;
-		println("	LGV WAITING FOR THE COMMAND TO LOAD ")
-	]
-	transition stopAfter 100000
-		whenMsg lgvMoveLoad_3cmd -> handlelgvloadcmd
-		
+								replyToCaller -m lgvReady_2 : lgvReady_2(SOURCE,LGV,true ) 		
+	]    
+	switchTo waitCommadToLoad
+	
+	Plan waitCommadToLoad[
+		println("	LGV IS (STILL) WAITING FOR THE COMMAND TO LOAD " )
+	]                 
+	transition stopAfter 100000   
+ 		whenMsg lgvReady_2       -> checkLgvReady ,  //accept also requests for ready or reset
+ 		whenMsg lgvMoveLoad_3cmd -> handlelgvloadcmd
+	finally repeatPlan  
+          		
 	Plan handlelgvloadcmd[ 
 		println("LGV MUST MOVE FROM PARKING TO SOURCE ");
-		memoCurrentMessage  ;
-		actorOp simulateActionAsynch("simulateMoveToSource",1000)
+		//printCurrentMessage;   
+		actorOp simulateActionAsynch("simulateMoveToSource",950)
 	]
 	switchTo movingToSource
 	
 	Plan movingToSource[
-		println("	LGV IS MOVING FROM PARKING TO SOURCE ")
-	]
-	transition stopAfter 100000    
-		whenMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,reset)  do switchTo lgvIdle ,
-		whenMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,query ) do replyToCaller -m lgvReady_2 : lgvReady_2(SOURCE,LGV,false ),
-		whenMsg endAction  -> movingToLoadEnd
-    finally repeatPlan	//other msgs handled
-	  
+		println("	LGV IS (STILL) MOVING FROM PARKING TO SOURCE ")
+  		//printCurrentMessage
+	] 
+	transition stopAfter 600000    
+		whenMsg lgvReady_2 -> checkLgvReady ,
+ 		whenMsg endAction  -> movingToLoadEnd
+    finally repeatPlan	//when checkLgvReady resumeLastPlan
+
 	Plan movingToLoadEnd[
-		println("LGV HAS REACHED THE  SOURCE. Now sends lgvLoaded_3a ");
-		[ !? msg(A,B,SENDER,D,lgvMoveLoad_3cmd(LGV,SOURCE),F) ] println( msg(A,B,SENDER,D,lgvMoveLoad_3cmd(LGV,SOURCE),F) ) ;
-  		[ ?? msg(A,B,SENDER,D,lgvMoveLoad_3cmd(LGV,SOURCE),F) ] forward SENDER -m lgvLoaded_3a : lgvLoaded_3a(LGV,SOURCE,material)
+		println("LGV HAS REACHED THE  SOURCE. Now sends lgvLoaded_3a "); 
+		//printCurrentMessage;		//endAction
+		//[ !? msg(A,B,SENDER,D,lgvMoveLoad_3cmd(LGV,SOURCE),F) ] println( msg(A,B,SENDER,D,lgvMoveLoad_3cmd(LGV,SOURCE),F) ) ;
+  		[ ?? msg(A,B,SENDER,D,lgvMoveLoad_3cmd(LGV,SOURCE),F) ] 
+  				forward SENDER -m lgvLoaded_3a : lgvLoaded_3a(LGV,SOURCE,material) 
 	]
-	transition stopAfter 100000 
+	transition stopAfter 100000  
+		whenMsg lgvReady_2 -> checkLgvReady ,
 		whenMsg lgvMoveWhareh_7cmd -> handlelgvmovetodest
  	
 	Plan handlelgvmovetodest [
-		println("LGV MIUST MOVE TO THE WHAREHOUSE");
-		memoCurrentMessage ;
+		println("LGV MUST MOVE TO THE WHAREHOUSE");
+ 		memoCurrentMessage ;	//REMEMBER THE COMMAND 
 		actorOp simulateActionAsynch("simulateMoveToDest",1000)
  	]
  	switchTo movingToDest
  	
  	Plan movingToDest[
- 		println("	LGV IS MOVING TO THE WHAREHOUSE")
+ 		println("	LGV IS  (STILL) MOVING TO THE WHAREHOUSE")
  	]
-	transition stopAfter 100000
-		//no reset is possible
-		whenMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,query ) do replyToCaller -m lgvReady_2 : lgvReady_2(SOURCE,LGV,false ),
+	transition stopAfter 600000
+		//no reset is possible here
+		//whenMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,query ) do replyToCaller -m lgvReady_2 : lgvReady_2(SOURCE,LGV,false ),
+		whenMsg lgvReady_2 -> checkLgvReady,
 		whenMsg endAction  -> movingToDestEnd 
- 	finally repeatPlan	//other msgs handled 	
+ 	finally repeatPlan	 	
  		
 	Plan movingToDestEnd[  
 		println("LGV HAS REACHED THE WHAREHOUSE"); 
@@ -332,18 +333,18 @@ Rules{
 	switchTo gotoDeposit
 	   
 	Plan gotoDeposit[
-		println("LGV IS MOVING TO THE WAITING AREA ");
-		actorOp simulateActionAsynch("simulateMoveToDeposit",1000)
+		println("LGV IS MOVING TO THE PARKING AREA ");
+		actorOp simulateActionAsynch("simulateMoveToDeposit",1100)
 	]
 	switchTo movingToDeposit
 	
-	Plan movingToDeposit[
-		println("	LGV IS MOVING TO ITS PARKING ")
+	Plan movingToDeposit[  
+		println("	LGV IS (STILL) MOVING TO ITS PARKING ")
 	]
-	transition stopAfter 100000
-		whenMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,query ) do replyToCaller -m lgvReady_2 : lgvReady_2(SOURCE,LGV,false ),
-		whenMsg endAction  -> lgvIdle
- 		finally repeatPlan	//other msgs handled
+	transition stopAfter 20000    
+   		whenMsg lgvReady_2   -> checkLgvReady,
+		whenMsg  endAction   -> lgvIdle 	 
+ 	finally repeatPlan
  }
 
  
@@ -361,10 +362,10 @@ QActor plant context ctxE80CaseStudy{
 	switchTo doWork
 	
 	Plan doWork[
-		delay 100; 
-		emit sourceEngaged : sourceEngaged( s1 ) ;
-		delay 1000;
-		emit sourceEngaged : sourceEngaged( s2 ) 		
+//		delay 100; 
+//		emit sourceEngaged : sourceEngaged( s1 ) ;
+//		delay 7000;
+//		emit sourceEngaged : sourceEngaged( s2 ) 		
 	]
 	
 }

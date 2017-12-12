@@ -14,13 +14,13 @@ digraph finite_state_machine {
 	doWork [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	handles300LgvLoaded [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	handles200LgvReady [ color = black ][ fontcolor = black ][ penwidth = 3 ]
-	handlelgvStore_7a [ color = blue ][ fontcolor = blue ][ penwidth = 3 ]
+	handlelgvStore_7a [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	
 	doWork -> handles300LgvLoaded [ label = "s300LgvLoaded_4" ][ color = red ][ fontcolor = red ][ dir = both ]
+	doWork -> handlelgvStore_7a [ label = "lgvStore_7a" ][ color = red ][ fontcolor = red ][ dir = both ]
 	init -> doWork [ label = "switch" ][ color = black ][ fontcolor = black ]
 	doWork -> handlenmis [ label = "nmis_6" ][ color = red ][ fontcolor = red ][ dir = both ]
 	doWork -> handles200LgvReady [ label = "s200LgvReady" ][ color = red ][ fontcolor = red ][ dir = both ]
-	doWork -> handlelgvStore_7a [ label = "lgvStore_7a" ][ color = black ][ fontcolor = black ]
 	doWork -> doWork [ label = "repeat "][ style = dashed ][ color = blue ][ fontcolor = blue ]
 	doWork -> handleToutBuiltIn [ label = "timeout(600000)" ][ color = green ][ fontcolor = green ]
 }

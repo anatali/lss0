@@ -29,7 +29,7 @@ public class SonarObserver :  MonoBehaviour
         .Subscribe(obj =>
         {
 
-			//Debug.Log("[SonarOnBoardddd] " + sonar.name + " Detected obj: " +  obj.name );
+			Debug.Log("[SonarOnBoardddd] " + sonar.name + " Detected obj: " +  obj.name );
             var connector = TcpConnectorListener.Instance;
             var handler   = connector.GetHandlerFromID(actorName);
 

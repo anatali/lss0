@@ -144,6 +144,7 @@ actorPrintln( X ):- actorobj(A), text_term(XS,X), A  <- println( XS ).
 %------------------------------------------------- 
 lgvStatus( lgv,free).
 engageLgv( SOURCE,LGV):-lgvStatus( LGV,free),replaceRule( lgvStatus( LGV,free),lgvStatus( LGV,engaged)),assert( lgvtaker( SOURCE,LGV)).
+disengageLgv( LGV):-actorPrintln( disengageLgv( LGV)),replaceRule( lgvStatus( LGV,engaged),lgvStatus( LGV,free)).
 /*
 ------------------------------------------------------------------------
 testex :- actorPrintln( testex ),

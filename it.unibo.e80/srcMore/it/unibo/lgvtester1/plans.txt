@@ -1,0 +1,5 @@
+plan(1,init, sentence(true,not here StateMoveNormal,'','' ))
+plan(2,init, sentence(true,delay( 1000) ,'','' ))
+plan(1,naggingQuery, sentence(true,delay( 500) ,'','' ))
+plan(2,naggingQuery, sentence(true,move(print("lgvtester1 query")),'','' ))
+plan(3,naggingQuery, sentence(true,forward(lgv0, lgvReady_2,lgvReady_2( s2,lgv0,query)),'','' ))

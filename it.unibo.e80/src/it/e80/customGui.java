@@ -23,6 +23,8 @@ private static Hashtable<QActor,EnvFrame> guiTab  = new Hashtable<QActor,EnvFram
  		if( color.equals("cyan")) return Color.cyan;
 		if( color.equals("green")) return Color.green;
 		if( color.equals("yellow")) return Color.yellow;
+		if( color.equals("gray")) return Color.lightGray;
+		if( color.equals("pink")) return Color.pink;
 		return Color.white;
  	}
 	protected static EnvFrame setTheEnv(QActor qa, int size, int px, int py,Color colorgui ){

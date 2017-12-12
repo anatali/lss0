@@ -5,22 +5,21 @@ Event sourceEngaged        : sourceEngaged( SOURCE )	//SOURCE = s1, s2
 
 Dispatch endAction         : endAction(A,R)
 Dispatch endActorOp        : endActorOp(A,R)
-
+ 
 Dispatch materialAvailable : sourceEngaged( SOURCE )	//SOURCE = s1, s2
 
-Dispatch qLoad    		   : qLoad( SOURCE )
-Dispatch lgvReady 		   : lgvReady(SOURCE,LGV,V) 		//V=query/true/false 
-Dispatch s200LgvReady	   : s200LgvReady( SOURCE, LGV )
-Dispatch m200LoadConfirmed : m200LoadConfirmed( SOURCE, LGV )
-Dispatch s300LgvLoaded     : s300LgvLoaded( MATERIAL, SOURCE, LGV )
-Dispatch pkup              : pkup(MATERIAL,SOURCE,LGV)
-Dispatch nmis              : mission(ORDREF,DEST)		//ORDREF=order(MATERIAL,SOURCE,LGV)
-Dispatch m100Mission       : m100Mission( MISSION )		//MISSION=mission(ORDREF,DEST)
-Dispatch lgvMoveLoad       : lgvMoveLoad(LGV,SOURCE)	//SOURCE=s1|s2| 
-Dispatch lgvMoveWhareh     : lgvMoveWhareh(LGV,SOURCE,DEST)	//SOURCE=s1|s2  DEST=  cell
-Dispatch lgvLoaded         : lgvLoaded( LGV,SOURCE,MATERIAL )
-Dispatch lgvStore          : lgvStore( LGV,SOURCE,MATERIAL,RESULT )
-Dispatch lgvMission        : lgvMission( LGV,SOURCE,MATERIAL,RESULT )
+Dispatch qLoad_1             : qLoad_1( SOURCE )
+Dispatch lgvReady_2 	     : lgvReady_2(SOURCE,LGV,V) 		//V=query/true/false 
+Dispatch s200LgvReady	     : s200LgvReady( SOURCE, LGV )
+Dispatch m200LoadConfirmed_3 : m200LoadConfirmed_3( SOURCE, LGV )
+Dispatch s300LgvLoaded_4     : s300LgvLoaded_4( MATERIAL, SOURCE, LGV )
+Dispatch pkup_5              : pkup_5(MATERIAL,SOURCE,LGV)
+Dispatch nmis_6              : mission(ORDREF,DEST)		//ORDREF=order(MATERIAL,SOURCE,LGV)
+Dispatch m100Mission_7       : m100Mission_7( MISSION )		//MISSION=mission(ORDREF,DEST)
+Dispatch lgvMoveLoad_3cmd    : lgvMoveLoad_3cmd(LGV,SOURCE)	//SOURCE=s1|s2| 
+Dispatch lgvMoveWhareh_7cmd  : lgvMoveWhareh_7cmd(LGV,SOURCE,DEST)	//SOURCE=s1|s2  DEST=  cell
+Dispatch lgvLoaded_3a        : lgvLoaded_3a( LGV,SOURCE,MATERIAL )
+Dispatch lgvStore_7a         : lgvStore_7a( LGV,SOURCE,MATERIAL,RESULT )
 
 Context  ctxE80Lgv  ip [ host="localhost"   port=8023 ] 
 
@@ -33,88 +32,112 @@ Context  ctxE80Lgv  ip [ host="localhost"   port=8023 ]
 QActor lgv0 context ctxE80Lgv   {
 Rules{
 	lgvId( lgv0 ).
+	again.
+	again.	
 }
+
+	//Utility plan to handle  lgvReady_2 messages when not ready
+	Plan checkLgvReady resumeLastPlan[
+		println("LGV checkLgvReady while busy");
+		printCurrentMessage;
+ 		onMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,reset) -> switchTo lgvIdle ;
+		onMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,query) -> replyToCaller -m lgvReady_2 : lgvReady_2(SOURCE,LGV,false )
+	] 
+
 	Plan init normal [
  		javaRun it.e80.customGui.createCustomGui("400", "30", "500", "cyan")
 	]
 	switchTo lgvIdle
 	
 	Plan lgvIdle[
- 		[ !? lgvId( LGV )] println( info( "STATE", LGV, "IDLE" ) )
-	]
+ 		[ !? lgvId( LGV )] println( info( "STATE", LGV, "IDLE" ) );
+ 		[ ?? again ]  println(  "GOING ON"  ) else endPlan "no more iterations"
+	] 
 	transition stopAfter 100000 
-		whenMsg lgvReady-> handlelgvReadyQuery 
-		
-	Plan handlelgvReadyQuery [
-		//printCurrentMessage;
- 		[ !? lgvId( LGV )]  onMsg  lgvReady : lgvReady(SOURCE,LGV,query ) -> 
-								replyToCaller -m lgvReady : lgvReady(SOURCE,LGV,true )
-	]
-	transition stopAfter 10000
-		whenMsg lgvMoveLoad -> handlelgvloadcmd
-		
+ 		whenMsg  lgvReady_2  -> handlelgvReadyQuery 
+ 		          
+	Plan handlelgvReadyQuery [            
+		printCurrentMessage;  
+ 		[ !? lgvId( LGV )]  onMsg  lgvReady_2 : lgvReady_2(SOURCE,LGV,query ) -> 
+								replyToCaller -m lgvReady_2 : lgvReady_2(SOURCE,LGV,true ) 		
+	]    
+	switchTo waitCommadToLoad
+	
+	Plan waitCommadToLoad[
+		println("	LGV IS (STILL) WAITING FOR THE COMMAND TO LOAD " )
+	]                 
+	transition stopAfter 100000   
+ 		whenMsg lgvReady_2       -> checkLgvReady ,  //accept also requests for ready or reset
+ 		whenMsg lgvMoveLoad_3cmd -> handlelgvloadcmd
+	finally repeatPlan  
+          		
 	Plan handlelgvloadcmd[ 
-		println("LGV MUST MOVE FROM DEPOSIT TO SOURCE ");
-		memoCurrentMessage  ;
-		actorOp simulateActionAsynch("simulateMoveToSource",1000)
+		println("LGV MUST MOVE FROM PARKING TO SOURCE ");
+		//printCurrentMessage;   
+		actorOp simulateActionAsynch("simulateMoveToSource",2000)
 	]
 	switchTo movingToSource
 	
 	Plan movingToSource[
-		println("	LGV IS MOVING FROM DEPOSIT TO SOURCE ")
-	]
-	transition stopAfter 100000    
-		whenMsg lgvReady : lgvReady(SOURCE,LGV,reset)  do switchTo lgvIdle ,
-		whenMsg lgvReady : lgvReady(SOURCE,LGV,query ) do replyToCaller -m lgvReady : lgvReady(SOURCE,LGV,false ),
-		whenMsg endAction  -> movingToLoadEnd
-    finally repeatPlan	//other msgs handled
-	  
+		println("	LGV IS (STILL) MOVING FROM PARKING TO SOURCE ")
+  		//printCurrentMessage
+	] 
+	transition stopAfter 600000    
+		whenMsg lgvReady_2 -> checkLgvReady ,
+ 		whenMsg endAction  -> movingToLoadEnd
+    finally repeatPlan	//when checkLgvReady resumeLastPlan
+
 	Plan movingToLoadEnd[
-		println("LGV HAS REACHED THE  SOURCE ");
-		//[ !? msg(A,B,C,D,lgvMoveLoad(LGV,SOURCE),F) ] println( msg(A,B,C,D,lgvMoveLoad(LGV,SOURCE),F) ) ;
-  		[ ?? msg(A,B,SENDER,D,lgvMoveLoad(LGV,SOURCE),F)  ] forward SENDER -m lgvLoaded : lgvLoaded(LGV,SOURCE,material)
+		println("LGV HAS REACHED THE  SOURCE. Now sends lgvLoaded_3a "); 
+		//printCurrentMessage;		//endAction
+		//[ !? msg(A,B,SENDER,D,lgvMoveLoad_3cmd(LGV,SOURCE),F) ] println( msg(A,B,SENDER,D,lgvMoveLoad_3cmd(LGV,SOURCE),F) ) ;
+  		[ ?? msg(A,B,SENDER,D,lgvMoveLoad_3cmd(LGV,SOURCE),F) ] 
+  				forward SENDER -m lgvLoaded_3a : lgvLoaded_3a(LGV,SOURCE,material) 
 	]
-	transition stopAfter 100000 
-		whenMsg lgvMoveWhareh -> handlelgvmovetodest
+	transition stopAfter 100000  
+		whenMsg lgvReady_2 -> checkLgvReady ,
+		whenMsg lgvMoveWhareh_7cmd -> handlelgvmovetodest
  	
 	Plan handlelgvmovetodest [
 		println("LGV MIUST MOVE TO THE WHAREHOUSE");
-		memoCurrentMessage ;
+ 		memoCurrentMessage ;	//REMEMBER THE COMMAND 
 		actorOp simulateActionAsynch("simulateMoveToDest",1000)
  	]
  	switchTo movingToDest
  	
  	Plan movingToDest[
- 		println("	LGV IS MOVING TO THE WHAREHOUSE")
+ 		println("	LGV IS  (STILL) MOVING TO THE WHAREHOUSE")
  	]
-	transition stopAfter 100000
-		//no reset is possible
-		whenMsg lgvReady : lgvReady(SOURCE,LGV,query ) do replyToCaller -m lgvReady : lgvReady(SOURCE,LGV,false ),
+	transition stopAfter 600000
+		//no reset is possible here
+		//whenMsg lgvReady_2 : lgvReady_2(SOURCE,LGV,query ) do replyToCaller -m lgvReady_2 : lgvReady_2(SOURCE,LGV,false ),
+		whenMsg lgvReady_2 -> checkLgvReady,
 		whenMsg endAction  -> movingToDestEnd 
- 	finally repeatPlan	//other msgs handled 	
+ 	finally repeatPlan	 	
  		
 	Plan movingToDestEnd[  
 		println("LGV HAS REACHED THE WHAREHOUSE"); 
 		//[ !? msg(A,B,C,D,E,F)  ]  println( msg(A,B,C,D,E,F) );
-		[ ?? msg(lgvMoveWhareh,B,SENDER,D,lgvMoveWhareh(LGV,SOURCE,DEST),F)  ]  
-						forward SENDER -m lgvStore : lgvStore(LGV,SOURCE,DEST,done)
+		[ ?? msg(lgvMoveWhareh_7cmd,B,SENDER,D,lgvMoveWhareh_7cmd(LGV,SOURCE,DEST),F)  ]  
+						forward SENDER -m lgvStore_7a : lgvStore_7a(LGV,SOURCE,DEST,done)
 	] 
 	switchTo gotoDeposit
 	   
 	Plan gotoDeposit[
-		println("LGV IS MOVING TO THE WAITING AREA ");
-		actorOp simulateActionAsynch("simulateMoveToDeposit",1000)
+		println("LGV IS MOVING TO THE PARKING AREA ");
+		actorOp simulateActionAsynch("simulateMoveToDeposit",1100)
 	]
 	switchTo movingToDeposit
 	
-	Plan movingToDeposit[
-		println("	LGV IS MOVING TO ITS DEPOSIT ")
+	Plan movingToDeposit[  
+		println("	LGV IS (STILL) MOVING TO ITS PARKING ")
 	]
-	transition stopAfter 100000
-		whenMsg lgvReady : lgvReady(SOURCE,LGV,query ) do replyToCaller -m lgvReady : lgvReady(SOURCE,LGV,false ),
-		whenMsg endAction  -> lgvIdle
- 		finally repeatPlan	//other msgs handled
- }
+	transition stopAfter 20000    
+   		whenMsg lgvReady_2   -> checkLgvReady,
+		whenMsg  endAction   -> lgvIdle 	 
+ 	finally repeatPlan
+ }  
+
 
 /*
  * ------------------------------------
@@ -123,36 +146,56 @@ Rules{
 */  
 
 QActor lgvtester context ctxE80Lgv{
-	Plan init normal [ 
- 		println("lgvtester query") ;
-		forward lgv0 -m lgvReady : lgvReady(s1,lgv0,query)		 
+Rules{
+	source(s1).
+//	source(s2).
+}
+	Plan init normal [   
+		javaRun it.e80.customGui.createCustomGui("400", "30", "500", "white");
+ 		println("lgvtester query for lgv0 ready") ;
+		[ ?? source(S) ] forward lgv0 -m lgvReady_2 : lgvReady_2(S,lgv0,query) 		
 	]
-	transition stopAfter 100000 
-		whenMsg lgvReady : lgvReady(SOURCE,lgv0,true ) do switchTo simulatesmarttm
+	transition stopAfter 600000
+		whenMsg lgvReady_2 -> handleAnswer
 		
+	Plan handleAnswer[  
+		printCurrentMessage; 
+		println("lgvtester handleAnswer") ;  
+		onMsg lgvReady_2 : lgvReady_2(SOURCE,lgv0,false ) -> println("DEVICE NOT READY");
+		onMsg lgvReady_2 : lgvReady_2(SOURCE,lgv0,true )  -> switchTo simulatesmarttm
+	]
+	transition stopAfter 600000 //here if the msg is lgvReady_2(SOURCE,lgv0,false ) 
+		whenMsg lgvReady_2 -> handleAnswer 	
+	
 	Plan simulatesmarttm[
 		println("lgvtester lgvMoveLoad") ;
-		forward lgv0 -m lgvMoveLoad : lgvMoveLoad(lgv0,s1)
+		forward lgv0 -m lgvMoveLoad_3cmd : lgvMoveLoad_3cmd(lgv0,s1)
 	]
-	transition stopAfter 100000 
-		whenMsg lgvLoaded : lgvLoaded(LGV,SOURCE,M) do switchTo simulateaftersdm
+	transition stopAfter 600000 
+		whenMsg lgvLoaded_3a : lgvLoaded_3a(LGV,SOURCE,M) do switchTo simulateaftersdm
 	
 	Plan simulateaftersdm[
 		println("lgvtester lgvMoveWhareh") ;
-		forward lgv0 -m lgvMoveWhareh : lgvMoveWhareh(lgv0,s1,cell1)
+		forward lgv0 -m lgvMoveWhareh_7cmd : lgvMoveWhareh_7cmd(lgv0,s1,cell1)
 	]
-	transition stopAfter 100000 
-		whenMsg lgvStore : lgvStore(LGV,SOURCE,M,R) do println( lgvStore(LGV,SOURCE,M,R) )
+	transition stopAfter 600000 
+		whenMsg lgvStore_7a : lgvStore_7a(LGV,SOURCE,M,R) do switchTo init  //println( lgvStore_7a(LGV,SOURCE,M,R) )
 }
 
-QActor lgvtester1 context ctxE80Lgv{
+QActor lgvtester1 context ctxE80Lgv {
 	Plan init normal [ 
-//		delay 1000;
-//		println("lgvtester1 query") ;
-//		forward lgv0 -m lgvReady : lgvReady(s1,lgv0,query)		 
+		javaRun it.e80.customGui.createCustomGui("400", "50", "300", "white");
+		delay 1000	//the LGV should be engaged
 	]
-	transition stopAfter 100000 
-		whenMsg lgvReady : lgvReady(s1,lgv0,ANSW) do println( lgvReady(s1,lgv0,ANSW) )
+	switchTo naggingQuery
 	
+	Plan naggingQuery[
+		delay 500;
+		println("lgvtester1 query") ;
+		forward lgv0 -m lgvReady_2 : lgvReady_2(s2,lgv0,query)		 		
+	]
+	transition stopAfter 600000 
+		whenMsg lgvReady_2 : lgvReady_2(s2,lgv0,ANSW) do println( lgvReady_2(s2,lgv0,ANSW) )	
+	finally repeatPlan 6
 }
 

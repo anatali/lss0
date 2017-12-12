@@ -34,7 +34,7 @@ public abstract class AbstractWharehouse extends QActor {
 		public AbstractWharehouse(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/wharehouse/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/wharehouse/plans.txt";
 	  	}
 		@Override
@@ -98,6 +98,7 @@ public abstract class AbstractWharehouse extends QActor {
 	    	String myselfName = "handleWh";  
 	    	printCurrentMessage(false);
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("cmd(store,M)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("wh") && 
 	    		pengine.unify(curT, Term.createTerm("cmd(TYPE,CMD)")) && 
@@ -115,6 +116,7 @@ public abstract class AbstractWharehouse extends QActor {
 	    		}
 	    	}
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("cmd(remove,M)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("wh") && 
 	    		pengine.unify(curT, Term.createTerm("cmd(TYPE,CMD)")) && 
@@ -144,6 +146,7 @@ public abstract class AbstractWharehouse extends QActor {
 	    	String myselfName = "handleStore";  
 	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?cell(C,free)" )) != null ){
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("cmd(store,M)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("wh") && 
 	    		pengine.unify(curT, Term.createTerm("cmd(TYPE,CMD)")) && 
@@ -217,6 +220,7 @@ public abstract class AbstractWharehouse extends QActor {
 	    	String myselfName = "handleRemove";  
 	    	if( (guardVars = QActorUtils.evalTheGuard(this, " !?cell(C,M)" )) != null ){
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("cmd(remove,M)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("wh") && 
 	    		pengine.unify(curT, Term.createTerm("cmd(TYPE,CMD)")) && 

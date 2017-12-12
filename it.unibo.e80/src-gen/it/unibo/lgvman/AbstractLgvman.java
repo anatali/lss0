@@ -34,7 +34,7 @@ public abstract class AbstractLgvman extends QActor {
 		public AbstractLgvman(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/lgvman/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/lgvman/plans.txt";
 	  	}
 		@Override
@@ -78,7 +78,7 @@ public abstract class AbstractLgvman extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
-	    	it.e80.customGui.createCustomGui( this ,"400", "10", "20", "white"  );
+	    	it.e80.customGui.createCustomGui( this ,"400", "70", "90", "white"  );
 	    	//switchTo doWork
 	        switchToPlanAsNextState(pr, myselfName, "lgvman_"+myselfName, 
 	              "doWork",false, false, null); 
@@ -108,10 +108,10 @@ public abstract class AbstractLgvman extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handles200LgvReady",-1);
 	    	String myselfName = "handles200LgvReady";  
-	    	printCurrentMessage(false);
-	    	temporaryStr = "\"A lgv is ready. Now I send m200LoadConfirmed_3 to smarttm, by excpecting s300LgvLoaded\"";
+	    	temporaryStr = "\"A lgv is ready. Now I send m200LoadConfirmed_3 to smarttm, by excpecting s300LgvLoaded_4 from smarttm\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("s200LgvReady(SOURCE,LGV)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("s200LgvReady") && 
 	    		pengine.unify(curT, Term.createTerm("s200LgvReady(SOURCE,LGV)")) && 
@@ -133,10 +133,10 @@ public abstract class AbstractLgvman extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handles300LgvLoaded",-1);
 	    	String myselfName = "handles300LgvLoaded";  
-	    	printCurrentMessage(false);
-	    	temporaryStr = "\"The lgv is loaded. Now I send pkup_5 to sdm, by excpecting nmis\"";
+	    	temporaryStr = "\"The lgv is loaded. Now I send pkup_5 to sdm, by excpecting nmis_6 from sdm\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("s300LgvLoaded_4(MATERIAL,SOURCE,LGV)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("s300LgvLoaded_4") && 
 	    		pengine.unify(curT, Term.createTerm("s300LgvLoaded_4(MATERIAL,SOURCE,LGV)")) && 
@@ -158,10 +158,10 @@ public abstract class AbstractLgvman extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handlenmis",-1);
 	    	String myselfName = "handlenmis";  
-	    	printCurrentMessage(false);
-	    	temporaryStr = "\"A new mission must start. Now I send m100Mission_7 to smarttm, by excpecting lgvStore_7a\"";
+	    	temporaryStr = "\"A new mission must start. Now I send m100Mission_7 to smarttm, by excpecting lgvStore_7a from\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("mission(ORDREF,DEST)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("nmis_6") && 
 	    		pengine.unify(curT, Term.createTerm("mission(ORDREF,DEST)")) && 
@@ -183,10 +183,9 @@ public abstract class AbstractLgvman extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handlelgvStore_7a",-1);
 	    	String myselfName = "handlelgvStore_7a";  
-	    	printCurrentMessage(false);
 	    	temporaryStr = "\"MOVE DONE\"";
 	    	println( temporaryStr );  
-	    	repeatPlanNoTransition(pr,myselfName,"lgvman_"+myselfName,false,false);
+	    	repeatPlanNoTransition(pr,myselfName,"lgvman_"+myselfName,false,true);
 	    }catch(Exception e_handlelgvStore_7a){  
 	    	 println( getName() + " plan=handlelgvStore_7a WARNING:" + e_handlelgvStore_7a.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 

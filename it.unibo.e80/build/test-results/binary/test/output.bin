@@ -1,187 +1,0 @@
-iactionPerformed CLICK id=0 from:it.unibo.bls17.naive.ButtonWithGui[button0,8,31,85x161,label=LEDSWITCH]
-%actionPerformed 01/01/1970 01:00:00
-iactionPerformed CLICK id=0 from:it.unibo.bls17.naive.ButtonWithGui[button0,8,31,85x161,label=LEDSWITCH]
-%actionPerformed 01/01/1970 01:00:00
-mactionPerformed LEDSWITCH id=0 from:it.unibo.bls17.naive.ButtonWithGui[button1,8,31,85x161,label=LEDSWITCH]
-%actionPerformed 01/01/1970 01:00:00
-.BlsApplicationLogic LEDSWITCH ledstate=false
-mactionPerformed LEDSWITCH id=0 from:it.unibo.bls17.naive.ButtonWithGui[button1,8,31,85x161,label=LEDSWITCH]
-%actionPerformed 01/01/1970 01:00:00
--BlsApplicationLogic LEDSWITCH ledstate=true
-mactionPerformed LEDSWITCH id=0 from:it.unibo.bls17.naive.ButtonWithGui[button1,8,31,85x161,label=LEDSWITCH]
-%actionPerformed 01/01/1970 01:00:00
-.BlsApplicationLogic LEDSWITCH ledstate=false
-device(led(led),GREEN,false)
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-BLSControlFSM update cmd=true
-'BLSControlFSM curstate=SOdd/result=on
-device(led(led),GREEN,true)
-BLSControlFSM FSM done ON
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-BLSControlFSM update cmd=true
-)BLSControlFSM curstate=SOdd/result=null
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DevButton update false
- BLSControlFSM update cmd=false
-$BLSControlFSM curstate=SOn/result=
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DevButton update false
- BLSControlFSM update cmd=false
-(BLSControlFSM curstate=SOn/result=null
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-BLSControlFSM update cmd=true
-)BLSControlFSM curstate=SEven/result=off
-device(led(led),GREEN,false)
-BLSControlFSM FSM done OFF
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-BLSControlFSM update cmd=true
-*BLSControlFSM curstate=SEven/result=null
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DevButton update false
- BLSControlFSM update cmd=false
-#BLSControlFSM curstate=S0/result=
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-BLSControlFSM update cmd=true
-'BLSControlFSM curstate=SOdd/result=on
-device(led(led),GREEN,true)
-BLSControlFSM FSM done ON
-device(led(led),GREEN,false)
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-.BLSControlSwitch update input=true sodd=true
-device(led(led),GREEN,true)
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-/BLSControlSwitch update input=true sodd=false
-device(led(led),GREEN,false)
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DevButton update false
-/BLSControlSwitch update input=false sodd=true
-device(led(led),GREEN,true)
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DevButton update false
-0BLSControlSwitch update input=false sodd=false
-device(led(led),GREEN,false)
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-.BLSControlSwitch update input=true sodd=true
-device(led(led),GREEN,true)
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-/BLSControlSwitch update input=true sodd=false
-device(led(led),GREEN,false)
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DevButton update false
-/BLSControlSwitch update input=false sodd=true
-device(led(led),GREEN,true)
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-/BLSControlSwitch update input=true sodd=false
-device(led(led),GREEN,false)
-device(led(led),GREEN,false)
-DeviceButtonImpl getInput:0
-device(led(led),GREEN,false)
-"devbutton(devBtn,pressed(false))
-	device(led(led),GREEN,false)
-	7device(led(led),GREEN,false) sensor(button(bt),false)
-	KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-	DevButton update true
-	$BLSControlNaive update input= true
-	device(led(led),GREEN,true)
-
-device(led(led),GREEN,false)
-device(led(led),GREEN,false)
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-$BLSControlNaive update input= true
-device(led(led),GREEN,true)
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-$BLSControlNaive update input= true
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DevButton update false
-%BLSControlNaive update input= false
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DevButton update false
-%BLSControlNaive update input= false
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-$BLSControlNaive update input= true
-device(led(led),GREEN,false)
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-$BLSControlNaive update input= true
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DevButton update false
-%BLSControlNaive update input= false
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DevButton update true
-$BLSControlNaive update input= true
-device(led(led),GREEN,true)
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DeviceButtonImpl getInput:1
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DeviceButtonImpl getInput:1
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DeviceButtonImpl getInput:1
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DeviceButtonImpl getInput:1
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DeviceButtonImpl getInput:0
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-DeviceButtonImpl getInput:1
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-DeviceButtonImpl getInput:0
-KDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:true
-!ButtonObserverNaive update true
-LDeviceButtonImpl it.unibo.buttonLed.components.ButtonMock execAction:false
-"ButtonObserverNaive update false
- *** setUp 
-device(led(led),GREEN,false)
-	testTurnOff ... 
-device(led(led),GREEN,false)
- *** tearDown 
- *** setUp 
-device(led(led),GREEN,false)
-	testrep ... 
-Krep=device(led(led),GREEN,false) repExpected=device(led(led),GREEN,false)
- *** tearDown 
- *** setUp 
-device(led(led),GREEN,false)
-	testTurnOn ... 
-device(led(led),GREEN,true)
- *** tearDown 
- *** setUp 
-device(led(led),GREEN,false)
-	testSwitch ... 
-device(led(led),GREEN,true)
-device(led(led),GREEN,false)
- *** tearDown 
- *** setUp 
-device(led(led),GREEN,false)
-	testCreation ... 
- *** tearDown 
-@	%%% SystemCreationActor numOfcontexts= 1 application actors=6
-*** addPanel 0
-*** addPanel 1
-led still not set
-led still not set
-led still not set
-0====== setUp  led=it.unibo.qaled.Qaled@ac3b199
-====== aTest ===============
-2			||| btn WILL EMIT event:local_click after 200
-#====== aTest 1 ledState=true true
-2			||| btn WILL EMIT event:local_click after 200
-#====== aTest 2 ledState=true true
-2			||| btn WILL EMIT event:local_click after 200
-#====== aTest 1 ledState=true true
-2			||| btn WILL EMIT event:local_click after 200
-#====== aTest 2 ledState=true true
-;	%%%  SystemCreationActor terminates1:ledtester_ctrl  1/6
-6	%%%  SystemCreationActor terminates1:ledtester  2/6
-;====== terminate  it.unibo.qactors.QActorContext@1997cd49

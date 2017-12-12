@@ -1,4 +1,5 @@
-plan(1,init, sentence(true,move(print("sourcehandler WORKING")),'','' ))
+plan(1,init, sentence(true,not here StateMoveNormal,'','' ))
+plan(2,init, sentence(true,move(print("sourcehandler WORKING")),'','' ))
 plan(1,handlematerialAvailable, sentence(true,printCurrentMessage(''),'','' ))
 plan(2,handlematerialAvailable, sentence(true,move(print("A new source is engaged. Now I send qLaod to smarttm by expecting s200LgvReady")),'','' ))
 plan(3,handlematerialAvailable, sentence(true,msgswitch(materialAvailable, sourceEngaged( S) , forward(smarttm, qLoad_1,qLoad_1( S))),'','' ))

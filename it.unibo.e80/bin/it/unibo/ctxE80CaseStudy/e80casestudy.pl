@@ -17,6 +17,5 @@ qactor( plant , ctxe80casestudy, "it.unibo.plant.MsgHandle_Plant"   ). %%store m
 qactor( plant_ctrl , ctxe80casestudy, "it.unibo.plant.Plant"   ). %%control-driven 
 %%% -------------------------------------------
 eventhandler(evh,ctxe80casestudy,"it.unibo.ctxE80CaseStudy.Evh","sourceEngaged").  
-eventhandler(evh1,ctxe80casestudy,"it.unibo.ctxE80CaseStudy.Evh1","userCmd").  
 %%% -------------------------------------------
 

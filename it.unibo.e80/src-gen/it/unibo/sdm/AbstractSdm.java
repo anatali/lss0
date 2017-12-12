@@ -34,7 +34,7 @@ public abstract class AbstractSdm extends QActor {
 		public AbstractSdm(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/sdm/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/sdm/plans.txt";
 	  	}
 		@Override
@@ -109,6 +109,7 @@ public abstract class AbstractSdm extends QActor {
 	    	temporaryStr = "\"pkup_5 received. Now I create a mission, send it to lgvman by expecting ???\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("pkup_5(MATERIAL,SOURCE,LGV)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("pkup_5") && 
 	    		pengine.unify(curT, Term.createTerm("pkup_5(MATERIAL,SOURCE,LGV)")) && 

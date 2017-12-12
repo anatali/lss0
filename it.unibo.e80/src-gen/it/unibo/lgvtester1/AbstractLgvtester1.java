@@ -34,7 +34,7 @@ public abstract class AbstractLgvtester1 extends QActor {
 		public AbstractLgvtester1(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/lgvtester1/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/lgvtester1/plans.txt";
 	  	}
 		@Override
@@ -56,6 +56,7 @@ public abstract class AbstractLgvtester1 extends QActor {
 	    protected void initStateTable(){  	
 	    	stateTab.put("handleToutBuiltIn",handleToutBuiltIn);
 	    	stateTab.put("init",init);
+	    	stateTab.put("naggingQuery",naggingQuery);
 	    }
 	    StateFun handleToutBuiltIn = () -> {	
 	    	try{	
@@ -73,6 +74,33 @@ public abstract class AbstractLgvtester1 extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
+	    	it.e80.customGui.createCustomGui( this ,"400", "50", "300", "white"  );
+	    	//delay  ( no more reactive within a plan)
+	    	aar = delayReactive(1000,"" , "");
+	    	if( aar.getInterrupted() ) curPlanInExec   = "init";
+	    	if( ! aar.getGoon() ) return ;
+	    	//switchTo naggingQuery
+	        switchToPlanAsNextState(pr, myselfName, "lgvtester1_"+myselfName, 
+	              "naggingQuery",false, false, null); 
+	    }catch(Exception e_init){  
+	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//init
+	    
+	    StateFun naggingQuery = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_naggingQuery",6);
+	     pr.incNumIter(); 	
+	    	String myselfName = "naggingQuery";  
+	    	//delay  ( no more reactive within a plan)
+	    	aar = delayReactive(500,"" , "");
+	    	if( aar.getInterrupted() ) curPlanInExec   = "naggingQuery";
+	    	if( ! aar.getGoon() ) return ;
+	    	temporaryStr = "\"lgvtester1 query\"";
+	    	println( temporaryStr );  
+	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"lgvReady_2(SOURCE,LGV,V)","lgvReady_2(s2,lgv0,query)", guardVars ).toString();
+	    	sendMsg("lgvReady_2","lgv0", QActorContext.dispatch, temporaryStr ); 
 	    	//bbb
 	     msgTransition( pr,myselfName,"lgvtester1_"+myselfName,false,
 	          new StateFun[]{
@@ -80,28 +108,28 @@ public abstract class AbstractLgvtester1 extends QActor {
 	          try{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
-	             if( currentMessage.msgContent().startsWith("lgvReady") ){
-	            	String parg = "lgvReady(s1,lgv0,ANSW)";
+	             if( currentMessage.msgContent().startsWith("lgvReady_2") ){
+	            	String parg = "lgvReady_2(s2,lgv0,ANSW)";
 	            	/* Print */
-	            	parg =  updateVars( Term.createTerm("lgvReady(SOURCE,LGV,V)"), 
-	            	                    Term.createTerm("lgvReady(s1,lgv0,ANSW)"), 
+	            	parg =  updateVars( Term.createTerm("lgvReady_2(SOURCE,LGV,V)"), 
+	            	                    Term.createTerm("lgvReady_2(s2,lgv0,ANSW)"), 
 	            		    		  	Term.createTerm(currentMessage.msgContent()), parg);
 	            	if( parg != null ) println( parg );
 	             }
 	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
 	          }catch(Exception e ){  
-	             println( getName() + " plan=init WARNING:" + e.getMessage() );
+	             println( getName() + " plan=naggingQuery WARNING:" + e.getMessage() );
 	             //QActorContext.terminateQActorSystem(this); 
 	          }
 	          }
 	          },//new StateFun[]
-	          new String[]{"true","M","lgvReady" },
-	          100000, "handleToutBuiltIn" );//msgTransition
-	    }catch(Exception e_init){  
-	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );
+	          new String[]{"true","M","lgvReady_2" },
+	          600000, "handleToutBuiltIn" );//msgTransition
+	    }catch(Exception e_naggingQuery){  
+	    	 println( getName() + " plan=naggingQuery WARNING:" + e_naggingQuery.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 
 	    }
-	    };//init
+	    };//naggingQuery
 	    
 	    protected void initSensorSystem(){
 	    	//doing nothing in a QActor

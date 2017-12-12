@@ -143,6 +143,8 @@ actorPrintln( X ):- actorobj(A), text_term(XS,X), A  <- println( XS ).
 %  User static rules about lgv0
 %------------------------------------------------- 
 lgvId( lgv0).
+again.
+again.
 /*
 ------------------------------------------------------------------------
 testex :- actorPrintln( testex ),

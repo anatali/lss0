@@ -34,7 +34,7 @@ public abstract class AbstractSourcehandler extends QActor {
 		public AbstractSourcehandler(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/sourcehandler/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/sourcehandler/plans.txt";
 	  	}
 		@Override
@@ -73,8 +73,10 @@ public abstract class AbstractSourcehandler extends QActor {
 	    
 	    StateFun init = () -> {	
 	    try{	
-	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
+	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_init",0);
+	     pr.incNumIter(); 	
 	    	String myselfName = "init";  
+	    	it.e80.customGui.createCustomGui( this ,"400", "10", "20", "gray"  );
 	    	temporaryStr = "\"sourcehandler WORKING\"";
 	    	println( temporaryStr );  
 	    	//bbb
@@ -96,6 +98,7 @@ public abstract class AbstractSourcehandler extends QActor {
 	    	temporaryStr = "\"A new source is engaged. Now I send qLaod to smarttm by expecting s200LgvReady\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("sourceEngaged(S)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("materialAvailable") && 
 	    		pengine.unify(curT, Term.createTerm("sourceEngaged(SOURCE)")) && 
@@ -106,29 +109,7 @@ public abstract class AbstractSourcehandler extends QActor {
 	    			    		  					Term.createTerm(currentMessage.msgContent()), parg);
 	    		if( parg != null ) sendMsg("qLoad_1","smarttm", QActorContext.dispatch, parg ); 
 	    	}
-	    	//bbb
-	     msgTransition( pr,myselfName,"sourcehandler_"+myselfName,true,
-	          new StateFun[]{
-	          () -> {	//AD HOC state to execute an action and resumeLastPlan
-	          try{
-	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
-	            //ActionSwitch for a message or event
-	             if( currentMessage.msgContent().startsWith("s200LgvReady") ){
-	            	String parg="s200LgvReady(SOURCE,LGV)";
-	            	/* SendDispatch */
-	            	parg = updateVars(Term.createTerm("s200LgvReady(SOURCE,LGV)"),  Term.createTerm("s200LgvReady(SOURCE,LGV)"), 
-	            		    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	            	if( parg != null ) sendMsg("s200LgvReady","lgvman", QActorContext.dispatch, parg ); 
-	             }
-	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
-	          }catch(Exception e ){  
-	             println( getName() + " plan=handlematerialAvailable WARNING:" + e.getMessage() );
-	             //QActorContext.terminateQActorSystem(this); 
-	          }
-	          }
-	          },//new StateFun[]
-	          new String[]{"true","M","s200LgvReady" },
-	          2000, "lgvNotReady" );//msgTransition
+	    	repeatPlanNoTransition(pr,myselfName,"sourcehandler_"+myselfName,false,true);
 	    }catch(Exception e_handlematerialAvailable){  
 	    	 println( getName() + " plan=handlematerialAvailable WARNING:" + e_handlematerialAvailable.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 

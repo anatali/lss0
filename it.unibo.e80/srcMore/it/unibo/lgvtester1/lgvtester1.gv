@@ -10,7 +10,10 @@ digraph finite_state_machine {
 	size="8,5"
 	
 	init [ color = red ][ fontcolor = red ][ penwidth = 3 ]
+	naggingQuery [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	
-	init -> action [ label = "lgvReady" ][ color = red ][ fontcolor = red ][ dir = both ]
-	init -> handleToutBuiltIn [ label = "timeout(100000)" ][ color = green ][ fontcolor = green ]
+	naggingQuery -> handleToutBuiltIn [ label = "timeout(600000)" ][ color = green ][ fontcolor = green ]
+	init -> naggingQuery [ label = "switch" ][ color = black ][ fontcolor = black ]
+	naggingQuery -> naggingQuery [ label = "repeat 6"][ style = dashed ][ color = blue ][ fontcolor = blue ]
+	naggingQuery -> action [ label = "lgvReady_2" ][ color = red ][ fontcolor = red ][ dir = both ]
 }

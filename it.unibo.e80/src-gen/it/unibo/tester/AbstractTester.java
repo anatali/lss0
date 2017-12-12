@@ -34,7 +34,7 @@ public abstract class AbstractTester extends QActor {
 		public AbstractTester(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/tester/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/tester/plans.txt";
 	  	}
 		@Override
@@ -121,7 +121,8 @@ public abstract class AbstractTester extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("handleAnswer",-1);
 	    	String myselfName = "handleAnswer";  
 	    	printCurrentEvent(false);
-	    	//onEvent  
+	    	//onEvent 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("cmd(storeResult,booked)");
 	    	if( currentEvent != null && currentEvent.getEventId().equals("storeResult") && 
 	    		pengine.unify(curT, Term.createTerm("cmd(storeResult,R)")) && 
@@ -138,7 +139,8 @@ public abstract class AbstractTester extends QActor {
 	    			    //the control is given to the caller state
 	    			}
 	    	}
-	    	//onEvent  
+	    	//onEvent 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("cmd(storeResult,busy)");
 	    	if( currentEvent != null && currentEvent.getEventId().equals("storeResult") && 
 	    		pengine.unify(curT, Term.createTerm("cmd(storeResult,R)")) && 
@@ -155,7 +157,8 @@ public abstract class AbstractTester extends QActor {
 	    			    //the control is given to the caller state
 	    			}
 	    	}
-	    	//onEvent  
+	    	//onEvent 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("cmd(storeResult,space)");
 	    	if( currentEvent != null && currentEvent.getEventId().equals("storeResult") && 
 	    		pengine.unify(curT, Term.createTerm("cmd(storeResult,R)")) && 

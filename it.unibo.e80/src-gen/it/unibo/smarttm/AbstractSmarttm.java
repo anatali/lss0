@@ -34,7 +34,7 @@ public abstract class AbstractSmarttm extends QActor {
 		public AbstractSmarttm(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/smarttm/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/smarttm/plans.txt";
 	  	}
 		@Override
@@ -113,6 +113,7 @@ public abstract class AbstractSmarttm extends QActor {
 	    	temporaryStr = "\"A new load is requested. Now I check if some LGV is available\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("qLoad_1(S)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("qLoad_1") && 
 	    		pengine.unify(curT, Term.createTerm("qLoad_1(SOURCE)")) && 
@@ -155,10 +156,10 @@ public abstract class AbstractSmarttm extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handleLgvReady",-1);
 	    	String myselfName = "handleLgvReady";  
-	    	printCurrentMessage(false);
 	    	temporaryStr = "\"A new LGV is ready. Now I send s200LgvReady to lgvman, expecting a m200LoadConfirmed_3\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("lgvReady_2(SOURCE,LGV,true)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("lgvReady_2") && 
 	    		pengine.unify(curT, Term.createTerm("lgvReady_2(SOURCE,LGV,V)")) && 
@@ -180,10 +181,10 @@ public abstract class AbstractSmarttm extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("driveLgv",-1);
 	    	String myselfName = "driveLgv";  
-	    	printCurrentMessage(false);
 	    	temporaryStr = "\"Now I drive LGV, expecting  lgvLoaded_3a form LGV \"";
 	    	println( temporaryStr );  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("m200LoadConfirmed_3(SOURCE,LGV)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("m200LoadConfirmed_3") && 
 	    		pengine.unify(curT, Term.createTerm("m200LoadConfirmed_3(SOURCE,LGV)")) && 
@@ -205,10 +206,10 @@ public abstract class AbstractSmarttm extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handlelgvLoaded",-1);
 	    	String myselfName = "handlelgvLoaded";  
-	    	printCurrentMessage(false);
 	    	temporaryStr = "\"Now I tell lgvaman that the LGV is loaded (s300LgvLoaded_4), by expecting m100Mission_7 from lgvman\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("lgvLoaded_3a(LGV,SOURCE,MATERIAL)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("lgvLoaded_3a") && 
 	    		pengine.unify(curT, Term.createTerm("lgvLoaded_3a(LGV,SOURCE,MATERIAL)")) && 
@@ -230,10 +231,10 @@ public abstract class AbstractSmarttm extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handlem100Mission",-1);
 	    	String myselfName = "handlem100Mission";  
-	    	printCurrentMessage(false);
-	    	temporaryStr = "\"Now I have to manage a mission by sending lgvMoveWhareh_7cmd to the LGV and expecting lgvStore_7a\"";
+	    	temporaryStr = "\"Now I have to manage a mission by sending lgvMoveWhareh_7cmd to the LGV and expecting lgvStore_7a from lgv\"";
 	    	println( temporaryStr );  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("m100Mission_7(mission(order(MATERIAL,SOURCE,LGV),DEST))");
 	    	if( currentMessage != null && currentMessage.msgId().equals("m100Mission_7") && 
 	    		pengine.unify(curT, Term.createTerm("m100Mission_7(MISSION)")) && 
@@ -255,8 +256,8 @@ public abstract class AbstractSmarttm extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handleStored",-1);
 	    	String myselfName = "handleStored";  
-	    	printCurrentMessage(false);
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("lgvStore_7a") && 
 	    		pengine.unify(curT, Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)")) && 
@@ -269,6 +270,31 @@ public abstract class AbstractSmarttm extends QActor {
 	    		if( parg != null ) println( parg );
 	    	}
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
+	    	curT = Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("lgvStore_7a") && 
+	    		pengine.unify(curT, Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
+	    		String parg="disengageLgv(LGV)";
+	    		/* PHead */
+	    		parg =  updateVars( Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)"), 
+	    		                    Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)"), 
+	    			    		  	Term.createTerm(currentMessage.msgContent()), parg);
+	    			if( parg != null ) {
+	    			    aar = QActorUtils.solveGoal(this,myCtx,pengine,parg,"",outEnvView,86400000);
+	    				//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
+	    				if( aar.getInterrupted() ){
+	    					curPlanInExec   = "handleStored";
+	    					if( aar.getTimeRemained() <= 0 ) addRule("tout(demo,"+getName()+")");
+	    					if( ! aar.getGoon() ) return ;
+	    				} 			
+	    				if( aar.getResult().equals("failure")){
+	    					if( ! aar.getGoon() ) return ;
+	    				}else if( ! aar.getGoon() ) return ;
+	    			}
+	    	}
+	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("lgvStore_7a") && 
 	    		pengine.unify(curT, Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)")) && 

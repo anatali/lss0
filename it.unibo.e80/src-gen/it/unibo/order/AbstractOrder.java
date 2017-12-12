@@ -34,7 +34,7 @@ public abstract class AbstractOrder extends QActor {
 		public AbstractOrder(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/order/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/order/plans.txt";
 	  	}
 		@Override

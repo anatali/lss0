@@ -34,7 +34,7 @@ public abstract class AbstractLgvtester extends QActor {
 		public AbstractLgvtester(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/lgvtester/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/lgvtester/plans.txt";
 	  	}
 		@Override
@@ -56,6 +56,7 @@ public abstract class AbstractLgvtester extends QActor {
 	    protected void initStateTable(){  	
 	    	stateTab.put("handleToutBuiltIn",handleToutBuiltIn);
 	    	stateTab.put("init",init);
+	    	stateTab.put("handleAnswer",handleAnswer);
 	    	stateTab.put("simulatesmarttm",simulatesmarttm);
 	    	stateTab.put("simulateaftersdm",simulateaftersdm);
 	    }
@@ -75,44 +76,72 @@ public abstract class AbstractLgvtester extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("init",-1);
 	    	String myselfName = "init";  
-	    	temporaryStr = "\"lgvtester query\"";
+	    	it.e80.customGui.createCustomGui( this ,"400", "30", "500", "white"  );
+	    	temporaryStr = "\"lgvtester query for lgv0 ready\"";
 	    	println( temporaryStr );  
-	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"lgvReady(SOURCE,LGV,V)","lgvReady(s1,lgv0,query)", guardVars ).toString();
-	    	sendMsg("lgvReady","lgv0", QActorContext.dispatch, temporaryStr ); 
+	    	if( (guardVars = QActorUtils.evalTheGuard(this, " ??source(S)" )) != null ){
+	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"lgvReady_2(SOURCE,LGV,V)","lgvReady_2(S,lgv0,query)", guardVars ).toString();
+	    	sendMsg("lgvReady_2","lgv0", QActorContext.dispatch, temporaryStr ); 
+	    	}
 	    	//bbb
 	     msgTransition( pr,myselfName,"lgvtester_"+myselfName,false,
-	          new StateFun[]{
-	          () -> {	//AD HOC state to execute an action and resumeLastPlan
-	          try{
-	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
-	            //ActionSwitch for a message or event
-	             if( currentMessage.msgContent().startsWith("lgvReady") ){
-	            	/* SwitchTransition */
-	            	String parg = "simulatesmarttm";
-	            	parg =  updateVars( Term.createTerm("lgvReady(SOURCE,LGV,V)"), 
-	            		                Term.createTerm("lgvReady(SOURCE,lgv0,true)"), 
-	            		                Term.createTerm(currentMessage.msgContent()), parg);
-	            	if(parg != null){ 
-	            		switchToPlanAsNextState(pr, myselfName, "console_"+myselfName, 
-	            	    	 		    		parg,false, true, null); 
-	            	    return;	
-	            	    //the control is given to the caller state
-	            	}
-	             }
-	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
-	          }catch(Exception e ){  
-	             println( getName() + " plan=init WARNING:" + e.getMessage() );
-	             //QActorContext.terminateQActorSystem(this); 
-	          }
-	          }
-	          },//new StateFun[]
-	          new String[]{"true","M","lgvReady" },
-	          100000, "handleToutBuiltIn" );//msgTransition
+	          new StateFun[]{stateTab.get("handleAnswer") },//new StateFun[]
+	          new String[]{"true","M","lgvReady_2" },
+	          600000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_init){  
 	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 
 	    }
 	    };//init
+	    
+	    StateFun handleAnswer = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp("handleAnswer",-1);
+	    	String myselfName = "handleAnswer";  
+	    	printCurrentMessage(false);
+	    	temporaryStr = "\"lgvtester handleAnswer\"";
+	    	println( temporaryStr );  
+	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
+	    	curT = Term.createTerm("lgvReady_2(SOURCE,lgv0,false)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("lgvReady_2") && 
+	    		pengine.unify(curT, Term.createTerm("lgvReady_2(SOURCE,LGV,V)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
+	    		String parg = "\"DEVICE NOT READY\"";
+	    		/* Print */
+	    		parg =  updateVars( Term.createTerm("lgvReady_2(SOURCE,LGV,V)"), 
+	    		                    Term.createTerm("lgvReady_2(SOURCE,lgv0,false)"), 
+	    			    		  	Term.createTerm(currentMessage.msgContent()), parg);
+	    		if( parg != null ) println( parg );
+	    	}
+	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
+	    	curT = Term.createTerm("lgvReady_2(SOURCE,lgv0,true)");
+	    	if( currentMessage != null && currentMessage.msgId().equals("lgvReady_2") && 
+	    		pengine.unify(curT, Term.createTerm("lgvReady_2(SOURCE,LGV,V)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
+	    		/* SwitchTransition */
+	    		String parg = "simulatesmarttm";
+	    		parg =  updateVars( Term.createTerm("lgvReady_2(SOURCE,LGV,V)"), 
+	    			                Term.createTerm("lgvReady_2(SOURCE,lgv0,true)"), 
+	    			                Term.createTerm(currentMessage.msgContent()), parg);
+	    		if(parg != null){ 
+	    			switchToPlanAsNextState(pr, myselfName, "console_"+myselfName, 
+	    		    	 		    		parg,false, true, null); 
+	    		    return;	
+	    		    //the control is given to the caller state
+	    		}
+	    	}
+	    	//bbb
+	     msgTransition( pr,myselfName,"lgvtester_"+myselfName,false,
+	          new StateFun[]{stateTab.get("handleAnswer") },//new StateFun[]
+	          new String[]{"true","M","lgvReady_2" },
+	          600000, "handleToutBuiltIn" );//msgTransition
+	    }catch(Exception e_handleAnswer){  
+	    	 println( getName() + " plan=handleAnswer WARNING:" + e_handleAnswer.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//handleAnswer
 	    
 	    StateFun simulatesmarttm = () -> {	
 	    try{	
@@ -120,8 +149,8 @@ public abstract class AbstractLgvtester extends QActor {
 	    	String myselfName = "simulatesmarttm";  
 	    	temporaryStr = "\"lgvtester lgvMoveLoad\"";
 	    	println( temporaryStr );  
-	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"lgvMoveLoad(LGV,SOURCE)","lgvMoveLoad(lgv0,s1)", guardVars ).toString();
-	    	sendMsg("lgvMoveLoad","lgv0", QActorContext.dispatch, temporaryStr ); 
+	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"lgvMoveLoad_3cmd(LGV,SOURCE)","lgvMoveLoad_3cmd(lgv0,s1)", guardVars ).toString();
+	    	sendMsg("lgvMoveLoad_3cmd","lgv0", QActorContext.dispatch, temporaryStr ); 
 	    	//bbb
 	     msgTransition( pr,myselfName,"lgvtester_"+myselfName,false,
 	          new StateFun[]{
@@ -129,11 +158,11 @@ public abstract class AbstractLgvtester extends QActor {
 	          try{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
-	             if( currentMessage.msgContent().startsWith("lgvLoaded") ){
+	             if( currentMessage.msgContent().startsWith("lgvLoaded_3a") ){
 	            	/* SwitchTransition */
 	            	String parg = "simulateaftersdm";
-	            	parg =  updateVars( Term.createTerm("lgvLoaded(LGV,SOURCE,MATERIAL)"), 
-	            		                Term.createTerm("lgvLoaded(LGV,SOURCE,M)"), 
+	            	parg =  updateVars( Term.createTerm("lgvLoaded_3a(LGV,SOURCE,MATERIAL)"), 
+	            		                Term.createTerm("lgvLoaded_3a(LGV,SOURCE,M)"), 
 	            		                Term.createTerm(currentMessage.msgContent()), parg);
 	            	if(parg != null){ 
 	            		switchToPlanAsNextState(pr, myselfName, "console_"+myselfName, 
@@ -149,8 +178,8 @@ public abstract class AbstractLgvtester extends QActor {
 	          }
 	          }
 	          },//new StateFun[]
-	          new String[]{"true","M","lgvLoaded" },
-	          100000, "handleToutBuiltIn" );//msgTransition
+	          new String[]{"true","M","lgvLoaded_3a" },
+	          600000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_simulatesmarttm){  
 	    	 println( getName() + " plan=simulatesmarttm WARNING:" + e_simulatesmarttm.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 
@@ -163,8 +192,8 @@ public abstract class AbstractLgvtester extends QActor {
 	    	String myselfName = "simulateaftersdm";  
 	    	temporaryStr = "\"lgvtester lgvMoveWhareh\"";
 	    	println( temporaryStr );  
-	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"lgvMoveWhareh(LGV,SOURCE,DEST)","lgvMoveWhareh(lgv0,s1,cell1)", guardVars ).toString();
-	    	sendMsg("lgvMoveWhareh","lgv0", QActorContext.dispatch, temporaryStr ); 
+	    	temporaryStr = QActorUtils.unifyMsgContent(pengine,"lgvMoveWhareh_7cmd(LGV,SOURCE,DEST)","lgvMoveWhareh_7cmd(lgv0,s1,cell1)", guardVars ).toString();
+	    	sendMsg("lgvMoveWhareh_7cmd","lgv0", QActorContext.dispatch, temporaryStr ); 
 	    	//bbb
 	     msgTransition( pr,myselfName,"lgvtester_"+myselfName,false,
 	          new StateFun[]{
@@ -172,13 +201,18 @@ public abstract class AbstractLgvtester extends QActor {
 	          try{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
-	             if( currentMessage.msgContent().startsWith("lgvStore") ){
-	            	String parg = "lgvStore(LGV,SOURCE,M,R)";
-	            	/* Print */
-	            	parg =  updateVars( Term.createTerm("lgvStore(LGV,SOURCE,MATERIAL,RESULT)"), 
-	            	                    Term.createTerm("lgvStore(LGV,SOURCE,M,R)"), 
-	            		    		  	Term.createTerm(currentMessage.msgContent()), parg);
-	            	if( parg != null ) println( parg );
+	             if( currentMessage.msgContent().startsWith("lgvStore_7a") ){
+	            	/* SwitchTransition */
+	            	String parg = "init";
+	            	parg =  updateVars( Term.createTerm("lgvStore_7a(LGV,SOURCE,MATERIAL,RESULT)"), 
+	            		                Term.createTerm("lgvStore_7a(LGV,SOURCE,M,R)"), 
+	            		                Term.createTerm(currentMessage.msgContent()), parg);
+	            	if(parg != null){ 
+	            		switchToPlanAsNextState(pr, myselfName, "console_"+myselfName, 
+	            	    	 		    		parg,false, true, null); 
+	            	    return;	
+	            	    //the control is given to the caller state
+	            	}
 	             }
 	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
 	          }catch(Exception e ){  
@@ -187,8 +221,8 @@ public abstract class AbstractLgvtester extends QActor {
 	          }
 	          }
 	          },//new StateFun[]
-	          new String[]{"true","M","lgvStore" },
-	          100000, "handleToutBuiltIn" );//msgTransition
+	          new String[]{"true","M","lgvStore_7a" },
+	          600000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_simulateaftersdm){  
 	    	 println( getName() + " plan=simulateaftersdm WARNING:" + e_simulateaftersdm.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 

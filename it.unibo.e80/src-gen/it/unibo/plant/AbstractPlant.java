@@ -34,7 +34,7 @@ public abstract class AbstractPlant extends QActor {
 		public AbstractPlant(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/plant/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/plant/plans.txt";
 	  	}
 		@Override
@@ -89,18 +89,6 @@ public abstract class AbstractPlant extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("doWork",-1);
 	    	String myselfName = "doWork";  
-	    	//delay  ( no more reactive within a plan)
-	    	aar = delayReactive(100,"" , "");
-	    	if( aar.getInterrupted() ) curPlanInExec   = "doWork";
-	    	if( ! aar.getGoon() ) return ;
-	    	temporaryStr = QActorUtils.unifyMsgContent(pengine, "sourceEngaged(SOURCE)","sourceEngaged(s1)", guardVars ).toString();
-	    	emit( "sourceEngaged", temporaryStr );
-	    	//delay  ( no more reactive within a plan)
-	    	aar = delayReactive(1000,"" , "");
-	    	if( aar.getInterrupted() ) curPlanInExec   = "doWork";
-	    	if( ! aar.getGoon() ) return ;
-	    	temporaryStr = QActorUtils.unifyMsgContent(pengine, "sourceEngaged(SOURCE)","sourceEngaged(s2)", guardVars ).toString();
-	    	emit( "sourceEngaged", temporaryStr );
 	    	repeatPlanNoTransition(pr,myselfName,"plant_"+myselfName,false,false);
 	    }catch(Exception e_doWork){  
 	    	 println( getName() + " plan=doWork WARNING:" + e_doWork.getMessage() );

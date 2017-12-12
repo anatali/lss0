@@ -14,7 +14,6 @@ digraph finite_state_machine {
 	handlematerialAvailable [ color = black ][ fontcolor = black ][ penwidth = 3 ]
 	
 	init -> handleToutBuiltIn [ label = "timeout(600000)" ][ color = green ][ fontcolor = green ]
-	handlematerialAvailable -> action [ label = "s200LgvReady" ][ color = red ][ fontcolor = red ][ dir = both ]
-	handlematerialAvailable -> lgvNotReady [ label = "timeout(2000)" ][ color = green ][ fontcolor = green ][ dir = both ]
+	init -> init [ label = "repeat "][ style = dashed ][ color = blue ][ fontcolor = blue ]
 	init -> handlematerialAvailable [ label = "materialAvailable" ][ color = red ][ fontcolor = red ][ dir = both ]
 }

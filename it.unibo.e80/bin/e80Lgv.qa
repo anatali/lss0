@@ -1,6 +1,5 @@
 System e80Lgv
 
-
 Event sourceEngaged        : sourceEngaged( SOURCE )	//SOURCE = s1, s2
 
 Dispatch endAction         : endAction(A,R)

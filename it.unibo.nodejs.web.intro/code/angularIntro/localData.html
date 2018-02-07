@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app="localDataApp">
+<head>
+<script src="angular.min.js"></script>
+<script src="localData.js"></script>
+<meta charset="utf-8">
+<title>Angular local data</title>
+</head>
+
+<body>
+<div  ng-controller="localDataController">
+<h2>All Data</h2>
+<p>{{ data }}</p>
+
+
+<h2>List of data names</h2>
+<ul>
+	<li ng-repeat="item in data.locations">{{ item.name }}</li>
+</ul>
+
+<h2>Using the buil-in filter uppercase fot the names</h2>
+<ul>
+	<li ng-repeat="item in data.locations">{{ item.name | uppercase}}</li>
+</ul>
+
+
+<h2>Using a custom  filter for the distance</h2>
+<ul>
+	<li ng-repeat="item in data.locations">{{ item.distance | formatDistance}}</li>
+</ul>
+
+<h2>Binding data[1] name to input</h2>
+item at 1) <input ng-model="data.locations[1].name" />
+
+<h2>Changing names</h2>
+<ul>
+	<li ng-repeat="item in data.locations" >{{ item.name }} <input ng-model="data.locations[$index].name"/></li>
+</ul>
+</div>
+
+<div  ng-controller="controllerWithService">
+<h2>List of local data given by a service</h2>
+<ul>
+	<li ng-repeat="item in data.locations">{{ item }}</li>
+</ul>
+
+</div>
+
+<div  ng-controller="controllerRemoteData">
+<h2>List of remote data given by a service</h2>
+{{ data }}
+<ul>
+	<li ng-repeat="item in data">{{ item }}</li>
+</ul>
+
+</div>
+
+</body>
+</html>
+
+<!-- https://docs.angularjs.org/api/ng/directive/ngRepeat -->

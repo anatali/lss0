@@ -1,0 +1,8 @@
+extends layout.jade
+block header
+   h2= "Users"  
+block content
+   p Current users:
+   ul
+   for el in items
+      li= el.name + " age=" + el.age + " pswd=" + el.password

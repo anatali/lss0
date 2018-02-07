@@ -1,0 +1,9 @@
+extends layout.jade
+block header
+   h1= "Blog Items"  
+block content
+   p Current items:
+   ul
+   for el in items
+      li= el.title + " val=" + el.body + " date=" + el.published
+

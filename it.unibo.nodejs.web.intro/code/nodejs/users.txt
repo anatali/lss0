@@ -1,0 +1,3 @@
+{"name":"Alice","age":"22","password":"pswdAlice"}
+{"name":"Dave","age":"34","password":"pswdDave"}
+{"name":"Bob","age":"25","password":"pswdBob"}

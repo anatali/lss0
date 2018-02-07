@@ -1,0 +1,9 @@
+NAME: Antonio
+SURNAME: Natali
+
+USERNAME: natali.antonio
+PASSWORD: pheiveik
+
+EMAIL: antonio.natali@unibo.it	
+ 
+E-LEARNING: https://moodle.bbs.unibo.it

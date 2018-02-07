@@ -1,0 +1,12 @@
+extends layout.jade
+block header
+   h1= "Blog New Item"
+block content
+ form(method="POST", action="/newitem")
+  input(type="hidden", name="_method", value="PUT")
+  p Title  
+       input(type="text", name="title")
+  p Text  
+       input(type="text", name="body")
+  p
+       input(type="submit")

@@ -1,0 +1,6 @@
+extends layout.jade
+block content
+   h2= "Welcome. Our devices are:"  
+   for el in req.result
+     li= el.name  + ": "      
+        i=el.description

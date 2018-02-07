@@ -1,0 +1,143 @@
+{
+"@context": "http://schema.org/Product",
+"@id": "http://localhost:8484",
+"name": "My WoT Raspberry PI",
+"description": "A simple WoT-connected Raspberry PI for the WoT book.",
+"productID" : "asin:B00T2U7R7I",
+"manufacturer" : "Raspberry Pi",
+"model" : "100437",
+"image" : "http://devices.webofthings.io:9090/snapshot.cgi?user=snapshots&pwd=4MXfTSr0gH",
+"tags": [
+"raspberry",
+"pi",
+"WoT"
+],
+  "customFields" : {
+    "hostname":"localhost",
+    "port": 8484,
+    "secure": false,
+    "dataArraySize" : 30
+  },
+  "links": {
+    "product": {
+      "link": "https://www.raspberrypi.org/products/raspberry-pi-2-model-b/",
+      "title": "Product this Web Thing is based on"
+    },
+    "properties": {
+      "link": "/properties",
+      "title": "List of Properties",
+      "resources": {
+        "temperature": {
+          "name": "Temperature Sensor",
+          "description": "An ambient temperature sensor.",
+          "values": {
+            "t": {
+              "name": "Temperature sensor",
+              "description": "The temperature in celsius",
+              "unit": "celsius",
+              "customFields": {
+                "gpio": 12
+              }
+            }
+          },
+          "tags": [
+            "sensor",
+            "public",
+            "indoors"
+          ]
+        },
+        "humidity": {
+          "name": "Humidity Sensor",
+          "description": "An ambient humidity sensor.",
+          "values": {
+            "h": {
+              "name": "Humidity",
+              "description": "Percentage of Humidity",
+              "unit": "%",
+              "customFields": {
+                "gpio": 12
+              }
+            }
+          },
+          "tags": [
+            "sensor",
+            "public"
+          ]
+        },
+        "pir": {
+          "name": "Passive Infrared",
+          "description": "A passive infrared sensor.",
+          "values": {
+            "presence": {
+              "name": "Presence",
+              "description": "Current sensor value (true=motion detected)",
+              "type": "boolean",
+              "customFields": {
+                "gpio": 17
+              }
+            }
+          },
+          "tags": [
+            "sensor",
+            "public"
+          ]
+        },
+        "leds": {
+          "name": "LEDs",
+          "description": "The LEDs of this device.",
+          "values": {
+            "1": {
+              "name": "LED 1",
+              "customFields": {
+                "gpio": 4
+              }
+            },
+            "2": {
+              "name": "LED 2",
+              "customFields": {
+                "gpio": 9
+              }
+            }
+          },
+          "tags": [
+            "sensor",
+            "public"
+          ]
+        }
+      }
+    },
+    "actions": {
+      "link": "/actions",
+      "title": "Actions of this Web Thing",
+      "resources": {
+        "ledState": {
+          "name": "Change LED state",
+          "description": "Change the state of an LED",
+          "values": {
+            "ledId": {
+              "type": "enum",
+              "enum":{"1":"LED 1","2":"LED 2","ALL":"All LEDs"},
+              "required": true
+            },
+            "state": {
+              "type": "boolean",
+              "required" : true
+            }
+          }
+        }
+      }
+    },
+    "type": {
+      "link": "http://model.webofthings.org/WebThing",
+      "title": "Instance type of the Pi"
+    },
+    "help": {
+      "link": "http://webofthings.org/docs/pi/",
+      "title": "Documentation"
+    },
+    "ui": {
+      "link": "/",
+      "title": "User Interface"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "node-demo",
+  "version": "1.0.0",
+  "description": "Node demo showing how to store data into a MongoDB database",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "mongodb",
+    "mongoose",
+    "demo"
+  ],
+  "author": "an unibo disi",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongodb": "^3.0.1",
+    "mongoose": "^4.6.7"
+  }
+}

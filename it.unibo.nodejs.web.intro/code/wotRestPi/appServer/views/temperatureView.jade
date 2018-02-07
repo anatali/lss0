@@ -1,0 +1,9 @@
+extends layout.jade
+block content
+   h2= title  
+   ul
+       li= "NAME=" + data.name 
+       li= "UNIT=" + data.values.t.unit
+       li= "GPIO="+  data.values.t.customFields.gpio
+       li= "VAL ="+  data.data[data.data.length-1].t
+ 

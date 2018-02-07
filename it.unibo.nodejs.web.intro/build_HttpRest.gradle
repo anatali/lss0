@@ -1,0 +1,54 @@
+/*
+================================================================================
+build_HttpRest.gradle
+GENERATED ONLY ONCE
+USAGE:	 
+	gradle -b build_HttpRest.gradle eclipse	//to set the dependency on the library
+	gradle -b build_HttpRest.gradle build
+================================================================================
+*/
+apply plugin: 'java'
+apply plugin: 'eclipse'
+ 
+
+/*
+--------------------------------------------------------------
+PROPERTIES
+--------------------------------------------------------------
+*/
+version = "1.0"
+sourceCompatibility = "1.8"
+
+/*
+--------------------------------------------------------------
+DIRS
+--------------------------------------------------------------
+*/
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src' ]
+		}
+	}
+	test {
+		 java {
+		   srcDirs = ['test']
+		 }
+	}
+}
+/*
+--------------------------------------------------------------
+DEPENDENCIES
+--------------------------------------------------------------
+*/
+repositories {
+      mavenCentral()
+}
+dependencies {
+
+
+ // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
+ 
+ }
+ 

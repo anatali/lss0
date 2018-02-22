@@ -34,7 +34,7 @@ public abstract class AbstractMusicreactive extends QActor {
 		public AbstractMusicreactive(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/musicreactive/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/musicreactive/plans.txt";
 	  	}
 		@Override

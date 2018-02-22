@@ -34,7 +34,7 @@ public abstract class AbstractQabls0client extends QActor {
 		public AbstractQabls0client(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qabls0client/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qabls0client/plans.txt";
 	  	}
 		@Override

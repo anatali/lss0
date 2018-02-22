@@ -34,7 +34,7 @@ public abstract class AbstractAlarmemitter extends QActor {
 		public AbstractAlarmemitter(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/alarmemitter/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/alarmemitter/plans.txt";
 	  	}
 		@Override

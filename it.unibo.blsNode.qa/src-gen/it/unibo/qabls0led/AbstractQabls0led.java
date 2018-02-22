@@ -42,9 +42,9 @@ public abstract class AbstractQabls0led extends QActor implements IActivity{
 		public AbstractQabls0led(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qabls0led/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			addInputPanel(80);
-			addCmdPanels();	
+			addCmdPanels();
 			this.planFilePath = "./srcMore/it/unibo/qabls0led/plans.txt";
 	  	}
 	protected void addInputPanel(int size){
@@ -120,7 +120,7 @@ public abstract class AbstractQabls0led extends QActor implements IActivity{
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentEvent.getMsg().startsWith("fileChanged") ){
-	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.EventTransSwitchImpl@2b97e81c
+	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.EventTransSwitchImpl@d12f438
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("fileChanged(FNAME,CONTENT)"), 
 	            		                Term.createTerm("fileChanged(F,press)"), 

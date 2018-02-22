@@ -1,0 +1,387 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    
+    margin-left: 35px;
+    margin-right: 35px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+    font-size: 100%;
+}
+h4 {
+    background-color: #fcf8c7;
+    font-size: 100%;
+}
+    #i {
+    color: #ff1010;
+}
+  -->
+</style>
+    
+<head>
+   
+<title>ISSEntry</title></head>
+    
+<body>
+ 
+<div id="top">
+<!--    CESENA
+<h1>81614 - LABORATORIO DI SISTEMI SOFTWARE <font size="5"> : <a href="./LectureCesena1718.html" target="isslm">LabSS-lectures site</a></font> </h1>
+<a href="http://www.ingegneriarchitettura.unibo.it/it/corsi/insegnamenti/insegnamento/2017/412677" target="isslm">SITO WEB di Ateneo</a>
+-->    
+<h1>72939 - INGEGNERIA DEI SISTEMI SOFTWARE M <font size="5"> : <a href="./LectureBologna1718.html" target="isslm">LabSS-lectures site</a></font> </h1>
+    
+    <a href="http://www.ingegneriarchitettura.unibo.it/it/corsi/insegnamenti/insegnamento/2017/385373" target="isslm">SITO WEB di Ateneo</a>
+</div>     
+<ul>
+<li>Conoscenze e abilità da conseguire</li>    
+<li>Programma/Contenuti</li>    
+<li>Testi/Bibliografia</li>
+<li>Metodi didattici</li>
+<li>Modalità di verifica dell'apprendimento</li>
+<li>Strumenti a supporto della didattica</li>
+</ul>
+    
+   <h2><a name="Prereq"></a>Prerequisiti</h2>   
+    <ul>
+        <li>Good knowledge of Java (Java8), 
+           <a id="ar" href="../NatMolBook/LinguaggioUML.html" target="isslm">UML (2.0)</a> ,
+             <a href="../NatMolBook/Pattern.html" target="isslm">Design pattern</a>
+            (documentazione relativa a <a href="entry2016.html" target="isslm">Materiale di Ingegneria del software</a>)
+        </li>
+         <li>Fundamentals of <a href="../Readings/linguaggiAll.pdf" target="isslm">programming languages</a>
+        
+        </li>
+        <li>Fundamentals of operating systems</li>
+        <li>Fundamentals of concurrent programming</li>
+         <li>Knowledge og Prolog and Javascript (E6)</li>
+  </ul>
+  
+    
+<h2><a name="Goals"></a>Conoscenze e abilità da conseguire</h2>    
+Al termine del corso lo studente:
+<ul>
+<li>è in grado di impostare processi di sviluppo del software cooperativo basati sia su approcci agili (in particolare SCRUM) sia su approcci basati su modelli espressi in UML2 oppure espressi mediante meta-modelli custom, domain specific; </li>
+<li>è in grado di valutare criticamente il ruolo e l'uso di UML2 come linguaggio di modellazione nella costruzione di sistemi distribuiti eterogeni </li>
+<li>e' in grado di sviluppare sistemi software in modo technology-independent attraverso opportune formalizazioni dell'analisi dei requisiti e dell'analisi del problema con particolare riferinento al settore oggi noto come <a href="https://en.wikipedia.org/wiki/Internet_of_things" target="isslm">Internet of Things</a>
+    
+<center>
+<table >
+<tr><td><img src="./img/introDesign1.jpg" alt="qactors0" width="271" height="215"/></td> 
+    <td><img src="./img/introDesign2.jpg" alt="qactors0" width="271" height="215"/></td> 
+    <td><img src="./img/introDesignTecno.jpg" alt="qactors0" width="161" height="265"/></td> 
+    </tr>   
+    </table>  
+    </center>    
+</li>
+<li>è in grado di affrontare il progetto e la costruzione di piattaforme custom di supporto allo sviluppo di sistemi software proattivi/reattivi con particolare riferimento ai modelli message-passing e event.driven 
+    <li>è in grado di progettare e costruire (in ambiente Eclipse) ambienti di sviluppo custom (Software Factories) capaci di generazione automatica di codice in accordo all'approccio Model Driven Software Development (<tt>MDSD</tt>tt>)
+<li>è in grado di costruire dispositivi a basso costo tipici dell'Internet of Things (<tt>IOT</tt>) per lo svliuppo di case-study concreti basati su dispositici quali Raspberry, Arduino e Android con particolare riferimento 
+    <a href="../Robots/robotEntry.html" target="lecture">a robot differential drive (DDR) custom</a></li>
+<li>è in grado di applicare i concetti, i dispostivi, e gli strunmenti sviluppati in modo concreto ed operativo durante il laboratorio nello svluppo di applicazioni IOT che utilizzano DDR singoli o coordinati come sistemi che operano sulla base di dati sensoriali</li>    
+</ul>  
+
+    
+     
+<h4>From the methological/conceptual point of view:</h4>
+<ul>       
+    <li>Understand and manage <a href="../NatMolBook/content/book/ingSoft/metodoMetodologia.html" target="isslm">methodologies</a> and tools to make <i id="i">explicit</i>  knowldegde/information usually implicit in code-based <a href="../NatMolBook/content/book/processi/processiSviluppoSoftware.html" target="isslm">software production processes</a>, with particular attention  to the phases of <a href="../NatMolBook/Analisi.html" target="isslm">analysis</a>, <a href="../NatMolBook/Progettazione.html"  target="isslm">design</a> and  <a href="../NatMolBook/Testing.html"  target="isslm">testing</a>.</h4>
+    <li>Understand the role of <i id="i">Requirement analysis</i> and its practical impact on software  pruduction (<a href="../SwFactory/domainModels.html"  target="isslm"><i>Domain model</i></a> specification, <a href="../NatMolBook/content/book/modelBased/fasi/pianoCollaudo.html#" target="isslm"><i>Unit-Testing Plans</i></a>, <a href="../NatMolBook/content/book/modelBased/fasi/pianoLavoro.html" target="isslm">Work plan</a>)  </li>
+    <li>Understand the impact of a given <i id="i">Software Technolgy</i> on software analysis, design and implementation</li>
+    <li>Understand the role of <i id="i">Problem analysis</i> with particular reference to the definition of the <a href="../NatMolBook/content/book/modelBased/fasi/architetturaLogica.html" target="isslm">logic architecture</a> of a software system, on the evaluation of the <a href="../Survey/AbstrGap.html" target="isslm">abstraction gap</a> between an application (domain) and the implementation technology, on the production of  <i id="i">Integration-Testing Plans</i>, on the evalutation of <i id="i">risks</i> and d on the definition of the <i id="i">work-plans</i>.   </li>
+    <li>Learn how to overcome the limits of a technology-based software development approach via <i id="i">cooperative work</i> based on <a href="../NatMolBook/content/book/modelBased/fasi/architetturaLogica.html" target="isslm">logic architectures</a> and <a href="https://en.wikipedia.org/wiki/Model-driven_software_development" target="isslm">MDSD</a> (Model Driven software Development), able to promote collaboration between development, operations and testing (a graceful introduction to <a href="https://en.wikipedia.org/wiki/DevOps" target="isslm">DevOps</a>) </li>
+     <li>Learn how to automatize software construction by exploiting 
+         <a href="https://en.wikipedia.org/wiki/Model-driven_software_development" target="isslm">MDSD</a>
+        </li>
+
+</ul>     
+    
+<h4>From the practical point of view:</h4>    
+    <ul>
+        <li>Define test plans and automate testing with <a href="http://junit.org/junit4/" target="isslm">JUnit</a> 
+        and <a href="https://en.wikipedia.org/wiki/Gradle" target="isslm">Gradle</a> </li>
+     <li>Experiment with the
+        <a href="../Survey/SCRUM/scrumEntry.html" target="isslm">SCRUM</a> framework
+         <!-- <i id="i"> <a href="https://en.wikipedia.org/wiki/Scrum_(software_development)" target="isslm">SCRUM</a>approach.</i> -->
+</li>
+          
+    <li>Design and develop software systems according to an evoltive process of 
+        <a href="../NatMolBook/content/book/pattern/projectByPattern.html" target="isslm">piecemeal growth</a>
+along <a href="../NatMolBook/content/book/modelBased/fasi/dimensioni.html" target="isslm">three main architectural dimentions</a>, by intergrating model driven  approces with  SCRUM based methodology.</li>
+<li>Learn how to deal with <a href="https://en.wikipedia.org/wiki/Event-driven_programming"  target="isslm">event-driven programming</a> and with <a href="https://en.wikipedia.org/wiki/Reactive_programming" target="isslm">reactive programmimg</a></li>
+        <li> Learn how to build a <a href="../SwFactory/swFactoryEntry.html"  target="isslm">software factory</a> around domain specific languages by using the <a href="../Xtext/XtextEntry.html">Xtext</a> technology </li>
+<!--
+<li>Learn how to use custom specifications based on <a href="../Survey/FSMEntry.html" target="isslm">Finite State Machines</a> to generate most of (the part) of the behavior of a software system</li>
+-->
+        <li>Design and build distributed, heterogenous systems with particular reference to the domain of <a href="https://en.wikipedia.org/wiki/Internet_of_things" target="isslm">Internet of Things</a> and to concrete platforms such as <a href="../Android/androidEntry.html"  target="isslm">Android</a>, <a href="../Arduino/arduinoEntry.html"  target="isslm">Arduino</a>, <a href="../Raspberry/raspberryEntry.html"  target="isslm">RaspberryPi</a>.</li>
+        <li>Design and build control software for "intelligent devices" (our in-hous-made <a href="../Robots/robotEntry.html"  target="isslm">robots</a>)</li>
+<!--
+   <li>Introduzion to   <a href="https://en.wikipedia.org/wiki/DevOps">DevOps</a> practices and tools </li>
+-->
+</ul>
+    
+    
+<h2><a name="Books"></a>Laboratory</h2>  
+    <p>
+The course is based on a strong interaction between theory and laboratory. The leraning activties will be organized with reference to a sequence of projects to be devoloped in the lab.
+<!-- <a href="http://lab2.deis.unibo.it/" target="isslm">Lab2</a>. -->
+  
+</p><p>
+The aim of each proposed project is to face some specific methodology and/or aspect of software development, in incresing order of complexity. The activity performed in the lab related to a project is organized so to produce software that can be <i id="i">reused</i> in the following projacts. Thus, <b>course attendance is strongly reccomended</b>. 
+</p><p>
+Each project will be associated with a set of suggested readings, in order to establish a proper 'knowledge base' around the practical activities.   
+<!--
+</p><p>
+As an example of possible set of activities and projects, see <a href="Laboratory.html" target="isslm">Planned Lab activities 2016</a>
+-->
+    
+<h3 id="labstart">Lab start up</h3>
+    <ol>
+<li>Download Eclipse Java EE IDE for Web Developers, version Neon and the plugins for GIT, Gradle and Xtext</li>
+<li><a href="https://docs.gradle.org/current/userguide/installation.html" target="isslm">Install gradle</a></li>
+        
+<li>Execute the commands reported in <a href="../Lab/Lab2016/Starting2016.html" target="isslm">StartingLab</a></li>
+        
+        <li><p><i id="i">Create a ssh key </i> to access the course GIT repository <tt>ssh://isslm2014@137.204.107.21:80/labstudISSDISI</tt></p>
+        Use: <tt>Eclipse->Window->Preferences->General->Network Connection->SSH2->Key Management->GenerateRSA key</tt><br/>
+        Save the public-part of the Key in a file named <b></b><tt>CognomeNomeSSH.pub</tt></b> and send the file via e-mail to
+    <i>antonio.natali@unibo.it</i><br/>
+        Set the private part of the in the Eclipse workspace
+        </li>
+<!--
+<li>Copy the plugins 
+ <ul>
+    <li><a href="../Lab/it.unibo.xtext.qactor_1.5.3.jar">it.unibo.xtext.qactor_1.5.3.jar</a></li>
+    <li><a href="../Lab/it.unibo.xtext.qactor.ui_1.5.3.jar">it.unibo.xtext.qactor.ui_1.5.3.jar</a> </li>
+    <li><a href="../Lab/it.unibo.xtext.qactor.robot_1.5.3.jar">it.unibo.xtext.qactor.robot_1.5.3.jar</a></li>
+    <li><a href="../Lab/it.unibo.xtext.qactor.robot.ui_1.5.3.jar">it.unibo.xtext.qactor.robot.ui_1.5.3.jar</a> </li> 
+    <li><a href="../Lab/it.unibo.xtext.robot.base_1.0.0.jar">it.unibo.xtext.robot.base_1.0.0.jar</a></li>
+    <li><a href="../Lab/it.unibo.xtext.robot.base.ui_1.0.0.jar">it.unibo.xtext.robot.base.ui_1.0.0.jar</a></li>
+</ul>   
+    into the directory <tt>dropins</tt> of Eclipse.
+ -->   
+    
+    </li>
+<hr/>
+<li>Read an introduction to GIT, for example <a href="./sam2015git.pdf" target="isslm">sam2015git.pdf</a> or
+    <a href="https://git-scm.com/docs/gittutorial" target="isslm">gittutorial</a> ... </li>
+<li><p><i id="i">Clone the GIT repo</i>: <tt>ssh://isslm2014@137.204.107.21:80/labstudISSDISI</tt></p></li>    
+
+<li> <p><i id="i">Alternative GIT repo</i>: <tt>https://github.com/anatali/lss0</tt></p></li> 
+
+<li>Open a new Eclipse workspace and Import (by copying) the Project <tt>it.unibo.iss.libs</tt></li>
+
+<li>Download the Unity project (with tha last year CesenaScene) <a href="../Lab/virtualRobot.zip">virtualRobot.zip</a>  </li>    
+
+
+
+<!--
+<li>Look at the following requirenents: 
+<p>
+<h4 id="case2017study1">Case study: AndroidSensors (AS) </h4>    
+    <i>  
+    With reference to an <a href="https://it.wikipedia.org/wiki/Android" target="isslm">Android</a> device, write a software system that:
+    <ul>
+    <li>receives the data of the <b>accelerometer</b> sensor embedded in the Android device</li>
+    <li>looks at the accelerometer data and <ib>emits an alarm signal</b> if a value is higher than a prefixed value</li> 
+    <li>allows a controller to react to the alarm signals</li>
+    <li>maintains a log of the alarm signals emitted</li>
+    </ul>
+    
+</i>
+<h4 id="case2017study1">Case study: RobotExplorer (RE)</h4> 
+<i>
+With reference to a <a href="../Projects/Robots/robotBaseRobot.html" target="isslm">BaseRobot</a>, build a software system that:
+    <ul>
+    <li>allows the robot to explore the space around its initial position</li>
+    <li>allow the robot to build (in an incremental way) a map of the territory around it </li>    
+    <li>allow the robot to send the map to another robot (a form of 'teaching/learning')</li>
+    </ul>
+</i>
+
+<h4 id="case2017study2">Case study: faulty sensor replacenment (FSR)</h4> 
+
+    An equipment works by using a set of <i>sensors</i> that are periodically monitored by a <tt><b>SensorMonitor</b></tt> service  that can detect when a sensor is faulty. In such a case, the <tt>SensorMonitor</tt> publishes on the topic named <tt><b>sensorFault</b></tt>  of a given <tt>MQTT-server</tt>  the tuple <tt><b>fault( SENSORID, DATE, INFOSTRINGONFAULT )</b></tt>.
+    <br/>
+Build a software system that:
+ 
+    
+    <ul>
+    <li>finds in the  hardware warehouse (<tt><b>HWW</b></tt>) a new sensor of the <i id="i">same type</i> of the faulty sensor  </li>
+    <li>drives an available <i id="i">carrier-robot</i> from the <tt><b>HWW</b></tt> to the equipment  </li>    
+    <li>drives the moving of the new sensor form the <i>carrier-robot</i> to a  <i id="i">installer-robot</i> that is able to replace the faulty sensor with the new one, by putting the faulty sensor back on the <i>carrier-robot</i></li>
+    <li>verifies that the replaced sensor works correctly. If not, an <i id="i">alarm</i> must be emitted and an <i id="i">human operator</i> must take the control of the system  </li>
+    <li>drives (if the new sensor is working correclty) the moving of the <i>carrier-robot</i> to a proper storage area in the <tt><b>HWW</b></tt>, in order to store the faulty sensor </li>
+        <li>keeps track in proper database of the <i id="i">sensor replacement activity</i>, including the <tt>HWW</tt> place in which the faulty sensor has been stored</li>
+    <li>provides a tool to make a <i id="i">report</i> of the sensors replaced in a given period of time (e.g. a day, a week, a month, etc.) </li>
+        <li>....</li>
+    </ul>
+--> 
+
+    
+ 
+</li>
+
+</ol>
+
+
+
+
+
+<h2 id="buildrobot">Building a robot</h2>
+    <li><a href="../Robots/nanoUp.jpg" target="isslm">Robot Nano up</a>, <a href="../Robots/nanoDown.jpg" target="isslm">Robot Nano down</a></li>
+    <li><a href="../Devices/devsDdr.html" target="isslm">Devices for a ddr robot</a></li>
+    <li><a href="../Projects/Robots/RobotNano0.jpg" target="isslm" >Basic Hardware Configuration</a></li>
+    <li><a href="../Projects/Robots/RobotDdrDependencies.jpg" target="isslm" >Software dependecies</a></li>
+    <li> ... </li>
+<li> <a href="http://store.makeblock.com/product/mbot-robot-kit" target="isslm" >mBot</a>
+    
+
+</li>
+</p>    
+      
+
+
+<h2>Learning Material </h2>
+
+<li>Teacher <a href="../NatMolBook/bookEntry.html"   target="isslm">notes (from a book by A.Natali, A.Molesini)</a>, including commented <a href="https://137.204.107.21/syskb/it.unibo.iss2015intro/docs/Biblio/biblio.html"   target="isslm">bibligraphic references</a>.
+</li>
+<li>Proposed readings from the network of from the teacher <a href="./entry2016.html"   target="isslm">working site</a> (to be consulted, when needed).
+</li>
+
+<h3 id="Books">Useful Books</h3>
+<ol>
+<li><b>Building Microservices. S. Newman. O'Reilly 2016. ISBN 978-1491950357</b> </li>
+<li><b>Building the Web of Things: With Examples in Node.js and Raspberry Pi. Dominique Guinard, Vlad M. Trifa, Manning 2016, ISBN-10: 1617292680</b></li>
+<li><b>Domain Driven Design. E. Evans. Addison-Wesley 2004. ISBN 0321125215 978-0321125217</b> </li>     
+<li>Implementing Domain-Driven Design. Vaughn Vernon. Addison Wesley. ISBN-10: 0321834577 </li>
+<li>Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions. Gregor Hohpe, Bobby Woolf. ISBN-10: 0133065103</li>
+<li>Reactive Messaging Patterns with the Actor Model: Applications and Integration in Scala and Akka.Vaughn Addison-Wesley 2016. Vernon.ISBN-10: 0133846830 </li>
+<!-- 
+<li>Model-Driven Software Development: Technology, Engineering, Management. Thomas Stahl, Markus Voelter, ISBN 0470025700</li>
+
+https://books.google.it/books?id=9ww_D9fAKncC&pg=PT20&lpg=PT20&dq=www.mdsd-book.org&source=bl&ots=PU9MypGpWO&sig=wMv3m86_ev5YJeXkNhMf0LAkVxE&hl=it&sa=X&ved=0ahUKEwj0rMrc97PWAhXRERQKHR3ZAqIQ6AEILjAB#v=onepage&q=www.mdsd-book.org&f=false-->
+    
+<h5>About (software) technologies</h5>
+<li>Concepts, Techniques, and Models of Computer Programming.  S. Haridi, P. Van-Roy, Mit Press, ISBN-10: 0262220695  (Autore)</li>
+<li>Dsl Engineering: Designing, Implementing and Using Domain-specific Languages. M.  Voelter. CreateSpace Independent Publishing Platform. ISBN-10: 1481218581 </li>  
+    <li>Domain Specific Languages. M. Fowler. Addison Wesley. ISBN-10: 0321712943</li>
+<li>Implementing Domain Specific Languages with Xtext and Xtend. Second edition. Lorenzo Bettini. Packt Publishing. ISBN-10: 1786464969</li>
+<li>Akka in Action. Rob Bakker.Rob BakkerManning Publications  ISBN-10: 1617291013</li>
+<li>Speaking JavaScript: An In-Depth Guide for Programmers. Axel Rauschmayer. O'Reilly. 2014. ISBN-10: 1449365035</li>
+<li>Understanding Ecmascript 6: The Definitive Guide for Javascript Developers. Nicholas C. Zakas. 2016. ISBN-10: 1593277571 <li>Getting MEAN with Mongo, Express, Angular, and Node. Simon Holmes. Manning Publications. ISBN-10: 1617292036</li>   
+<li>REST in Practice: Hypermedia and Systems Architecture. Jim Webber, Savas Parastatidis, Ian Robinson. O'Reilly Media, ISBN-10: 0596805829.</li>   
+</li>
+
+ <h5>About tools</h5>
+    
+<li>Gradle in Action. B. Muschko. Manning 2014. ISBN 978-1617291302 </li>    
+<li>Java Concurrency n practice. B. Goetz. Addison-Wesley 2013. ISBN 0321349601 978-0321349606 </li>  
+<li>Programming Concurrenncy on the JVM. V.Subramaniam, 2011, The Pragmatic Bookshelf </li>    
+<li>Reactive Programming with RxJava: Creating Asynchronous, Event-Based Applications. Tomasz Nurkiewicz, Ben Christensen. O'Reilly 2016. ISBN-10: 1491931655</li>  
+
+ <h5>Others</h5>
+<li>Embedded Software Development: The Open-Source Approach.  Ivan Cibrario Bertolotti, Tingting Hu, CRC press, 2016. ISBN-10: 146659392X</li>
+
+</ol>
+    
+ 
+ 
+ 
+<h2>Assessment</h2>
+<p>
+The examination will performed in two-phases.
+</p><p>
+The first phase starts by publishing a set of requirements and terminates with the production of a software prototype satisfying the given requirements,  toghether with a project report. For an example of requirements, see <a href="./TemaFinaleLMBO2017.html" target="isslm">TemaFinaleLMBO2017.html</a>
+<br/>
+The first phase can be delevoped both in individual  way or in a team of at most 3 persons. 
+</p><p>
+The second phase consists of an individual discussion of the work done, in order to evaluate personal skills and the background knowledge of each member of the team.
+<hr/>    
+<div id="bottom" >
+By AN Unibo-DISI    
+</div>
+    
+ <!--
+     <h2><a name="Intro"></a>Overview</h2>
+<p>    
+    The course of <a href="http://www.engineeringarchitecture.unibo.it/en/programmes/course-unit-catalogue/course-unit/2016/377366">Software Systems Engineering</a>is about the  <i id="i">cooperative</i> construction of software based on <i>functional requirements/specifications</i>. Systems should also meet <i>non-functional requirements</i> such as modifcability, robustness,  maintainability, etc.. 
+</p><p>   
+    While real time specifications are outside the scope of the course, performance issues are not negleted.
+</p><p>   
+    The main goal is understand both <i id="i">what</i> should be done in a software development process and <i id="i">how</i> do it, with the help of <a href="../Tools/tools.html" target="isslm">tools</a> and modern <a href="../Frameworks/Frameworks.html" target="isslm">frameworks</a> or
+    run-time platforms  (general purpose and/or custom).
+ 
+</p><p>
+    The focus is on the idea of <i id="i">software system</i>, intended as a collections of interconnected, interacting parts (components) that form a "whole" non fully reducible to the sum of the parts. 
+    Particular attention is given to the ralationship between <a href="../NatMolBook/Analisi.html" target="isslm"><i id="i">problem analyis/logic design</i></a> and  concrete implementation technologies, with refrence to <i id="i">distributed, heterogenous</i>, <a href="../Embedded/embedded.html" target="isslm">embedded</a> systems in the application field of <a href="https://en.wikipedia.org/wiki/Internet_of_things target="isslm">Internet of Things</a>.   
+    </p>
+<ol>          
+<li>We look both at <i id="i">agile</i> (<a href="../Survey/SCRUM/scrumEntry.html" target="isslm">SCRUM</a>) and <i id="i">model driven</i> ((<a href="../NatMolBook/LinguaggioUML.html" target="isslm">UML2</a> or custom meta-models based on <a href="../NatMolBook/content/book/uml/layerUml.html" target="isslm">MOF</a> / <a href="../NatMolBook/content/book/uml211\ecore.html" target="isslm">ECORE</a>) sofware  develpment methodologies, in order to find elements useful in different production environments, from small companies without well identoifiable production roles (analyst, designer, implementor) to big companies sensible to innovation (at level of products and/or of sottatre development process).   </li>
+<li>Particular attention is given to the concept of <i id="i">Software Architecture</i> and to the usage/development of (custom) <i id="i">Software Factories</i> and/or <i id="i">Domain Specific Langauges</i> based on <a href="https://en.wikipedia.org/wiki/Model-driven_software_development" target="isslm">MDSD</a> techniques, with reference to the <a href="../Xtext/XtextEntry.html" target="isslm">Xtext</a> technology.</li>
+<li>Concrete examples will be given with reference to applications involving "intelligent" low-cost devices built in-house. We will use <a href="../Robots/robotEntry.html" target="isslm">differential drive robots</a> to bulid software that span from simple robot (remote) control by human users to autonmous robot behavior specified by custom (interpreted) languages until coordinated behavior taht involves several robots. </li>
+<li>We will use several <a href="../Tools/tools.html" target="isslm">tools</a>, frameworks and laguages including <b>Java8, Eclipse, JUnit, Git, Xtext, Jacascipt, RxJava</b> (Akka, Bluemix). </li>
+</ol>
+
+    The course is based on a <i id="i">strong interaction between theory and laboratory practice</i>. The applicative part is arranged by simulating (as far as possible) a concrete industrial environment, by stressing cooperative working issues.
+<p>
+    Even though the attendance to the course is not formally mandatory, <i id="i">the course attendance is strongly reccomended</i>. In any case all the lectures are reported in the <a href="./LectureBologna1617.html" target="isslm">ISS-lectures site</a>.
+</p>
+-->
+    
+
+</body></html>

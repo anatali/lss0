@@ -36,7 +36,7 @@ Rules{
    	      
   	Plan waitForCmd [ println("qaledcustom WAITS") ]
     transition stopAfter 3000000
-      	whenMsg [ !? config( led, pcgui ) ] turn : switch(N) do javaOp "it.unibo.custom.led.LedFactory.ledSwitch(\"l1\")"  ,
+//      	whenMsg [ !? config( led, pcgui ) ] turn : switch(N) do javaOp "it.unibo.custom.led.LedFactory.ledSwitch(\"l1\")"  ,
 //       	whenMsg [ !? config( led, nodePc )] turn : switch(N) do println( writeNodeOutput(N)  ),
        	whenMsg [ !? config( led, nodePc )] turn : switch(N) do actorOp writeNodeOutput(N) 
     finally repeatPlan	 

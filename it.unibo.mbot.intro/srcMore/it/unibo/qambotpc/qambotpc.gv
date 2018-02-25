@@ -1,0 +1,20 @@
+/*
+*
+* A GraphViz DOT FSM description 
+* Please use a GraphViz visualizer (like http://www.webgraphviz.com)
+*  
+*/
+
+digraph finite_state_machine {
+	rankdir=LR
+	size="8,5"
+	
+	init [ color = red ][ fontcolor = red ][ penwidth = 3 ]
+	handleUserCmd [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	waitUserCmd [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	
+	waitUserCmd -> handleUserCmd [ label = "usercmd" ][ color = red ][ fontcolor = red ][ dir = both ]
+	waitUserCmd -> handleToutBuiltIn [ label = "timeout(6000000)" ][ color = green ][ fontcolor = green ]
+	waitUserCmd -> waitUserCmd [ label = "repeat "][ style = dashed ][ color = blue ][ fontcolor = blue ]
+	init -> waitUserCmd [ label = "switch" ][ color = black ][ fontcolor = black ]
+}

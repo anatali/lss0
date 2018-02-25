@@ -34,7 +34,7 @@ public abstract class AbstractQaledhlreactiveweb extends QActor {
 		public AbstractQaledhlreactiveweb(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qaledhlreactiveweb/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qaledhlreactiveweb/plans.txt";
 	  	}
 		@Override

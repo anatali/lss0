@@ -1,0 +1,30 @@
+System mbotControl
+Event usercmd : usercmd(CMD)
+
+Context ctxMbotControl ip [ host="localhost"  port=8029 ] -httpserver  
+
+QActor qambotpc context ctxMbotControl  {  
+ 	Plan init normal [         
+    	//javaOp "it.unibo.qambotpc.MbotConnArduino.initPc()" ;	//for pc
+   		javaOp "it.unibo.qambotpc.MbotConnArduino.initRasp()" ;
+   		println( "qambotpc STARTED"  )  
+    ]
+   	switchTo waitUserCmd
+   	
+   	Plan waitUserCmd[]
+  	transition stopAfter 6000000 
+     	whenEvent usercmd -> handleUserCmd 
+   		finally repeatPlan
+   		
+   	Plan handleUserCmd resumeLastPlan [
+   		printCurrentEvent;
+   		onEvent usercmd : usercmd(robotgui(w(X)) ) -> javaOp "it.unibo.qambotpc.MbotConnArduino.mbotForward()" ;  
+   		onEvent usercmd : usercmd(robotgui(a(X)) ) -> javaOp "it.unibo.qambotpc.MbotConnArduino.mbotLeft()" ;
+   		onEvent usercmd : usercmd(robotgui(s(X)) ) -> javaOp "it.unibo.qambotpc.MbotConnArduino.mbotBackward()" ;
+   		onEvent usercmd : usercmd(robotgui(d(X)) ) -> javaOp "it.unibo.qambotpc.MbotConnArduino.mbotRight()" ;
+   		onEvent usercmd : usercmd(robotgui(f(X)) ) -> javaOp "it.unibo.qambotpc.MbotConnArduino.mbotLinefollow()" ;
+   		onEvent usercmd : usercmd(robotgui(x(X)) ) -> javaOp "it.unibo.qambotpc.MbotConnArduino.mbotExit()" ;  
+   		onEvent usercmd : usercmd(robotgui(x(X)) ) -> actorOp terminateSystem; 
+   		onEvent usercmd : usercmd(robotgui(h(X)) ) -> javaOp "it.unibo.qambotpc.MbotConnArduino.mbotStop()" 
+   	]
+} 

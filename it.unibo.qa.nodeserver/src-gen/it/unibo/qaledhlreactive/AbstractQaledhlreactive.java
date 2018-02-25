@@ -34,7 +34,7 @@ public abstract class AbstractQaledhlreactive extends QActor {
 		public AbstractQaledhlreactive(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qaledhlreactive/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qaledhlreactive/plans.txt";
 	  	}
 		@Override
@@ -111,6 +111,7 @@ public abstract class AbstractQaledhlreactive extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp("doLedCmd",-1);
 	    	String myselfName = "doLedCmd";  
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("turn(blink)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("turn") && 
 	    		pengine.unify(curT, Term.createTerm("turn(X)")) && 

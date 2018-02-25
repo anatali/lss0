@@ -34,7 +34,7 @@ public abstract class AbstractQahttpanswerhandler extends QActor {
 		public AbstractQahttpanswerhandler(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qahttpanswerhandler/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qahttpanswerhandler/plans.txt";
 	  	}
 		@Override

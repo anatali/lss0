@@ -34,7 +34,7 @@ public abstract class AbstractQamqttreceivet extends QActor {
 		public AbstractQamqttreceivet(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qamqttreceivet/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qamqttreceivet/plans.txt";
 	  	}
 		@Override

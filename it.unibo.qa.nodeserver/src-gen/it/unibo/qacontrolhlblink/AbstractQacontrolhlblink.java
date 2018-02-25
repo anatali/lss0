@@ -34,7 +34,7 @@ public abstract class AbstractQacontrolhlblink extends QActor {
 		public AbstractQacontrolhlblink(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qacontrolhlblink/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qacontrolhlblink/plans.txt";
 	  	}
 		@Override

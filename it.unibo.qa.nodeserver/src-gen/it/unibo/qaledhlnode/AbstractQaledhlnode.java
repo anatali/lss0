@@ -34,7 +34,7 @@ public abstract class AbstractQaledhlnode extends QActor {
 		public AbstractQaledhlnode(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qaledhlnode/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qaledhlnode/plans.txt";
 	  	}
 		@Override
@@ -107,22 +107,7 @@ public abstract class AbstractQaledhlnode extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	//println("WARNING: variable substitution not yet fully implemented " ); 
-	            		it.unibo.custom.led.LedFactory.ledSwitch("l1");
-	             }
-	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
-	          }catch(Exception e ){  
-	             println( getName() + " plan=waitForCmd WARNING:" + e.getMessage() );
-	             //QActorContext.terminateQActorSystem(this); 
-	          }
-	          },
-	           
-	          () -> {	//AD HOC state to execute an action and resumeLastPlan
-	          try{
-	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
-	            //ActionSwitch for a message or event
-	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	String parg = "writeNodeOutput(N)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@711d1301
+	            	String parg = "writeNodeOutput(N)"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@6ed35968
 	            	if( (guardVars = QActorUtils.evalTheGuard(this, " !?config(led,nodePc)" )) != null )
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("switch(N)"), 
@@ -138,7 +123,7 @@ public abstract class AbstractQaledhlnode extends QActor {
 	          }
 	          }
 	          },//new StateFun[]
-	          new String[]{" !?config(led,pcgui)" ,"M","turn", " !?config(led,nodePc)" ,"M","turn" },
+	          new String[]{" !?config(led,nodePc)" ,"M","turn" },
 	          3000000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_waitForCmd){  
 	    	 println( getName() + " plan=waitForCmd WARNING:" + e_waitForCmd.getMessage() );

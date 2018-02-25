@@ -34,7 +34,7 @@ public abstract class AbstractQaservercmds extends QActor {
 		public AbstractQaservercmds(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qaservercmds/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qaservercmds/plans.txt";
 	  	}
 		@Override
@@ -94,6 +94,7 @@ public abstract class AbstractQaservercmds extends QActor {
 	    	String myselfName = "handleServerCmd";  
 	    	printCurrentMessage(false);
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("usercmd(S,X)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("serverCmd") && 
 	    		pengine.unify(curT, Term.createTerm("usercmd(SENDER,DATA)")) && 
@@ -106,12 +107,13 @@ public abstract class AbstractQaservercmds extends QActor {
 	    		if( parg != null ) println( parg );
 	    	}
 	    	//onMsg 
+	    	setCurrentMsgFromStore(); 
 	    	curT = Term.createTerm("usercmd(S,X)");
 	    	if( currentMessage != null && currentMessage.msgId().equals("serverCmd") && 
 	    		pengine.unify(curT, Term.createTerm("usercmd(SENDER,DATA)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentMessage.msgContent() ) )){ 
 	    		//println("WARNING: variable substitution not yet fully implemented " ); 
-	    			sendAnswerToServer( guardVars.get("S"), guardVars.get("X") );
+	    		sendAnswerToServer( guardVars.get("S"), guardVars.get("X") );
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"qaservercmds_"+myselfName,false,true);
 	    }catch(Exception e_handleServerCmd){  

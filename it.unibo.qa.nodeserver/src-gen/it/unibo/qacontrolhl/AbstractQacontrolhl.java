@@ -34,7 +34,7 @@ public abstract class AbstractQacontrolhl extends QActor {
 		public AbstractQacontrolhl(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qacontrolhl/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qacontrolhl/plans.txt";
 	  	}
 		@Override

@@ -34,7 +34,7 @@ public abstract class AbstractQaledhlcustom extends QActor {
 		public AbstractQaledhlcustom(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qaledhlcustom/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qaledhlcustom/plans.txt";
 	  	}
 		@Override
@@ -98,7 +98,7 @@ public abstract class AbstractQaledhlcustom extends QActor {
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
 	            	//println("WARNING: variable substitution not yet fully implemented " ); 
-	            		it.unibo.custom.led.LedFactory.ledSwitch("l1");
+	            	it.unibo.custom.led.LedFactory.ledSwitch("l1");
 	             }
 	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
 	          }catch(Exception e ){  

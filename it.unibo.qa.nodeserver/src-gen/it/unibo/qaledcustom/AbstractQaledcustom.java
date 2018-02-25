@@ -34,7 +34,7 @@ public abstract class AbstractQaledcustom extends QActor {
 		public AbstractQaledcustom(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qaledcustom/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qaledcustom/plans.txt";
 	  	}
 		@Override
@@ -100,7 +100,7 @@ public abstract class AbstractQaledcustom extends QActor {
 	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
 	            //ActionSwitch for a message or event
 	             if( currentMessage.msgContent().startsWith("switch") ){
-	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@3e884923
+	            	String parg = "ledSwitch"; //it.unibo.xtext.qactor.impl.MsgTransSwitchImpl@20ef20f
 	            	{/* ActorOp */
 	            	parg =  updateVars( Term.createTerm("switch"), 
 	            		                Term.createTerm("switch"), 

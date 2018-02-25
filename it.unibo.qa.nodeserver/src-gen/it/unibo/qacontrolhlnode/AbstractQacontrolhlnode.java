@@ -34,7 +34,7 @@ public abstract class AbstractQacontrolhlnode extends QActor {
 		public AbstractQacontrolhlnode(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 			super(actorId, myCtx,  
 			"./srcMore/it/unibo/qacontrolhlnode/WorldTheory.pl",
-			setTheEnv( outEnvView )  , "init");		
+			setTheEnv( outEnvView )  , "init");
 			this.planFilePath = "./srcMore/it/unibo/qacontrolhlnode/plans.txt";
 	  	}
 		@Override

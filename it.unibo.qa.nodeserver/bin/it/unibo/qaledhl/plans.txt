@@ -1,2 +1,2 @@
-plan(1,init, sentence( config( led,X),move(actorOp(createLedObject( X))),'','' ))
-plan(1,waitForCmd, sentence(true,move(print("LED WAITS")),'','' ))
+plan(1,init, sentence(true,not here StateMoveNormal,'','' ))
+plan(1,waitForCmd, sentence(true,move(actorOp(noOp)),'','' ))

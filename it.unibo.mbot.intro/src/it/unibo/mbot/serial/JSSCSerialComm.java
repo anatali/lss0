@@ -55,10 +55,11 @@ public class JSSCSerialComm extends SituatedPlainObject {
 				                         SerialPort.STOPBITS_1,
 				                         SerialPort.PARITY_NONE);
 //				serialPort.addEventListener(this, SerialPort.MASK_RXCHAR);
-				break;
+			    return new SerialPortConnSupport(serialPort,outView);
+//				break;
 			}
 		}
-		return new SerialPortConnSupport(serialPort,outView);		
+		return null;		
  	}
 	
 	

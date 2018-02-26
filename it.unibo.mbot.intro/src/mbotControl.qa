@@ -1,12 +1,72 @@
 System mbotControl
-Event usercmd : usercmd(CMD)
+Event usercmd     : usercmd(CMD)
+Event sonar  	  : sonar(SONAR, TARGET, DISTANCE)			//From (virtual) sonar
+Event sonarDetect : sonarDetect(X)			//From (virtual robot) sonar
 
 Context ctxMbotControl ip [ host="localhost"  port=8029 ] -httpserver  
+
+QActor rover context ctxMbotControl { 
+	Plan init normal [    
+	    	println("rover START");	    	
+	    	connectUnity "localhost";
+	    	createUnityObject "rover" ofclass "Prefabs/CustomActor" ;
+ 			backwards 70 time ( 800 ) ;    	
+   	    	right 70 time ( 1000 )   //position
+  	    ] 
+	    switchTo waitUserCmd   
+		
+   	Plan waitUserCmd[
+  	]  
+  	transition stopAfter 600000    
+ 		whenEvent usercmd -> execMove
+  	finally repeatPlan 
+
+  	Plan execMove resumeLastPlan[   
+    		onEvent usercmd :  usercmd( robotgui(w(X)) ) -> switchTo moveForward;   //robotForward speed(40) time(1000) ;
+    		onEvent usercmd :  usercmd( robotgui(s(X)) ) -> switchTo moveBackward ;  
+  			onEvent usercmd :  usercmd( robotgui(a(X)) ) -> left 40 time(1000);  // left 60 time ( 1000 ) ;   
+   			onEvent usercmd :  usercmd( robotgui(d(X)) ) -> right 40 time(1000) ; // right 60 time ( 1000 ) ;  
+   			onEvent usercmd :  usercmd( robotgui(h(X)) ) -> stop 40 time ( 10 )  
+   	]
+  	
+  	Plan moveForward resumeLastPlan[ ]
+  	reactive onward 40 time( 15000 )  //onward 40 time ( 5000 )
+		whenEnd               -> endOfMove
+		whenTout 30000        -> handleTout
+		whenEvent sonarDetect -> moveBackward
+		or whenEvent sonar    -> handleSonar
+		or whenEvent usercmd  -> execMove
+  	
+  	Plan moveBackward resumeLastPlan[ ]  
+  	reactive backwards 40 time ( 15000 )
+		whenEnd               -> endOfMove
+		whenTout 30000        -> handleTout
+//		whenEvent sonarDetect -> handleObstacle
+		whenEvent sonar       -> handleSonar
+		or whenEvent usercmd  -> execMove
+		
+	Plan handleSonar  resumeLastPlan [
+		//printCurrentEvent;
+		onward 40 time ( 200 ) ; //out of sonar range
+		stop 40 time ( 100 )   ;  //stop for a while ...
+		sound time(2000) file("./audio/tada2.wav")
+	]
+	Plan endOfMove resumeLastPlan [ println("endOfMove") ]
+	reactive sound time(1000) file("./audio/music_dramatic20.wav")
+		whenEnd               -> handleEndOfMove  
+		whenTout 30000        -> handleTout
+ 		whenEvent sonar       -> handleSonar
+		or whenEvent usercmd  -> execMove
+	
+	Plan handleEndOfMove resumeLastPlan [ println("handleEndOfMove") ]
+	Plan handleTout [ println("handleTout") ]
+  	    
+}  
 
 QActor qambotpc context ctxMbotControl  {  
  	Plan init normal [         
     	//javaOp "it.unibo.qambotpc.MbotConnArduino.initPc()" ;	//for pc
-   		javaOp "it.unibo.qambotpc.MbotConnArduino.initRasp()" ;
+   		//javaOp "it.unibo.qambotpc.MbotConnArduino.initRasp()" ;
    		println( "qambotpc STARTED"  )  
     ]
    	switchTo waitUserCmd
@@ -17,7 +77,8 @@ QActor qambotpc context ctxMbotControl  {
    		finally repeatPlan
    		
    	Plan handleUserCmd resumeLastPlan [
-   		printCurrentEvent;
+   		//printCurrentEvent;
+   		onEvent usercmd : usercmd( robotgui(CMD) ) -> println( qambotp(handleUserCmd(CMD)) );	
    		onEvent usercmd : usercmd(robotgui(w(X)) ) -> javaOp "it.unibo.qambotpc.MbotConnArduino.mbotForward()" ;  
    		onEvent usercmd : usercmd(robotgui(a(X)) ) -> javaOp "it.unibo.qambotpc.MbotConnArduino.mbotLeft()" ;
    		onEvent usercmd : usercmd(robotgui(s(X)) ) -> javaOp "it.unibo.qambotpc.MbotConnArduino.mbotBackward()" ;

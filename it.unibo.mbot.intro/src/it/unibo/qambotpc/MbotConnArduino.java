@@ -5,7 +5,7 @@ import it.unibo.qactors.QActorUtils;
 
 public class MbotConnArduino {
  
-private static SerialPortConnSupport conn;
+private static SerialPortConnSupport conn = null;
 private static JSSCSerialComm serialConn;
 private static String dataFromArduino;
  
@@ -21,6 +21,7 @@ private static String dataFromArduino;
 	 		System.out.println("MbotConnArduino starts");
 			serialConn = new JSSCSerialComm(null);
 			conn = serialConn.connect(port);	//returns a SerialPortConnSupport
+			if( conn == null ) return;
  			dataFromArduino = conn.receiveALine();
 			System.out.println("MbotConnArduino received:" + dataFromArduino);
  			getDataFromArduino();
@@ -46,41 +47,31 @@ private static String dataFromArduino;
 	}
 	
 	public static void mbotForward() {
-		try { conn.sendCmd("w"); } catch (Exception e) {e.printStackTrace();}
+ 		try { if( conn != null ) conn.sendCmd("w"); } catch (Exception e) {e.printStackTrace();}
 	}
 	public static void mbotBackward() {
-		try { conn.sendCmd("s"); } catch (Exception e) {e.printStackTrace();}
+		try { if( conn != null ) conn.sendCmd("s"); } catch (Exception e) {e.printStackTrace();}
 	}
 	public static void mbotLeft() {
-		try { conn.sendCmd("a"); } catch (Exception e) {e.printStackTrace();}
+		try { if( conn != null ) conn.sendCmd("a"); } catch (Exception e) {e.printStackTrace();}
 	}
 	public static void mbotRight() {
-		try { conn.sendCmd("d"); } catch (Exception e) {e.printStackTrace();}
+		try { if( conn != null ) conn.sendCmd("d"); } catch (Exception e) {e.printStackTrace();}
 	}
 	public static void mbotStop() {
-		try { conn.sendCmd("h"); } catch (Exception e) {e.printStackTrace();}
+		try { if( conn != null ) conn.sendCmd("h"); } catch (Exception e) {e.printStackTrace();}
 //		QActorUtils.terminateTheQActorSystem( systemCreator, false  ); 
 	}
 	public static void mbotLinefollow() {
-		try { conn.sendCmd("f"); } catch (Exception e) {e.printStackTrace();}
+		try { if( conn != null ) conn.sendCmd("f"); } catch (Exception e) {e.printStackTrace();}
 	}
 	public static void mbotExit() {
-		try { conn.sendCmd("h"); } catch (Exception e) {e.printStackTrace();}
+		try { if( conn != null ) conn.sendCmd("h"); } catch (Exception e) {e.printStackTrace();}
 		
 		//System.exit(1);
 		
 	}
 	
 	
-//	public static void sendCmd(String cmd) {
-//   		try {
-//   			if( initDone ) conn.sendCmd(cmd);
-//   			else {
-//   				init();
-//   			}
-//		} catch (Exception e) {
-// 			e.printStackTrace();
-//		} 
-//  		
-//	}
+ 
 }

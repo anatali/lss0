@@ -168,7 +168,7 @@ public abstract class AbstractQambotpc extends QActor {
 	    	if( currentEvent != null && currentEvent.getEventId().equals("usercmd") && 
 	    		pengine.unify(curT, Term.createTerm("usercmd(CMD)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentEvent.getMsg() ) )){ 
-	    			String parg = "terminateSystem"; //it.unibo.xtext.qactor.impl.EventTransSwitchImpl@27992da5
+	    			String parg = "terminateSystem"; //it.unibo.xtext.qactor.impl.EventTransSwitchImpl@4a658d1c
 	    			{/* ActorOp */
 	    			parg =  updateVars( Term.createTerm("usercmd(CMD)"), 
 	    				                Term.createTerm("usercmd(robotgui(x(X)))"), 

@@ -13,4 +13,9 @@ public class Rover extends AbstractRover {
 /*
  * ADDED BY THE APPLICATION DESIGNER	
  */
+	public void terminateSystem(  ) {
+		println("EXIT FROM mbot CONTROL ...");
+		this.getQActorContext().terminateQActorSystem();
+	}
+
 }

@@ -60,6 +60,11 @@ public abstract class AbstractRover extends QActor {
 	    	stateTab.put("execMove",execMove);
 	    	stateTab.put("moveForward",moveForward);
 	    	stateTab.put("moveBackward",moveBackward);
+	    	stateTab.put("turnLeft",turnLeft);
+	    	stateTab.put("turnRight",turnRight);
+	    	stateTab.put("stopTheRobot",stopTheRobot);
+	    	stateTab.put("terminataAppl",terminataAppl);
+	    	stateTab.put("handleRobotSonarDetect",handleRobotSonarDetect);
 	    	stateTab.put("handleSonar",handleSonar);
 	    	stateTab.put("endOfMove",endOfMove);
 	    	stateTab.put("handleEndOfMove",handleEndOfMove);
@@ -83,8 +88,9 @@ public abstract class AbstractRover extends QActor {
 	    	String myselfName = "init";  
 	    	temporaryStr = "\"rover START\"";
 	    	println( temporaryStr );  
-	    	initUnityConnection("localhost");
+	    	initUnityConnection("192.168.43.229");
 	    	createSimulatedActor("rover", "Prefabs/CustomActor"); 
+	    	it.unibo.rover.MbotConnArduino.initRasp();
 	    	execUnity("rover","backward",800, 70,0); //rover: default namefor virtual robot		
 	    	execUnity("rover","right",1000, 70,0); //rover: default namefor virtual robot		
 	    	//switchTo waitUserCmd
@@ -158,8 +164,17 @@ public abstract class AbstractRover extends QActor {
 	    	if( currentEvent != null && currentEvent.getEventId().equals("usercmd") && 
 	    		pengine.unify(curT, Term.createTerm("usercmd(CMD)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentEvent.getMsg() ) )){ 
-	    			//println("WARNING: variable substitution not yet fully implemented " ); 
-	    			execUnity("rover","left",1000, 40,0); //rover: default namefor virtual robot		
+	    			/* SwitchTransition */
+	    			String parg = "turnLeft";
+	    			parg =  updateVars( Term.createTerm("usercmd(CMD)"), 
+	    				                Term.createTerm("usercmd(robotgui(a(X)))"), 
+	    				                Term.createTerm(currentEvent.getMsg()), parg);
+	    			if(parg != null){ 
+	    				switchToPlanAsNextState(pr, myselfName, "console_"+myselfName, 
+	    			    	 		    		parg,false, true, null); 
+	    			    return;	
+	    			    //the control is given to the caller state
+	    			}
 	    	}
 	    	//onEvent 
 	    	setCurrentMsgFromStore(); 
@@ -167,8 +182,17 @@ public abstract class AbstractRover extends QActor {
 	    	if( currentEvent != null && currentEvent.getEventId().equals("usercmd") && 
 	    		pengine.unify(curT, Term.createTerm("usercmd(CMD)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentEvent.getMsg() ) )){ 
-	    			//println("WARNING: variable substitution not yet fully implemented " ); 
-	    			execUnity("rover","right",1000, 40,0); //rover: default namefor virtual robot		
+	    			/* SwitchTransition */
+	    			String parg = "turnRight";
+	    			parg =  updateVars( Term.createTerm("usercmd(CMD)"), 
+	    				                Term.createTerm("usercmd(robotgui(d(X)))"), 
+	    				                Term.createTerm(currentEvent.getMsg()), parg);
+	    			if(parg != null){ 
+	    				switchToPlanAsNextState(pr, myselfName, "console_"+myselfName, 
+	    			    	 		    		parg,false, true, null); 
+	    			    return;	
+	    			    //the control is given to the caller state
+	    			}
 	    	}
 	    	//onEvent 
 	    	setCurrentMsgFromStore(); 
@@ -176,8 +200,44 @@ public abstract class AbstractRover extends QActor {
 	    	if( currentEvent != null && currentEvent.getEventId().equals("usercmd") && 
 	    		pengine.unify(curT, Term.createTerm("usercmd(CMD)")) && 
 	    		pengine.unify(curT, Term.createTerm( currentEvent.getMsg() ) )){ 
+	    			/* SwitchTransition */
+	    			String parg = "stopTheRobot";
+	    			parg =  updateVars( Term.createTerm("usercmd(CMD)"), 
+	    				                Term.createTerm("usercmd(robotgui(h(X)))"), 
+	    				                Term.createTerm(currentEvent.getMsg()), parg);
+	    			if(parg != null){ 
+	    				switchToPlanAsNextState(pr, myselfName, "console_"+myselfName, 
+	    			    	 		    		parg,false, true, null); 
+	    			    return;	
+	    			    //the control is given to the caller state
+	    			}
+	    	}
+	    	//onEvent 
+	    	setCurrentMsgFromStore(); 
+	    	curT = Term.createTerm("usercmd(robotgui(f(X)))");
+	    	if( currentEvent != null && currentEvent.getEventId().equals("usercmd") && 
+	    		pengine.unify(curT, Term.createTerm("usercmd(CMD)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentEvent.getMsg() ) )){ 
 	    			//println("WARNING: variable substitution not yet fully implemented " ); 
-	    			execUnity("rover","stop",10, 40,0); //rover: default namefor virtual robot		
+	    			it.unibo.rover.MbotConnArduino.mbotLinefollow();
+	    	}
+	    	//onEvent 
+	    	setCurrentMsgFromStore(); 
+	    	curT = Term.createTerm("usercmd(robotgui(x(X)))");
+	    	if( currentEvent != null && currentEvent.getEventId().equals("usercmd") && 
+	    		pengine.unify(curT, Term.createTerm("usercmd(CMD)")) && 
+	    		pengine.unify(curT, Term.createTerm( currentEvent.getMsg() ) )){ 
+	    			/* SwitchTransition */
+	    			String parg = "terminataAppl";
+	    			parg =  updateVars( Term.createTerm("usercmd(CMD)"), 
+	    				                Term.createTerm("usercmd(robotgui(x(X)))"), 
+	    				                Term.createTerm(currentEvent.getMsg()), parg);
+	    			if(parg != null){ 
+	    				switchToPlanAsNextState(pr, myselfName, "console_"+myselfName, 
+	    			    	 		    		parg,false, true, null); 
+	    			    return;	
+	    			    //the control is given to the caller state
+	    			}
 	    	}
 	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
 	    }catch(Exception e_execMove){  
@@ -190,6 +250,7 @@ public abstract class AbstractRover extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("moveForward",-1);
 	    	String myselfName = "moveForward";  
+	    	it.unibo.rover.MbotConnArduino.mbotForward();
 	    	Callable<String> body;
 	    int ractionTimeOut=0;
 	    ractionTimeOut = 30000;
@@ -205,7 +266,7 @@ public abstract class AbstractRover extends QActor {
 	    currentTimedAction.execASynch();
 	      	//aaa
 	    msgTransition( pr,myselfName,"rover_"+myselfName,true,
-	          new StateFun[]{stateTab.get( "endOfMove"),stateTab.get( "moveBackward"),stateTab.get( "handleSonar"),stateTab.get( "execMove")},
+	          new StateFun[]{stateTab.get( "endOfMove"),stateTab.get( "handleRobotSonarDetect"),stateTab.get( "handleSonar"),stateTab.get( "execMove")},
 	          new String[]{"true","E",terminationEvId,"true","E","sonarDetect","true","E","sonar","true","E","usercmd"},
 	          ractionTimeOut, "handleTout" );
 	    }catch(Exception e_moveForward){  
@@ -218,6 +279,7 @@ public abstract class AbstractRover extends QActor {
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("moveBackward",-1);
 	    	String myselfName = "moveBackward";  
+	    	it.unibo.rover.MbotConnArduino.mbotBackward();
 	    	Callable<String> body;
 	    int ractionTimeOut=0;
 	    ractionTimeOut = 30000;
@@ -242,13 +304,82 @@ public abstract class AbstractRover extends QActor {
 	    }
 	    };//moveBackward
 	    
+	    StateFun turnLeft = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp("turnLeft",-1);
+	    	String myselfName = "turnLeft";  
+	    	it.unibo.rover.MbotConnArduino.mbotLeft();
+	    	execUnity("rover","left",750, 40,0); //rover: default namefor virtual robot		
+	    	it.unibo.rover.MbotConnArduino.mbotStop();
+	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
+	    }catch(Exception e_turnLeft){  
+	    	 println( getName() + " plan=turnLeft WARNING:" + e_turnLeft.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//turnLeft
+	    
+	    StateFun turnRight = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp("turnRight",-1);
+	    	String myselfName = "turnRight";  
+	    	it.unibo.rover.MbotConnArduino.mbotRight();
+	    	execUnity("rover","right",750, 40,0); //rover: default namefor virtual robot		
+	    	it.unibo.rover.MbotConnArduino.mbotStop();
+	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
+	    }catch(Exception e_turnRight){  
+	    	 println( getName() + " plan=turnRight WARNING:" + e_turnRight.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//turnRight
+	    
+	    StateFun stopTheRobot = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp("stopTheRobot",-1);
+	    	String myselfName = "stopTheRobot";  
+	    	execUnity("rover","stop",10, 40,0); //rover: default namefor virtual robot		
+	    	it.unibo.rover.MbotConnArduino.mbotStop();
+	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
+	    }catch(Exception e_stopTheRobot){  
+	    	 println( getName() + " plan=stopTheRobot WARNING:" + e_stopTheRobot.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//stopTheRobot
+	    
+	    StateFun terminataAppl = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp("terminataAppl",-1);
+	    	String myselfName = "terminataAppl";  
+	    	execUnity("rover","stop",10, 40,0); //rover: default namefor virtual robot		
+	    	it.unibo.rover.MbotConnArduino.mbotStop();
+	    	parg = "terminateSystem"; 
+	    	actorOpExecute(parg, false);	//OCT17		 
+	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
+	    }catch(Exception e_terminataAppl){  
+	    	 println( getName() + " plan=terminataAppl WARNING:" + e_terminataAppl.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//terminataAppl
+	    
+	    StateFun handleRobotSonarDetect = () -> {	
+	    try{	
+	     PlanRepeat pr = PlanRepeat.setUp("handleRobotSonarDetect",-1);
+	    	String myselfName = "handleRobotSonarDetect";  
+	    	it.unibo.rover.MbotConnArduino.mbotStop();
+	    	execUnity("rover","stop",100, 40,0); //rover: default namefor virtual robot		
+	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
+	    }catch(Exception e_handleRobotSonarDetect){  
+	    	 println( getName() + " plan=handleRobotSonarDetect WARNING:" + e_handleRobotSonarDetect.getMessage() );
+	    	 QActorContext.terminateQActorSystem(this); 
+	    }
+	    };//handleRobotSonarDetect
+	    
 	    StateFun handleSonar = () -> {	
 	    try{	
 	     PlanRepeat pr = PlanRepeat.setUp("handleSonar",-1);
 	    	String myselfName = "handleSonar";  
-	    	execUnity("rover","forward",200, 40,0); //rover: default namefor virtual robot		
+	    	it.unibo.rover.MbotConnArduino.mbotStop();
+	    	execUnity("rover","forward",500, 40,0); //rover: default namefor virtual robot		
 	    	execUnity("rover","stop",100, 40,0); //rover: default namefor virtual robot		
-	    	playTheSound( "./audio/tada2.wav", 2000 );
 	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
 	    }catch(Exception e_handleSonar){  
 	    	 println( getName() + " plan=handleSonar WARNING:" + e_handleSonar.getMessage() );
@@ -262,24 +393,7 @@ public abstract class AbstractRover extends QActor {
 	    	String myselfName = "endOfMove";  
 	    	temporaryStr = "\"endOfMove\"";
 	    	println( temporaryStr );  
-	    	Callable<String> body;
-	    int ractionTimeOut=0;
-	    ractionTimeOut = 30000;
-	    body= new Callable<String>(){
-	    	public String call() throws Exception {
-	      				playTheSound( "./audio/music_dramatic20.wav", 1000 );
-	    			return currentActionResult;
-	    		}		
-	    		}; 
-	    		terminationEvId = QActorUtils.getNewName(IActorAction.endBuiltinEvent);
-	    currentTimedAction = new ActorTimedAction("ra_"+terminationEvId,this,myCtx,body,false,
-	    			terminationEvId, new String[]{}, outEnvView, ractionTimeOut	);
-	    currentTimedAction.execASynch();
-	      	//aaa
-	    msgTransition( pr,myselfName,"rover_"+myselfName,true,
-	          new StateFun[]{stateTab.get( "handleEndOfMove"),stateTab.get( "handleSonar"),stateTab.get( "execMove")},
-	          new String[]{"true","E",terminationEvId,"true","E","sonar","true","E","usercmd"},
-	          ractionTimeOut, "handleTout" );
+	    	repeatPlanNoTransition(pr,myselfName,"rover_"+myselfName,false,true);
 	    }catch(Exception e_endOfMove){  
 	    	 println( getName() + " plan=endOfMove WARNING:" + e_endOfMove.getMessage() );
 	    	 QActorContext.terminateQActorSystem(this); 

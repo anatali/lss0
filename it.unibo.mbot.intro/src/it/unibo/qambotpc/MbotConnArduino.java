@@ -1,7 +1,7 @@
 package it.unibo.qambotpc;
 import it.unibo.mbot.serial.JSSCSerialComm;
 import it.unibo.mbot.serial.SerialPortConnSupport;
-import it.unibo.qactors.QActorUtils;
+
 
 public class MbotConnArduino {
  

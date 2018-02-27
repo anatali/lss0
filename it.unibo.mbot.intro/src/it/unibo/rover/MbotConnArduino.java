@@ -12,8 +12,10 @@ private static JSSCSerialComm serialConn;
 private static double dataSonar = 0;
 private static String curDataFromArduino;
 private static QActor curActor ;
-	public static void initRasp()   {
+
+	public static void initRasp(QActor actor)   {
 		init( "/dev/ttyUSB0" );
+		curActor = actor;
 	}
 	public static void initPc(QActor actor)   {
 		init( "COM6" );

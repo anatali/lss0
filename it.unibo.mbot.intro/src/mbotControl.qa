@@ -9,10 +9,10 @@ Context ctxMbotControl ip [ host="localhost"  port=8029 ] -httpserver
 QActor rover context ctxMbotControl { 
 	Plan init normal [    
 	    	println("rover START");	    	
-//	    	connectUnity "192.168.43.229";
-//	    	createUnityObject "rover" ofclass "Prefabs/CustomActor" ;
-	    	javaOp "it.unibo.rover.MbotConnArduino.initPc(this)" ;
-     		//javaOp "it.unibo.rover.MbotConnArduino.initRasp()" ;
+ 	    	connectUnity "192.168.43.229";
+ 	    	createUnityObject "rover" ofclass "Prefabs/CustomActor" ;
+	    	//javaOp "it.unibo.rover.MbotConnArduino.initPc(this)" ;
+     		javaOp "it.unibo.rover.MbotConnArduino.initRasp(this)" ;
   			backwards 70 time ( 800 ) ;    	
    	    	right 70 time ( 1000 )   //position
   	    ] 

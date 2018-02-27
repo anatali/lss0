@@ -88,7 +88,9 @@ public abstract class AbstractRover extends QActor {
 	    	String myselfName = "init";  
 	    	temporaryStr = "\"rover START\"";
 	    	println( temporaryStr );  
-	    	it.unibo.rover.MbotConnArduino.initPc(this);
+	    	initUnityConnection("192.168.43.229");
+	    	createSimulatedActor("rover", "Prefabs/CustomActor"); 
+	    	it.unibo.rover.MbotConnArduino.initRasp(this);
 	    	execUnity("rover","backward",800, 70,0); //rover: default namefor virtual robot		
 	    	execUnity("rover","right",1000, 70,0); //rover: default namefor virtual robot		
 	    	//switchTo waitUserCmd

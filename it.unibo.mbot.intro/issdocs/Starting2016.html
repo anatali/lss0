@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.o../html4/strict.dtd">
+<html>
+<link rel="stylesheet" type="text/css" href="../css/plainStyle.css">
+<link rel="stylesheet" type="text/css" href="../css/tabStyle.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+<head>
+
+<title>Starting2016</title></head>
+    
+<body>     
+<div class="container wrapper"> 
+
+<div id="top">
+</div> 
+
+<div class="wrapper">
+<div id="main"> 
+
+<h1>STARTING ISS LAB 2016</h1>
+ <button onclick="window.location.href='../../Material/entry.html'">Home</button>
+  <div style="background-color:#fbffb6; width:100%;float:left;"> 
+    
+<h3>VISION</h3>
+      <ul>
+<li>A feature does not exist unless a test validates that it functions.</li>
+<li>Test early. Test often. test enough.</li>
+<li>The process of software creation and testing should be automated by using 
+<a href="https://en.wikipedia.org/wiki/Build_automation">build automation</a> systems.</li>
+      </ul>
+ 
+    
+<h3>GOAL</h3>
+Experiment with the <a href="https://en.wikipedia.org/wiki/Gradle">GRADLE</a> software automation system with reference to:
+    <ul>
+    <li>the <a href="../../Appls/ButtonLed/buttonLed.html" target="show"><img src="../../Material/source.gif">ButtonLed systemr equirements</a></li>
+        <li>the <a href="https://en.wikipedia.org/wiki/V-Model_(software_development)" target="show">V-Model</a> of software development</li>
+        <li>the <a href="http://www.collab.net/sites/default/files/uploads/CollabNet_scrumreferencecard.pdf" target="show">SCRUM</a>
+        management framework for incremental software development
+        </li>
+    </ul>
+</div>
+  
+    
+<div style="background-color:#d5faf1; width:100%;float:left;font-size:small;">
+<h3>DOWNLOAD</h3>
+    
+    <li>Download Eclipse Java EE IDE for Web Developers, version Neon and the plugins for Gradle and Xtext</li>
+ <li><a href="https://docs.gradle.org/current/userguide/installation.html">Install gradle</a></li>
+   
+    
+<h3>WORK TODO: Setup a Java project by starting from Gradle and then working in Eclipse</h3> 
+  
+<ol>
+<li>Create a working directory <b>WD</b> (e.g. <tt>..\bls</tt>)</li> 
+     <li>Open a terminal on <b>WD</b> and execute
+     <font face="Verdana" size="3" color="rgba(44, 0, 128, 0.91)"><pre>
+     gradle init    
+    </pre> </font>
+    </li> 
+    <li>Insert in the generated <tt>build.gradle</tt> the sentence <tt>apply plugin: 'eclipse'</tt>  and execute:
+     <font face="Verdana" size="3" color="rgba(44, 0, 128, 0.91)"><pre>
+     gradle eclipse
+    </pre> </font>        
+    </li>     
+     <li>
+        Open Eclipse and import the project (actually named <i></i>bls</i>)
+    </li> 
+    <li>In the Eclipse IDE,edit the generated <tt>build.gradle</tt> as follows:
+ <font face="Verdana" size="3" color="#5b2faf"><pre>
+apply plugin: 'java'
+apply plugin: 'eclipse'
+version = "1.0"
+sourceCompatibility = "1.8"
+sourceSets {
+    main {
+        java { srcDirs = ['src' ] 	}
+    }
+    test {
+        java { srcDirs = ['test' ]   }
+    }
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    testCompile 'junit:junit:4.12'
+	compile group: 'com.typesafe.akka', name: 'akka-actor_2.11', version: '2.4.8'
+	compile group: 'com.typesafe.akka', name: 'akka-remote_2.11', version: '2.4.9-RC2'
+}
+jar {
+    manifest {
+        attributes "Class-Path": configurations.compile.collect { "lib/"+it.getName() }.join(' ')
+        attributes 'Main-Class': 'Library'
+    }
+}    
+</pre></font></li>
+    <li>Open the view <b>Termimal</b> and execute
+     <font face="Verdana" size="3" color="rgba(44, 0, 128, 0.91)"><pre>
+        gradle eclipse //to update the classptah with the dependencies
+        gradle build 
+    </pre> </font>      
+    </li> 
+     <li>Create the source directories named <tt>src</tt>  and <tt>test</tt></li> 
+     <li>
+         Define the application code and related testing</li> 
+     <li>
+     Execute
+     <font face="Verdana" size="3" color="rgba(44, 0, 128, 0.91)"><pre>
+        gradle build    //to update the distribution
+      </pre> </font> </li>
+<li>
+</li>
+</div>
+    
+<div style="background-color:#dbfad5; width:100%;float:left;font-size:small;">
+
+Add in the gadle file the following code:
+ <font face="Verdana" size="3" color="#5b2faf">
+<pre>
+apply plugin: 'jacoco'
+test {
+	testLogging {
+		outputs.upToDateWhen { false }		
+		showStandardStreams = true		
+		events 'failed' , 'passed' //,  'started', 'skipped', 		
+	}
+	include '**/TestLed.class'
+	test.afterSuite { TestDescriptor srtsuite, TestResult result -> //add closure to be notified
+	if( !suite.parent && result.getTestCount() > 0) { //there is at least one test
+		long elapsedTestTime = result.getEndTime() - result.getStartTime()
+ 		System.out.println("""AFTERTEST Elapsed time for execution of ${result.getTestCount()} test(s):  $elapsedTestTime ms""");
+	}
+	}
+}
+
+test.finalizedBy jacocoTestReport
+
+jacocoTestReport {
+     reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
+</pre>  
+</font>
+Execute
+     <font face="Verdana" size="3" color="rgba(44, 0, 128, 0.91)"><pre>
+        gradle build    //to run the tests and generate the reports
+      </pre> </font> 
+    
+    </div>   
+
+</div>  
+    
+<div id="bottom">
+By AN Unibo-DISI    
+</div>
+    
+</div>
+</div>    
+    
+
+</body></html>

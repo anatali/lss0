@@ -14,5 +14,6 @@ digraph finite_state_machine {
 	init -> handleToutBuiltIn [ label = "timeout(600000)" ][ color = green ][ fontcolor = green ]
 	init -> init [ label = "repeat "][ style = dashed ][ color = blue ][ fontcolor = blue ]
 	init -> action [ label = "sonar" ][ color = red ][ fontcolor = red ][ dir = both ]
+	init -> action [ label = "realSonar" ][ color = red ][ fontcolor = red ][ dir = both ]
 	init -> action [ label = "sonarDetect" ][ color = red ][ fontcolor = red ][ dir = both ]
 }

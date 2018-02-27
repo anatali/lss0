@@ -2,15 +2,17 @@ System mbotControl
 Event usercmd     : usercmd(CMD)
 Event sonar  	  : sonar(SONAR, TARGET, DISTANCE)	//From (virtual) sonar
 Event sonarDetect : sonarDetect(X)					//From (virtual robot) sonar
+Event realSonar   : sonar( DISTANCE )				//From real sonar on real robot
 
 Context ctxMbotControl ip [ host="localhost"  port=8029 ] -httpserver  
 
 QActor rover context ctxMbotControl { 
 	Plan init normal [    
 	    	println("rover START");	    	
-	    	connectUnity "192.168.43.229";
-	    	createUnityObject "rover" ofclass "Prefabs/CustomActor" ;
-     		javaOp "it.unibo.rover.MbotConnArduino.initRasp()" ;
+//	    	connectUnity "192.168.43.229";
+//	    	createUnityObject "rover" ofclass "Prefabs/CustomActor" ;
+	    	javaOp "it.unibo.rover.MbotConnArduino.initPc(this)" ;
+     		//javaOp "it.unibo.rover.MbotConnArduino.initRasp()" ;
   			backwards 70 time ( 800 ) ;    	
    	    	right 70 time ( 1000 )   //position
   	    ] 
@@ -94,12 +96,11 @@ QActor rover context ctxMbotControl {
 }  
 
 QActor sonardetector context ctxMbotControl{
-	Plan init normal [    
-	    	println("sonarDetector START") 
-	]
+	Plan init normal [ ]
   	transition stopAfter 600000    
  		whenEvent sonar :  sonar(SONAR, TARGET, DISTANCE ) do printCurrentEvent,
- 		whenEvent sonarDetect : sonarDetect(X) do printCurrentEvent
+ 		whenEvent sonarDetect : sonarDetect(X) do printCurrentEvent ,
+ 		whenEvent realSonar : sonar( DISTANCE ) do printCurrentEvent
   	finally repeatPlan 
 
 }

@@ -8,7 +8,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
 
@@ -105,6 +104,7 @@ public class JSSCSerialComm extends SituatedPlainObject {
                 String receivedData = serialPort.readString(event.getEventValue());               
                 object.lock();
     			list.add(receivedData);
+    			println("serialEvent: " + receivedData);
     			object.unlock();
     			dataAvailable.release();
             }

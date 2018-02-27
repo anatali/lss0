@@ -74,8 +74,6 @@ public abstract class AbstractSonardetector extends QActor {
 	     PlanRepeat pr = PlanRepeat.setUp(getName()+"_init",0);
 	     pr.incNumIter(); 	
 	    	String myselfName = "init";  
-	    	temporaryStr = "\"sonarDetector START\"";
-	    	println( temporaryStr );  
 	    	//bbb
 	     msgTransition( pr,myselfName,"sonardetector_"+myselfName,false,
 	          new StateFun[]{
@@ -107,9 +105,24 @@ public abstract class AbstractSonardetector extends QActor {
 	             println( getName() + " plan=init WARNING:" + e.getMessage() );
 	             //QActorContext.terminateQActorSystem(this); 
 	          }
+	          },
+	           
+	          () -> {	//AD HOC state to execute an action and resumeLastPlan
+	          try{
+	            PlanRepeat pr1 = PlanRepeat.setUp("adhocstate",-1);
+	            //ActionSwitch for a message or event
+	             if( currentEvent.getMsg().startsWith("sonar") ){
+	            	//println("WARNING: variable substitution not yet fully implemented " ); 
+	            	printCurrentEvent(false);
+	             }
+	            repeatPlanNoTransition(pr1,"adhocstate","adhocstate",false,true);
+	          }catch(Exception e ){  
+	             println( getName() + " plan=init WARNING:" + e.getMessage() );
+	             //QActorContext.terminateQActorSystem(this); 
+	          }
 	          }
 	          },//new StateFun[]
-	          new String[]{"true","E","sonar", "true","E","sonarDetect" },
+	          new String[]{"true","E","sonar", "true","E","sonarDetect", "true","E","realSonar" },
 	          600000, "handleToutBuiltIn" );//msgTransition
 	    }catch(Exception e_init){  
 	    	 println( getName() + " plan=init WARNING:" + e_init.getMessage() );

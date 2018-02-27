@@ -80,11 +80,13 @@ private String curString = "";
 	public void serialEvent(SerialPortEvent event) {		
 		 if(event.isRXCHAR() && event.getEventValue() > 0) {
             try {
-                String data = serialPort.readString(event.getEventValue());   
-//                println("SerialPortConnSupport serialEvent ... " + data );                                           
+                String data  = serialPort.readString(event.getEventValue());   
+                String[] ds  = data.split("\n");
+                if( ds.length > 0 ) data = ds[0]; else return;  
+                //println("SerialPortConnSupport serialEvent ... " + data );                                           
 	            this.notifyTheObservers(data);  //an observer can see the received data as it is
-	            updateLines(data);
-              }
+	            updateLines(data+"\n");
+               }
             catch (SerialPortException ex) {
                 println("Error in receiving string from COM-port: " + ex);
             }
@@ -92,10 +94,11 @@ private String curString = "";
 	}
 	
 	protected synchronized void updateLines(String data){
+		//println("SerialPortConnSupport updateLines ... " + data.endsWith("\n") );    
 		if( data.length()>0) {
             curString = curString + data;
             if( data.endsWith("\n")    ) {
-// 	 			println("serialEvent data = " +  curString + " / " + curString.length());
+  	 			//println("updateLines curString= " +  curString + " / " + curString.length());
 				list.add(curString);
 				this.notifyAll();
 				curString = "";
